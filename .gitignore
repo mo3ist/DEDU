@@ -1,7 +1,7 @@
 .vscode
 backend/venv
-backend/core/migrations/*
-!backend/core/migrations/__init__.py
+backend/*/migrations/*
+!backend/*/migrations/__init__.py
 backend/*/__pycache__/
 backend/db.sqlite3
 backend/.ipynb_checkpoints/
