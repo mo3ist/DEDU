@@ -37,7 +37,6 @@ class Lecture(models.Model):
 	body = models.CharField(max_length=5000)
 	link = models.URLField()
 	votes = GenericRelation(Vote)
-	tags = GenericRelation(Tag)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -47,7 +46,6 @@ class Question(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote)
-	tags = GenericRelation(Tag)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -58,7 +56,6 @@ class Answer(models.Model):
 	title = models.CharField(max_length=500, null=True, blank=True)
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote)
-	tags = GenericRelation(Tag)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -72,7 +69,6 @@ class Quiz(models.Model):
 	d = models.CharField(max_length=250)
 	answer = models.CharField(max_length=250)
 	votes = GenericRelation(Vote)
-	tags = GenericRelation(Tag)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -82,7 +78,6 @@ class Resource(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote)
-	tags = GenericRelation(Tag)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -92,7 +87,6 @@ class Summary(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote)
-	tags = GenericRelation(Tag)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):

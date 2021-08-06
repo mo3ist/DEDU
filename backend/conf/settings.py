@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 	'core',
 	'accounts',
 	'gm2m',
+	'django.contrib.sites',
+	'moderation',
 
 	# DEVELOPEMENT
 	'django_extensions'
@@ -82,7 +84,7 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3',)	# It errored out all of a sudden, str solved it. 
     }
 }
 
@@ -131,3 +133,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+SITE_ID = 1
