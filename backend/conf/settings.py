@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 	'gm2m',
 	'django.contrib.sites',
 	'moderation',
+	'graphene_django',
 
 	# DEVELOPEMENT
 	'django_extensions'
@@ -135,3 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 SITE_ID = 1
+
+GRAPHENE = {
+    'SCHEMA': 'conf.schema.schema' # Where your Graphene schema lives
+}

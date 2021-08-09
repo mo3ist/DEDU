@@ -2,16 +2,8 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
+from django.db.models.query_utils import Q
 from gm2m import GM2MField
-
-class Tag(models.Model):
-	title = models.CharField(max_length=250)
-	body = models.CharField(max_length=5000, null=True)
-	contents = GM2MField()
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return self.title
 
 class Vote(models.Model):
 	UPVOTE = 'UPVOTE'
@@ -88,6 +80,19 @@ class Summary(models.Model):
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.title
+
+class Tag(models.Model):
+	title = models.CharField(max_length=250)
+	body = models.CharField(max_length=5000, null=True)
+	contents = GM2MField(Lecture, Question, Answer, Quiz, Resource, Summary)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+	@property
+	def get_contents(self):
+		return self.contents.all()
 
 	def __str__(self):
 		return self.title
