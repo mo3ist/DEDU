@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 	'django.contrib.sites',
 	'moderation',
 	'graphene_django',
+	'rest_framework',
 
 	# DEVELOPEMENT
 	'django_extensions'
