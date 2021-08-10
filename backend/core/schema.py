@@ -6,12 +6,18 @@ from graphene_django.rest_framework.mutation import SerializerMutation
 from gm2m import GM2MField
 import http
 
-from core import models
-from core import serializers
+from core import models as core_models
+from core import serializers as core_serializers
+from accounts import models as accounts_models
+
+class TagInput(graphene.InputObjectType):
+	title = graphene.String(required=True)
+	body = graphene.String(required=True)
+	user = graphene.String(required=True)
 
 class LectureType(DjangoObjectType):
 	class Meta:
-		model = models.Lecture
+		model = core_models.Lecture
 
 	# Using 'core.schema.Tag' is the solution to the
 	# circular dependency between Tag and rest of Tag.contents' Models
@@ -20,29 +26,31 @@ class LectureType(DjangoObjectType):
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
 
-class LectureMutation(SerializerMutation):
-	class Meta:
-		serializer_class = serializers.LectureSerializer
-		model_operations = ["create", "update"]
-		lookup_field = "id"
+class LectureInput(graphene.InputObjectType):
+	title = graphene.String(required=True)
+	body = graphene.String(required=True)
+	link = graphene.String(required=True)
+	user = graphene.String(required=True)
+	tag_set = graphene.List(TagInput)
 
-	@classmethod
-	def get_serializer_kwargs(cls, root, info, **input):
-		if 'id' in input:
-			instance = models.Lecture.objects.filter(
-				id=input['id']
-			).first()
-			if instance:
-				return {'instance': instance, 'data': input, 'partial': True}
+class CreateLecture(graphene.Mutation):
+	class Arguments:
+		input_data = LectureInput(required=True, name="input")
 
-			else:
-				raise http.Http404
+	lecture = graphene.Field(LectureType)
 
-		return {'data': input, 'partial': True}
+	@staticmethod
+	def mutate(obj, info, input_data):
+		print(input_data)
+		# lecture_serializer = core_serializers.LectureSerializer(data=input_data)
+		lecture_serializer = core_serializers.LectureSerializer(data=input_data)
+		if lecture_serializer.is_valid():
+			lecture = lecture_serializer.save()
+			return CreateLecture(lecture=lecture)
 
 class QuestionType(DjangoObjectType):
 	class Meta:
-		model = models.Question
+		model = core_models.Question
 
 	tag_set = graphene.List('core.schema.TagType')	
 
@@ -51,14 +59,14 @@ class QuestionType(DjangoObjectType):
 
 class QuestionMutation(SerializerMutation):
 	class Meta:
-		serializer_class = serializers.QuestionSerializer
+		serializer_class = core_serializers.QuestionSerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Question.objects.filter(
+			instance = core_models.Question.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -72,7 +80,7 @@ class QuestionMutation(SerializerMutation):
 
 class AnswerType(DjangoObjectType):
 	class Meta:
-		model = models.Answer
+		model = core_models.Answer
 
 	tag_set = graphene.List('core.schema.TagType')	
 
@@ -81,14 +89,14 @@ class AnswerType(DjangoObjectType):
 
 class AnswerMutation(SerializerMutation):
 	class Meta:
-		serializer_class = serializers.AnswerSerializer
+		serializer_class = core_serializers.AnswerSerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Answer.objects.filter(
+			instance = core_models.Answer.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -101,7 +109,7 @@ class AnswerMutation(SerializerMutation):
 
 class QuizType(DjangoObjectType):
 	class Meta:
-		model = models.Quiz
+		model = core_models.Quiz
 
 	tag_set = graphene.List('core.schema.TagType')	
 
@@ -110,14 +118,14 @@ class QuizType(DjangoObjectType):
 
 class QuizMutation(SerializerMutation):
 	class Meta:
-		serializer_class = serializers.QuizSerializer
+		serializer_class = core_serializers.QuizSerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Quiz.objects.filter(
+			instance = core_models.Quiz.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -130,7 +138,7 @@ class QuizMutation(SerializerMutation):
 
 class ResourceType(DjangoObjectType):
 	class Meta:
-		model = models.Resource
+		model = core_models.Resource
 
 	tag_set = graphene.List('core.schema.TagType')	
 
@@ -139,14 +147,14 @@ class ResourceType(DjangoObjectType):
 
 class ResourceMutation(SerializerMutation):
 	class Meta:
-		serializer_class = serializers.ResourceSerializer
+		serializer_class = core_serializers.ResourceSerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Resource.objects.filter(
+			instance = core_models.Resource.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -159,7 +167,7 @@ class ResourceMutation(SerializerMutation):
 
 class SummaryType(DjangoObjectType):
 	class Meta:
-		model = models.Summary
+		model = core_models.Summary
 
 	tag_set = graphene.List('core.schema.TagType')	
 
@@ -168,14 +176,14 @@ class SummaryType(DjangoObjectType):
 
 class SummaryMutation(SerializerMutation):
 	class Meta:
-		serializer_class = serializers.SummarySerializer
+		serializer_class = core_serializers.SummarySerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Summary.objects.filter(
+			instance = core_models.Summary.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -198,18 +206,18 @@ def convert_field_to_string(field, registry=None):
 
 class TagType(DjangoObjectType):
 	class Meta:
-		model = models.Tag
+		model = core_models.Tag
 
 class TagMutation(SerializerMutation):
 	class Meta:
-		serializer_class = serializers.TagSerializer
+		serializer_class = core_serializers.TagSerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Tag.objects.filter(
+			instance = core_models.Tag.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -222,21 +230,21 @@ class TagMutation(SerializerMutation):
 
 class VoteType(DjangoObjectType):
 	class Meta:
-		model = models.Vote
+		model = core_models.Vote
 
 	content_object = graphene.List(ContentsType)
 
 class VoteMutation(SerializerMutation):
 	class Meta:
 		convert_choices_to_enum = False
-		serializer_class = serializers.VoteSerializer
+		serializer_class = core_serializers.VoteSerializer
 		model_operations = ["create", "update"]
 		lookup_field = "id"
 
 	@classmethod
 	def get_serializer_kwargs(cls, root, info, **input):
 		if 'id' in input:
-			instance = models.Vote.objects.filter(
+			instance = core_models.Vote.objects.filter(
 				id=input['id']
 			).first()
 			if instance:
@@ -258,31 +266,31 @@ class Query(graphene.ObjectType):
 	tags = graphene.List(TagType)
 
 	def resolve_lectures(obj, info, **kwargs):
-		return models.Lecture.objects.all()
+		return core_models.Lecture.objects.all()
 	
 	def resolve_questions(obj, info, **kwargs):
-		return models.Question.objects.all()
+		return core_models.Question.objects.all()
 	
 	def resolve_answers(obj, info, **kwargs):
-		return models.Answer.objects.all()
+		return core_models.Answer.objects.all()
 	
 	def resolve_quizzes(obj, info, **kwargs):
-		return models.Quiz.objects.all()
+		return core_models.Quiz.objects.all()
 
 	def resolve_resources(obj, info, **kwargs):
-		return models.Resource.objects.all()
+		return core_models.Resource.objects.all()
 	
 	def resolve_summaries(obj, info, **kwargs):
-		return models.Summary.objects.all()
+		return core_models.Summary.objects.all()
 	
 	def resolve_votes(obj, info, **kwargs):
-		return models.Vote.objects.all()
+		return core_models.Vote.objects.all()
 
 	def resolve_tags(obj, info, **kwargs):
-		return models.Tag.objects.all()
+		return core_models.Tag.objects.all()
 
 class Mutation(graphene.ObjectType):
-	mutate_lecture = LectureMutation.Field()
+	createLecture = CreateLecture.Field()
 	mutate_question = QuizMutation.Field()
 	mutate_answer = AnswerMutation.Field()
 	mutate_quiz = QuizMutation.Field()

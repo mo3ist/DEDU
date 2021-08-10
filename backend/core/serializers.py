@@ -2,15 +2,31 @@ from django.contrib.contenttypes import fields
 from rest_framework import serializers
 from core import models 
 
+class TagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = models.Tag
+		fields = ("id", "title", "body", "user")
+
+	id = serializers.CharField(required=False) 
+
 class LectureSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Lecture
-		fields = ("id", "title", "body", "link", "user")
+		fields = ("id", "title", "body", "link", "user", "tag_set")
 
 	# GraphQL's ID is a string.
 	# It's important to make required=False so mutations can user
 	#serializers to create instanced, too.
 	id = serializers.CharField(required=False) 
+	tag_set = TagSerializer(many=True)
+
+	def create(self, validated_data):
+		tag_set = validated_data.pop("tag_set")
+		lecture = models.Lecture.objects.create(**validated_data)
+		for tag in tag_set:
+			tag = models.Tag.objects.create(**tag)
+			tag.contents.add(lecture)
+		return lecture
 
 class QuestionSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -43,13 +59,6 @@ class ResourceSerializer(serializers.ModelSerializer):
 class SummarySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Summary
-		fields = ("id", "title", "body", "user")
-
-	id = serializers.CharField(required=False) 
-
-class TagSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = models.Tag
 		fields = ("id", "title", "body", "user")
 
 	id = serializers.CharField(required=False) 
