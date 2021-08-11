@@ -41,9 +41,9 @@ INSTALLED_APPS = [
 	'accounts',
 	'gm2m',
 	'django.contrib.sites',
-	'moderation',
 	'graphene_django',
 	'rest_framework',
+	'mptt',
 
 	# DEVELOPEMENT
 	'django_extensions'

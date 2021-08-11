@@ -22,9 +22,11 @@ class LectureSerializer(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set")
-		lecture = models.Lecture.objects.create(**validated_data)
+		mod = models.Mod.objects.create()
+		lecture = models.Lecture.objects.create(mod=mod, **validated_data)
 		for tag in tag_set:
-			tag = models.Tag.objects.create(**tag)
+			mod = models.Mod.objects.create()
+			tag = models.Tag.objects.create(mod=mod, **tag)
 			tag.contents.add(lecture)
 		return lecture
 

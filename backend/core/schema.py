@@ -266,8 +266,8 @@ class Query(graphene.ObjectType):
 	tags = graphene.List(TagType)
 
 	def resolve_lectures(obj, info, **kwargs):
-		return core_models.Lecture.objects.all()
-	
+		return core_models.Lecture.objects.filter(mod__state=core_models.Mod.APPROVED)
+
 	def resolve_questions(obj, info, **kwargs):
 		return core_models.Question.objects.all()
 	
