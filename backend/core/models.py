@@ -36,7 +36,6 @@ class Vote(models.Model):
 	object_id = models.PositiveIntegerField()
 	content_object = GenericForeignKey()
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return f"{self.value} #{self.id}"

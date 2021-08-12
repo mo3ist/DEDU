@@ -1,5 +1,6 @@
 from django.contrib.contenttypes import fields
 from rest_framework import serializers
+from generic_relations.relations import GenericRelatedField
 from core import models 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -68,6 +69,27 @@ class SummarySerializer(serializers.ModelSerializer):
 class VoteSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Vote
-		fields = ("id", "value", "content_object", "user")
+		fields = ("id", "value", "content_type", "content_object", "user")
 
 	id = serializers.CharField(required=False) 
+	content_type = serializers.CharField()
+	content_object = serializers.CharField()
+
+	def create(self, validated_data):
+		contents = {
+			"lecture": models.Lecture,
+			"question": models.Question,
+			"answer": models.Answer,
+			"quiz": models.Quiz,
+			"resource": models.Resource,
+			"summary": models.Summary 
+		}
+		content = contents[validated_data["content_type"]].objects.get(
+			id=validated_data["content_object"]
+		)
+		vote = models.Vote.objects.create(
+			value=validated_data["value"],
+			user=validated_data["user"],
+			content_object=content
+		)
+		return vote
