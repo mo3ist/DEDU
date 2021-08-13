@@ -5,6 +5,8 @@ from django.conf import settings
 from django.db.models.query_utils import Q
 from gm2m import GM2MField
 from mptt.models import MPTTModel, TreeForeignKey
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Mod(MPTTModel):
 	PENDING = "PENDING"
@@ -20,6 +22,28 @@ class Mod(MPTTModel):
 	by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 	date = models.DateTimeField(auto_now=True)
 	parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+	group_id = models.PositiveIntegerField(blank=True, null=True)
+	history = models.BooleanField(default=False)
+
+@receiver(post_save, sender=Mod)
+def populate_fields(sender, instance, **kwargs):
+	Mod.objects.filter(id=instance.id).update(
+		group_id=instance.get_root().id
+	)
+	if instance.state != Mod.PENDING:
+		if instance.parent:
+			Mod.objects.filter(id=instance.parent.id).update(history=True)
+
+	# Creation
+	if instance.parent:
+		if instance.parent.state == Mod.PENDING:
+			old_parent = instance.parent
+			instance.move_to(instance.parent.parent)
+			old_parent.delete()
+
+@receiver(post_save)
+def testing(sender, **kwargs):
+	print(sender)
 
 class Vote(models.Model):
 	UPVOTE = 'UPVOTE'

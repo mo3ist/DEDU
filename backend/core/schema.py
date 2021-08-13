@@ -10,6 +10,10 @@ from core import models as core_models
 from core import serializers as core_serializers
 from accounts import models as accounts_models
 
+class ModType(DjangoObjectType):
+	class Meta:
+		model = core_models.Mod
+
 class TagInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
@@ -22,6 +26,7 @@ class LectureType(DjangoObjectType):
 	# Using 'core.schema.Tag' is the solution to the
 	# circular dependency between Tag and rest of Tag.contents' Models
 	tag_set = graphene.List('core.schema.TagType')	
+	mod = graphene.Field('core.schema.ModType')
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
@@ -253,7 +258,6 @@ class CreateVote(graphene.Mutation):
 			return CreateVote(vote=vote)
 		print(vote_serializer.errors)
 
-
 class Query(graphene.ObjectType):
 	lectures = graphene.List(LectureType)
 	questions = graphene.List(QuestionType)
@@ -263,30 +267,34 @@ class Query(graphene.ObjectType):
 	summaries = graphene.List(SummaryType)
 	votes = graphene.List(VoteType)
 	tags = graphene.List(TagType)
+	mods = graphene.List(ModType)
 
 	def resolve_lectures(obj, info, **kwargs):
-		return core_models.Lecture.objects.filter(mod__state=core_models.Mod.APPROVED)
+		return core_models.Lecture.objects.filter(mod__history=False)
 
 	def resolve_questions(obj, info, **kwargs):
-		return core_models.Question.objects.all()
+		return core_models.Question.objects.filter(mod__history=False)
 	
 	def resolve_answers(obj, info, **kwargs):
-		return core_models.Answer.objects.all()
+		return core_models.Answer.objects.filter(mod__history=False)
 	
 	def resolve_quizzes(obj, info, **kwargs):
-		return core_models.Quiz.objects.all()
+		return core_models.Quiz.objects.filter(mod__history=False)
 
 	def resolve_resources(obj, info, **kwargs):
-		return core_models.Resource.objects.all()
+		return core_models.Resource.objects.filter(mod__history=False)
 	
 	def resolve_summaries(obj, info, **kwargs):
-		return core_models.Summary.objects.all()
+		return core_models.Summary.objects.filter(mod__history=False)
 	
 	def resolve_votes(obj, info, **kwargs):
 		return core_models.Vote.objects.all()
 
 	def resolve_tags(obj, info, **kwargs):
-		return core_models.Tag.objects.all()
+		return core_models.Tag.objects.filter(mod__history=False)
+
+	def resolve_mods(obj, info, **kwargs):
+		return core_models.Mod.objects.all()
 
 class Mutation(graphene.ObjectType):
 	create_lecture = CreateLecture.Field()
