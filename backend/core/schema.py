@@ -36,7 +36,8 @@ class LectureInput(graphene.InputObjectType):
 	body = graphene.String(required=True)
 	link = graphene.String(required=True)
 	user = graphene.String(required=True)
-	tag_set = graphene.List(TagInput)
+	mod = graphene.String()
+	tag_set = graphene.List(graphene.String)
 
 class CreateLecture(graphene.Mutation):
 	class Arguments:
