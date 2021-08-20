@@ -18,6 +18,7 @@ class TagInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
 	user = graphene.String(required=True)
+	mod = graphene.String()
 
 class LectureType(DjangoObjectType):
 	class Meta:
@@ -65,7 +66,7 @@ class QuestionInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
 	user = graphene.String(required=True)
-	tag_set = graphene.List(TagInput)
+	tag_set = graphene.List(graphene.String)
 
 class CreateQuestion(graphene.Mutation):
 	class Arguments:
@@ -90,11 +91,11 @@ class AnswerType(DjangoObjectType):
 		return obj.tag_set.all()
 
 class AnswerInput(graphene.InputObjectType):
-	question = graphene.Field(QuestionInput)
+	question = graphene.Field(graphene.String)
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
 	user = graphene.String(required=True)
-	tag_set = graphene.List(TagInput)
+	tag_set = graphene.List(graphene.String)
 
 class CreateAnswer(graphene.Mutation):
 	class Arguments:
@@ -126,7 +127,7 @@ class QuizInput(graphene.InputObjectType):
 	d = graphene.String(required=True)
 	answer = graphene.String(required=True)
 	user = graphene.String(required=True)
-	tag_set = graphene.List(TagInput)
+	tag_set = graphene.List(graphene.String)
 
 class CreateQuiz(graphene.Mutation):
 	class Arguments:
@@ -154,7 +155,7 @@ class ResourceInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
 	user = graphene.String(required=True)
-	tag_set = graphene.List(TagInput)
+	tag_set = graphene.List(graphene.String)
 
 class CreateResource(graphene.Mutation):
 	class Arguments:
@@ -182,7 +183,7 @@ class SummaryInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
 	user = graphene.String(required=True)
-	tag_set = graphene.List(TagInput)
+	tag_set = graphene.List(graphene.String)
 
 class CreateSummary(graphene.Mutation):
 	class Arguments:
@@ -222,7 +223,7 @@ class CreateTag(graphene.Mutation):
 		tag_serializer = core_serializers.TagSerializer(data=input_data)
 		if tag_serializer.is_valid():
 			tag = tag_serializer.save()
-			return CreateTag(tag=tag)
+			return CreateTag(tag=tag)	
 
 class VoteType(DjangoObjectType):
 	class Meta:
@@ -257,7 +258,6 @@ class CreateVote(graphene.Mutation):
 		if vote_serializer.is_valid():
 			vote = vote_serializer.save()
 			return CreateVote(vote=vote)
-		print(vote_serializer.errors)
 
 class Query(graphene.ObjectType):
 	lectures = graphene.List(LectureType)

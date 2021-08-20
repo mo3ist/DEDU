@@ -25,6 +25,18 @@ class Mod(MPTTModel):
 	group_id = models.PositiveIntegerField(blank=True, null=True)
 	history = models.BooleanField(default=False)
 
+	@staticmethod
+	def create_child_mod(parent_mod):
+		mod = Mod.objects.create()
+		if parent_mod:
+			mod_leafnodes = parent_mod.get_leafnodes()
+			if mod_leafnodes:
+				mod.parent = mod_leafnodes[0]
+			else:
+				mod.parent = parent_mod
+			mod.save()
+		return mod 
+		
 @receiver(post_save, sender=Mod)
 def populate_fields(sender, instance, **kwargs):
 	Mod.objects.filter(id=instance.id).update(
@@ -40,10 +52,6 @@ def populate_fields(sender, instance, **kwargs):
 			old_parent = instance.parent
 			instance.move_to(instance.parent.parent)
 			old_parent.delete()
-
-@receiver(post_save)
-def testing(sender, **kwargs):
-	print(sender)
 
 class Vote(models.Model):
 	UPVOTE = 'UPVOTE'
