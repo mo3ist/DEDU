@@ -10,3 +10,10 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = ("id", "email", "password")
 
 	id = serializers.CharField(required=False) 
+
+	def create(self, validated_data):
+		password = validated_data.pop("password")
+		user = UserModel(**validated_data)
+		user.set_password(password)
+		user.save()
+		return user

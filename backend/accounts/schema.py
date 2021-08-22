@@ -11,26 +11,22 @@ class UserType(DjangoObjectType):
 	class Meta:
 		model = UserModel
 
-class UserMutation(SerializerMutation):
-	class Meta:
-		serializer_class = serializers.UserSerializer
-		model_operations = ["create", "update"]
-		lookup_field = "id"
+class UserInput(graphene.InputObjectType):
+	email = graphene.String(required=True)
+	password = graphene.String(required=True)
 
-	@classmethod
-	def get_serializer_kwargs(cls, root, info, **input):
-		if 'id' in input:
-			instance = UserModel.objects.filter(
-				id=input['id']
-			).first()
-			if instance:
-				return {'instance': instance, 'data': input, 'partial': True}
+class CreateUser(graphene.Mutation):
+	class Arguments:
+		input_data = UserInput(required=True, name="input")
 
-			else:
-				raise http.Http404
+	user = graphene.Field(UserType)
 
-		return {'data': input, 'partial': True}
-
+	@staticmethod
+	def mutate(obj, info, input_data):
+		user_serializer = serializers.UserSerializer(data=input_data)
+		if user_serializer.is_valid():
+			user = user_serializer.save()
+			return CreateUser(user=user)
 
 class Query(graphene.ObjectType):
 	users = graphene.List(UserType)
@@ -39,6 +35,6 @@ class Query(graphene.ObjectType):
 		return UserModel.objects.all()
 
 class Mutation(graphene.ObjectType):
-	mutate_user = UserMutation.Field()
+	create_user = CreateUser.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

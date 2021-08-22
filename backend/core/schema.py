@@ -17,7 +17,6 @@ class ModType(DjangoObjectType):
 class TagInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
-	user = graphene.String(required=True)
 	mod = graphene.String()
 
 class LectureType(DjangoObjectType):
@@ -36,7 +35,7 @@ class LectureInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
 	link = graphene.String(required=True)
-	user = graphene.String(required=True)
+	# user = graphene.String(required=True)
 	mod = graphene.String()
 	tag_set = graphene.List(graphene.String)
 
@@ -48,6 +47,7 @@ class CreateLecture(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user
 		lecture_serializer = core_serializers.LectureSerializer(data=input_data)
 		if lecture_serializer.is_valid():
 			lecture = lecture_serializer.save()
@@ -65,7 +65,6 @@ class QuestionType(DjangoObjectType):
 class QuestionInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
-	user = graphene.String(required=True)
 	tag_set = graphene.List(graphene.String)
 
 class CreateQuestion(graphene.Mutation):
@@ -76,6 +75,7 @@ class CreateQuestion(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		question_serializer = core_serializers.QuestionSerializer(data=input_data)
 		if question_serializer.is_valid():
 			question = question_serializer.save()
@@ -94,7 +94,6 @@ class AnswerInput(graphene.InputObjectType):
 	question = graphene.Field(graphene.String)
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
-	user = graphene.String(required=True)
 	tag_set = graphene.List(graphene.String)
 
 class CreateAnswer(graphene.Mutation):
@@ -105,6 +104,7 @@ class CreateAnswer(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		answer_serializer = core_serializers.AnswerSerializer(data=input_data)
 		if answer_serializer.is_valid():
 			answer = answer_serializer.save()
@@ -126,7 +126,6 @@ class QuizInput(graphene.InputObjectType):
 	c = graphene.String(required=True)
 	d = graphene.String(required=True)
 	answer = graphene.String(required=True)
-	user = graphene.String(required=True)
 	tag_set = graphene.List(graphene.String)
 
 class CreateQuiz(graphene.Mutation):
@@ -137,6 +136,7 @@ class CreateQuiz(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		quiz_serializer = core_serializers.QuizSerializer(data=input_data)
 		if quiz_serializer.is_valid():
 			quiz = quiz_serializer.save()
@@ -154,7 +154,6 @@ class ResourceType(DjangoObjectType):
 class ResourceInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
-	user = graphene.String(required=True)
 	tag_set = graphene.List(graphene.String)
 
 class CreateResource(graphene.Mutation):
@@ -165,6 +164,7 @@ class CreateResource(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		resource_serializer = core_serializers.ResourceSerializer(data=input_data)
 		if resource_serializer.is_valid():
 			resource = resource_serializer.save()
@@ -182,7 +182,6 @@ class SummaryType(DjangoObjectType):
 class SummaryInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	body = graphene.String(required=True)
-	user = graphene.String(required=True)
 	tag_set = graphene.List(graphene.String)
 
 class CreateSummary(graphene.Mutation):
@@ -193,6 +192,7 @@ class CreateSummary(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		summary_serializer = core_serializers.SummarySerializer(data=input_data)
 		if summary_serializer.is_valid():
 			summary = summary_serializer.save()
@@ -220,6 +220,7 @@ class CreateTag(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		tag_serializer = core_serializers.TagSerializer(data=input_data)
 		if tag_serializer.is_valid():
 			tag = tag_serializer.save()
@@ -243,7 +244,6 @@ class VoteInput(graphene.InputObjectType):
 	value = graphene.String(required=True)
 	content_type = ContentObjectEnum()
 	content_object = graphene.String()
-	user = graphene.String(required=True)
 	tag_set = graphene.List(TagInput)
 
 class CreateVote(graphene.Mutation):
@@ -254,6 +254,7 @@ class CreateVote(graphene.Mutation):
 
 	@staticmethod
 	def mutate(obj, info, input_data):
+		input_data["user"] = info.context.user.id
 		vote_serializer = core_serializers.VoteSerializer(data=input_data)
 		if vote_serializer.is_valid():
 			vote = vote_serializer.save()
