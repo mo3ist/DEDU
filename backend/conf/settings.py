@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 	'graphene_django',
 	'rest_framework',
 	'mptt',
+	'django_filters',
 
 	# DEVELOPEMENT
 	'django_extensions'
