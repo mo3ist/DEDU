@@ -7,6 +7,7 @@ from gm2m import GM2MField
 from mptt.models import MPTTModel, TreeForeignKey
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 class Mod(MPTTModel):
 	PENDING = "PENDING"
@@ -21,6 +22,7 @@ class Mod(MPTTModel):
 	state = models.CharField(choices=STATE, max_length=8, default=PENDING)
 	by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 	date = models.DateTimeField(auto_now=True)
+	reason = models.CharField(max_length=1000, null=True, blank=True)
 	parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 	group_id = models.PositiveIntegerField(blank=True, null=True)
 	history = models.BooleanField(default=False)
@@ -36,6 +38,14 @@ class Mod(MPTTModel):
 				mod.parent = parent_mod
 			mod.save()
 		return mod 
+
+	def save(self, *args, **kwargs):
+		if self.id:
+			if Mod.objects.get(id=self.id).state != self.state:
+				self.date = timezone.now()
+				if not self.by:
+					raise Exception("Field 'by' needs to be populated.")
+		super().save(*args, **kwargs)
 		
 @receiver(post_save, sender=Mod)
 def populate_fields(sender, instance, **kwargs):
