@@ -72,11 +72,24 @@ class Vote(models.Model):
 	def __str__(self):
 		return f"{self.value} #{self.id}"
 
+	def save(self, *args, **kwargs):
+		# Validations
+		# https://stackoverflow.com/a/36166644/
+		if not self.id:
+			model_query = { str(self.content_type): self.content_object } # dynamically get the query {model type: value}
+			other = Vote.objects.filter(
+				Q(**model_query),
+				user=self.user, 
+			)
+			# save if other votes don't exist
+			if not other:
+				super().save(*args, **kwargs)
+
 class Lecture(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
 	link = models.URLField()
-	votes = GenericRelation(Vote)
+	votes = GenericRelation(Vote, related_query_name="lecture")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
@@ -86,7 +99,7 @@ class Lecture(models.Model):
 class Question(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
-	votes = GenericRelation(Vote)
+	votes = GenericRelation(Vote, related_query_name="question")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
@@ -97,7 +110,7 @@ class Answer(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	title = models.CharField(max_length=500, null=True, blank=True)
 	body = models.CharField(max_length=5000)
-	votes = GenericRelation(Vote)
+	votes = GenericRelation(Vote, related_query_name="answer")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
@@ -111,7 +124,7 @@ class Quiz(models.Model):
 	c = models.CharField(max_length=250)
 	d = models.CharField(max_length=250)
 	answer = models.CharField(max_length=250)
-	votes = GenericRelation(Vote)
+	votes = GenericRelation(Vote, related_query_name="quiz")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
@@ -121,7 +134,7 @@ class Quiz(models.Model):
 class Resource(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
-	votes = GenericRelation(Vote)
+	votes = GenericRelation(Vote, related_query_name="resource")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
@@ -131,7 +144,7 @@ class Resource(models.Model):
 class Summary(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
-	votes = GenericRelation(Vote)
+	votes = GenericRelation(Vote, related_query_name="summary")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 
@@ -151,3 +164,10 @@ class Tag(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	def save(self, *args, **kwargs):
+		if not self.id:
+			other = Tag.objects.filter(title=self.title)
+			if other:
+				raise Exception("A tag with the same name already exists.")
+			super().save(*args, **kwargs)
