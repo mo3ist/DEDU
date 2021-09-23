@@ -19,10 +19,30 @@ class ModType(DjangoObjectType):
 		model = core_models.Mod
 		interfaces = (graphene.relay.Node,)
 
+class ClassificationFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Classification
+		fields = ("year", "courses")
+
+class ClassificationType(DjangoObjectType):
+	class Meta:
+		model = core_models.Classification
+		interfaces = (graphene.relay.Node,)
+
+class CourseFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Course
+		fields = ("title", "outline")
+
+class CourseType(DjangoObjectType):
+	class Meta:
+		model = core_models.Course
+		interfaces = (graphene.relay.Node,)
+
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Lecture
-		fields = ("title", "body", "link", "user")
+		fields = ("title", "body", "link", "user", "course")
 
 class LectureType(DjangoObjectType):
 	class Meta:
@@ -46,6 +66,7 @@ class CreateLecture(graphene.relay.ClientIDMutation):
 		link = graphene.String(required=True)
 		mod = graphene.String()
 		tag_set = graphene.List(graphene.String)
+		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -57,7 +78,7 @@ class CreateLecture(graphene.relay.ClientIDMutation):
 class QuestionFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Question
-		fields = ("title", "body", "user")
+		fields = ("title", "body", "user", "course")
 
 class QuestionType(DjangoObjectType):
 	class Meta:
@@ -76,6 +97,7 @@ class CreateQuestion(graphene.relay.ClientIDMutation):
 		title = graphene.String(required=True)
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
+		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -87,7 +109,7 @@ class CreateQuestion(graphene.relay.ClientIDMutation):
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Answer
-		fields = ("question", "title", "body", "user")
+		fields = ("question", "title", "body", "user", "course")
 
 class AnswerType(DjangoObjectType):
 	class Meta:
@@ -107,6 +129,7 @@ class CreateAnswer(graphene.relay.ClientIDMutation):
 		title = graphene.String(required=True)
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
+		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -141,6 +164,7 @@ class CreateQuiz(graphene.relay.ClientIDMutation):
 		d = graphene.String(required=True)
 		answer = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
+		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -152,7 +176,7 @@ class CreateQuiz(graphene.relay.ClientIDMutation):
 class ResourceFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Resource
-		fields = ("title", "body", "user")
+		fields = ("title", "body", "user", "course")
 
 class ResourceType(DjangoObjectType):
 	class Meta:
@@ -171,6 +195,7 @@ class CreateResource(graphene.relay.ClientIDMutation):
 		title = graphene.String(required=True)
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
+		course = graphene.String(required=True)
 	
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -182,7 +207,7 @@ class CreateResource(graphene.relay.ClientIDMutation):
 class SummaryFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Summary
-		fields = ("title", "body", "user")
+		fields = ("title", "body", "user", "course")
 
 class SummaryType(DjangoObjectType):
 	class Meta:
@@ -201,6 +226,7 @@ class CreateSummary(graphene.relay.ClientIDMutation):
 		title = graphene.String(required=True)
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
+		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -222,7 +248,7 @@ def convert_field_to_string(field, registry=None):
 class TagFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Tag
-		fields = ("title", "body", "user")
+		fields = ("title", "body", "user", "course")
 
 class TagType(DjangoObjectType):
 	class Meta:
@@ -236,6 +262,7 @@ class CreateTag(graphene.relay.ClientIDMutation):
 		title = graphene.String(required=True)
 		body = graphene.String(required=True)
 		mod = graphene.String()
+		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -280,7 +307,12 @@ class CreateVote(graphene.relay.ClientIDMutation):
 			return CreateVote(vote=vote)
 
 class Query(graphene.ObjectType):
-	# lectures = graphene.List(LectureType)
+	classification = graphene.relay.node.Field(ClassificationType)
+	classifications = DjangoFilterConnectionField(ClassificationType, filterset_class=ClassificationFilter)
+	
+	course = graphene.relay.node.Field(CourseType)
+	courses = DjangoFilterConnectionField(CourseType, filterset_class=CourseFilter)
+
 	lecture = graphene.relay.node.Field(LectureType)
 	lectures = DjangoFilterConnectionField(LectureType, filterset_class=LectureFilter)
 
@@ -307,33 +339,6 @@ class Query(graphene.ObjectType):
 
 	mod = graphene.relay.node.Field(ModType)
 	mods = DjangoFilterConnectionField(ModType, filterset_class=ModFilter)
-
-	# def resolve_lectures(obj, info, **kwargs):
-	# 	return core_models.Lecture.objects.filter(mod__history=False)
-
-	# def resolve_questions(obj, info, **kwargs):
-	# 	return core_models.Question.objects.filter(mod__history=False)
-	
-	# def resolve_answers(obj, info, **kwargs):
-	# 	return core_models.Answer.objects.filter(mod__history=False)
-	
-	# def resolve_quizzes(obj, info, **kwargs):
-	# 	return core_models.Quiz.objects.filter(mod__history=False)
-
-	# def resolve_resources(obj, info, **kwargs):
-	# 	return core_models.Resource.objects.filter(mod__history=False)
-	
-	# def resolve_summaries(obj, info, **kwargs):
-	# 	return core_models.Summary.objects.filter(mod__history=False)
-	
-	# def resolve_votes(obj, info, **kwargs):
-	# 	return core_models.Vote.objects.all()
-
-	# def resolve_tags(obj, info, **kwargs):
-	# 	return core_models.Tag.objects.filter(mod__history=False)
-
-	# def resolve_mods(obj, info, **kwargs):
-	# 	return core_models.Mod.objects.all()
 
 class Mutation(graphene.ObjectType):
 	create_lecture = CreateLecture.Field()

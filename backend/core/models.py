@@ -95,6 +95,29 @@ class Vote(models.Model):
 			if not other:
 				super().save(*args, **kwargs)
 
+class Course(models.Model):
+	title = models.CharField(max_length=500)
+	outline = models.CharField(max_length=5000)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	
+class Classification(models.Model):
+	FIRST_YEAR_GENERAL = "FIRST_YEAR_GENERAL"
+	FIRST_YEAR_AI = "FIRST_YEAR_AI"
+	FIRST_YEAR_SE = "FIRST_YEAR_SE"
+	YEAR = [
+		(FIRST_YEAR_GENERAL, "First Year - General"),
+		(FIRST_YEAR_AI, "First Year - Artificail Intelligence"),
+		(FIRST_YEAR_SE, "First Year - Software Engineering"),
+	]
+	
+	year = models.CharField(
+		default=FIRST_YEAR_GENERAL,
+		choices=YEAR,
+		max_length=100
+	)
+	courses = models.ManyToManyField(Course)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
 class Lecture(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
@@ -102,6 +125,7 @@ class Lecture(models.Model):
 	votes = GenericRelation(Vote, related_query_name="lecture")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -112,6 +136,7 @@ class Question(models.Model):
 	votes = GenericRelation(Vote, related_query_name="question")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -123,6 +148,7 @@ class Answer(models.Model):
 	votes = GenericRelation(Vote, related_query_name="answer")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -137,6 +163,7 @@ class Quiz(models.Model):
 	votes = GenericRelation(Vote, related_query_name="quiz")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -147,6 +174,7 @@ class Resource(models.Model):
 	votes = GenericRelation(Vote, related_query_name="resource")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -157,6 +185,7 @@ class Summary(models.Model):
 	votes = GenericRelation(Vote, related_query_name="summary")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -167,6 +196,7 @@ class Tag(models.Model):
 	contents = GM2MField(Lecture, Question, Answer, Quiz, Resource, Summary)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	@property
 	def get_contents(self):
