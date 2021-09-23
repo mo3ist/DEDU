@@ -19,7 +19,7 @@ class TagSerializer(serializers.ModelSerializer):
 class LectureSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Lecture
-		fields = ("id", "title", "body", "link", "user", "tag_set", "mod")
+		fields = ("id", "title", "body", "link", "user", "tag_set", "mod", "course")
 
 	# GraphQL's ID is a string.
 	# It's important to make required=False so mutations can user
@@ -46,7 +46,7 @@ class LectureSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Question
-		fields = ("id", "title", "body", "user", "tag_set", "mod")
+		fields = ("id", "title", "body", "user", "tag_set", "mod", "course")
 
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
@@ -70,7 +70,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Answer
-		fields = ("id", "question", "title", "body", "user", "tag_set", "mod")
+		fields = ("id", "question", "title", "body", "user", "tag_set", "mod", "course")
 
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
@@ -94,7 +94,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 class QuizSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Quiz
-		fields = ("id", "title", "a", "b", "c", "d", "answer", "user", "tag_set", "mod")
+		fields = ("id", "title", "a", "b", "c", "d", "answer", "user", "tag_set", "mod", "course")
 
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
@@ -118,7 +118,7 @@ class QuizSerializer(serializers.ModelSerializer):
 class ResourceSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Resource
-		fields = ("id", "title", "body", "user", "tag_set", "mod")
+		fields = ("id", "title", "body", "user", "tag_set", "mod", "course")
 
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
@@ -142,7 +142,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 class SummarySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Summary
-		fields = ("id", "title", "body", "user", "tag_set", "mod")
+		fields = ("id", "title", "body", "user", "tag_set", "mod", "course")
 
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
