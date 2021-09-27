@@ -97,9 +97,13 @@ class Vote(models.Model):
 
 class Course(models.Model):
 	title = models.CharField(max_length=500)
+	code = models.CharField(max_length=15)
 	outline = models.CharField(max_length=5000)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	
+	def __str__(self):
+		return self.title
+
 class Classification(models.Model):
 	FIRST_YEAR_GENERAL = "FIRST_YEAR_GENERAL"
 	FIRST_YEAR_AI = "FIRST_YEAR_AI"
@@ -115,8 +119,11 @@ class Classification(models.Model):
 		choices=YEAR,
 		max_length=100
 	)
-	courses = models.ManyToManyField(Course)
+	courses = models.ManyToManyField(Course, null=True, blank=True)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.year
 
 class Lecture(models.Model):
 	title = models.CharField(max_length=500)
