@@ -32,7 +32,7 @@ class ClassificationType(DjangoObjectType):
 class CourseFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Course
-		fields = ("title", "outline")
+		fields = ("title", "outline", "code")
 
 class CourseType(DjangoObjectType):
 	class Meta:
