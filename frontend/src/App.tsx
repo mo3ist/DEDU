@@ -1,6 +1,7 @@
-import React from 'react';
-import { HelloWorld } from './pages/CourseMainPage'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import { CoursePage } from './pages/course-page/course-page'
 
 const client = new ApolloClient({
 	uri: 'http://127.0.0.1:8000/graphql/',
@@ -9,9 +10,30 @@ const client = new ApolloClient({
 
 function App() {
   return (
-	  <ApolloProvider client={ client }>
-		  <HelloWorld />
-	  </ApolloProvider>
+	<ApolloProvider client={ client }>
+		<Router>
+			<Switch>
+				<Route path="/courses/:course/lectures/">
+					<h1>{"<Lectures />"}</h1>
+				</Route>
+				<Route path="/courses/:course/qnas/">
+					<h1>{"<QnAs />"}</h1>
+				</Route>
+				<Route path="/courses/:course/summaries/">
+					<h1>{"<Summaries />"}</h1>
+				</Route>
+				<Route path="/courses/:course/quizzes/">
+					<h1>{"<Quizzes />"}</h1>
+				</Route>
+				<Route path="/courses/:course/resources/">
+					<h1>{"<Resources />"}</h1>
+				</Route>
+				<Route path="/courses/">
+					<CoursePage />
+				</Route>
+			</Switch>
+		</Router>
+	</ApolloProvider>
   );
 }
 
