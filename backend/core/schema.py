@@ -42,7 +42,7 @@ class CourseType(DjangoObjectType):
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Lecture
-		fields = ("title", "body", "link", "user", "course")
+		fields = ("title", "body", "user", "course")
 
 class LectureType(DjangoObjectType):
 	class Meta:
@@ -306,12 +306,43 @@ class CreateVote(graphene.relay.ClientIDMutation):
 			vote = vote_serializer.save()
 			return CreateVote(vote=vote)
 
+class AttachmentFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Attachment
+		fields = ("url", "attm_type", "user")
+
+class AttachmentType(DjangoObjectType):
+	class Meta:
+		model = core_models.Attachment
+		interfaces = (graphene.relay.Node,)
+
+	content_object = ContentsType()
+
+class CreateAttachment(graphene.relay.ClientIDMutation):
+	attachment = graphene.Field(AttachmentType)
+
+	class Input:
+		url = graphene.String(required=True)
+		attm_type = graphene.Enum.from_enum(core_models.Attachment.ATTM_TYPE)(required=True)
+		content_type = ContentObjectEnum(required=True)
+		content_object = graphene.String(required=True)
+		
+	def mutate_and_get_payload(obj, info, **input_data):
+		input_data["user"] = info.context.user.id
+		attachment_serializer = core_serializers.AttachmentSerializer(data=input_data)
+		if attachment_serializer.is_valid():
+			attachment = attachment_serializer.save()
+			return CreateAttachment(attachment=attachment)
+
 class Query(graphene.ObjectType):
 	classification = graphene.relay.node.Field(ClassificationType)
 	classifications = DjangoFilterConnectionField(ClassificationType, filterset_class=ClassificationFilter)
 	
 	course = graphene.relay.node.Field(CourseType)
 	courses = DjangoFilterConnectionField(CourseType, filterset_class=CourseFilter)
+
+	attachment = graphene.relay.node.Field(AttachmentType)
+	attachments = DjangoFilterConnectionField(AttachmentType, filterset_class=AttachmentFilter)
 
 	lecture = graphene.relay.node.Field(LectureType)
 	lectures = DjangoFilterConnectionField(LectureType, filterset_class=LectureFilter)
@@ -349,5 +380,6 @@ class Mutation(graphene.ObjectType):
 	create_summary = CreateSummary.Field()
 	create_vote = CreateVote.Field()
 	create_tag = CreateTag.Field()
+	create_attachment = CreateAttachment.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -125,10 +125,28 @@ class Classification(models.Model):
 	def __str__(self):
 		return self.year
 
+class Attachment(models.Model):
+
+	class ATTM_TYPE(models.TextChoices):
+		IMAGE = ("IMAGE", "Image")
+		VIDEO = ("VIDEO", "Video")
+		AUDIO = ("AUDIO", "Audio")
+		DOCUMENT = ("DOCUMENT", "Document")
+
+	url = models.URLField()
+	attm_type = models.CharField(max_length=100, choices=ATTM_TYPE.choices)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
+
+	content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+	object_id = models.PositiveIntegerField()
+	content_object = GenericForeignKey()
+
+	def __str__(self):
+		return f"{self.attm_type}<{self.content_type}>: {str(self.content_object)}"
+
 class Lecture(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
-	link = models.URLField()
 	votes = GenericRelation(Vote, related_query_name="lecture")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
@@ -198,12 +216,20 @@ class Summary(models.Model):
 		return self.title
 
 class Tag(models.Model):
+	
+	class TAG_TYPE(models.TextChoices):
+		CHAPTER = ("CHAPTER", "Chapter")
+		LECTURE = ("LECTURE", "Lecture")
+		CONCEPT = ("CONCEPT", "Concept")
+		OTHER = ("OTHER", "Other")
+
 	title = models.CharField(max_length=250)
 	body = models.CharField(max_length=5000, null=True)
 	contents = GM2MField(Lecture, Question, Answer, Quiz, Resource, Summary)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	tag_type = models.CharField(max_length=50, choices=TAG_TYPE.choices)
 
 	@property
 	def get_contents(self):

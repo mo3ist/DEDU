@@ -25,6 +25,15 @@ class ClassificationAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
 	list_display = ['__str__']
 
+class TagAdmin(admin.ModelAdmin):
+	list_display = ['__str__']
+
+class ModAdmin(admin.ModelAdmin):
+	list_display = ['__str__']
+
+class AttachmentAdmin(admin.ModelAdmin):
+	list_display = ['__str__']
+
 admin.site.register(models.Lecture, LectureAdmin)
 admin.site.register(models.Question, QuestionAdmin)
 admin.site.register(models.Answer, AnswerAdmin)
@@ -33,3 +42,6 @@ admin.site.register(models.Resource, ResourceAdmin)
 admin.site.register(models.Summary, SummaryAdmin)
 admin.site.register(models.Classification, ClassificationAdmin)
 admin.site.register(models.Course, CourseAdmin)
+admin.site.register(models.Tag, TagAdmin)
+admin.site.register(models.Mod, ModAdmin)
+admin.site.register(models.Attachment, AttachmentAdmin)

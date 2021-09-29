@@ -190,3 +190,32 @@ class VoteSerializer(serializers.ModelSerializer):
 			content_object=content
 		)
 		return vote
+
+class AttachmentSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = models.Attachment
+		fields = ("id", "url", "attm_type", "user", "content_type", "content_object")
+
+	id = serializers.CharField(required=False) 
+	content_type = serializers.CharField()
+	content_object = serializers.CharField()
+
+	def create(self, validated_data):
+		contents = {
+			"lecture": models.Lecture,
+			"question": models.Question,
+			"answer": models.Answer,
+			"quiz": models.Quiz,
+			"resource": models.Resource,
+			"summary": models.Summary 
+		}
+		content = contents[validated_data["content_type"]].objects.get(
+			id=validated_data["content_object"]
+		)
+		attachment = models.Attachment.objects.create(
+			url=validated_data["url"],
+			attm_type=validated_data["attm_type"],
+			user=validated_data["user"],
+			content_object=content
+		)
+		return attachment
