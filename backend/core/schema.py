@@ -14,12 +14,12 @@ from accounts import models as accounts_models
 class AttachmentFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Attachment
-		fields = ("url", "attm_type", "user")
+		fields = ("url", "title","attm_type", "user")
 
 class TagFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Tag
-		fields = ("title", "body", "user", "course")
+		fields = ("title", "body", "tag_type", "user", "course")
 
 class ModFilter(django_filters.FilterSet):
 	class Meta:
@@ -112,8 +112,8 @@ class CreateLecture(graphene.relay.ClientIDMutation):
 	
 	class Input:
 		title = graphene.String(required=True)
+		lecture_type = graphene.Enum.from_enum(core_models.Lecture.LECTURE_TYPE)()
 		body = graphene.String(required=True)
-		link = graphene.String(required=True)
 		mod = graphene.String()
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
@@ -313,6 +313,10 @@ class TagType(DjangoObjectType):
 	class Meta:
 		model = core_models.Tag
 		interfaces = (graphene.relay.Node,)
+		filter_fields = {
+			'title': ['iexact', 'istartswith', 'icontains'],
+			'tag_type': ['iexact']
+		}
 
 class TagInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
@@ -401,6 +405,7 @@ class CreateAttachment(graphene.relay.ClientIDMutation):
 
 	class Input:
 		url = graphene.String(required=True)
+		title = graphene.String(required=True)
 		attm_type = graphene.Enum.from_enum(core_models.Attachment.ATTM_TYPE)(required=True)
 		content_type = ContentObjectEnum(required=True)
 		content_object = graphene.String(required=True)
@@ -444,7 +449,7 @@ class Query(graphene.ObjectType):
 	votes = DjangoFilterConnectionField(VoteType, filterset_class=VoteFilter)
 
 	tag = graphene.relay.node.Field(TagType)
-	tags = DjangoFilterConnectionField(TagType, filterset_class=TagFilter)
+	tags = DjangoFilterConnectionField(TagType)
 
 	mod = graphene.relay.node.Field(ModType)
 	mods = DjangoFilterConnectionField(ModType, filterset_class=ModFilter)

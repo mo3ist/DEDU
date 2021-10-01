@@ -6,7 +6,7 @@ from core import models
 class LectureSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Lecture
-		fields = ("id", "title", "body", "link", "user", "tag_set", "mod", "course")
+		fields = ("id", "title", "lecture_type", "body", "user", "tag_set", "mod", "course")
 
 	# GraphQL's ID is a string.
 	# It's important to make required=False so mutations can user
@@ -181,7 +181,7 @@ class VoteSerializer(serializers.ModelSerializer):
 class AttachmentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Attachment
-		fields = ("id", "url", "attm_type", "user", "content_type", "content_object")
+		fields = ("id", "url", "title", "attm_type", "user", "content_type", "content_object")
 
 	id = serializers.CharField(required=False) 
 	content_type = serializers.CharField()
@@ -196,13 +196,16 @@ class AttachmentSerializer(serializers.ModelSerializer):
 			"resource": models.Resource,
 			"summary": models.Summary 
 		}
-		content = contents[validated_data["content_type"]].objects.get(
-			id=validated_data["content_object"]
-		)
+		try:
+			content = contents[validated_data.pop("content_type")].objects.get(
+				id=validated_data.pop("content_object")
+			)
+		
+		except: 
+			raise Exception("Error getting 'Content'.")
+		
 		attachment = models.Attachment.objects.create(
-			url=validated_data["url"],
-			attm_type=validated_data["attm_type"],
-			user=validated_data["user"],
-			content_object=content
+			content_object=content,
+			**validated_data
 		)
 		return attachment

@@ -134,6 +134,7 @@ class Attachment(models.Model):
 		DOCUMENT = ("DOCUMENT", "Document")
 
 	url = models.URLField()
+	title = models.CharField(max_length=100)
 	attm_type = models.CharField(max_length=100, choices=ATTM_TYPE.choices)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
 
@@ -145,7 +146,13 @@ class Attachment(models.Model):
 		return f"{self.attm_type}<{self.content_type}>: {str(self.content_object)}"
 
 class Lecture(models.Model):
+
+	class LECTURE_TYPE(models.TextChoices):
+		LECTURE = ("LECTURE", "Lecture")
+		SECTION = ("SECTION", "Section")
+
 	title = models.CharField(max_length=500)
+	lecture_type = models.CharField(max_length=20, choices=LECTURE_TYPE.choices, default=LECTURE_TYPE.LECTURE)
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote, related_query_name="lecture")
 	attachments = GenericRelation(Attachment, related_query_name="lecture")
@@ -224,7 +231,7 @@ class Summary(models.Model):
 class Tag(models.Model):
 	
 	class TAG_TYPE(models.TextChoices):
-		CHAPTER = ("CHAPTER", "Chapter")
+		SYLLABUS = ("SYLLABUS", "Syllabus")
 		LECTURE = ("LECTURE", "Lecture")
 		CONCEPT = ("CONCEPT", "Concept")
 		OTHER = ("OTHER", "Other")
