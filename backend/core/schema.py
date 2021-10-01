@@ -6,46 +6,85 @@ from graphene_django.filter import DjangoFilterConnectionField
 from gm2m import GM2MField
 import django_filters
 from django.contrib.auth import get_user_model
-from cprint import *
 
 from core import models as core_models
 from core import serializers as core_serializers
 from accounts import models as accounts_models
+
+class AttachmentFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Attachment
+		fields = ("url", "attm_type", "user")
+
+class TagFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Tag
+		fields = ("title", "body", "user", "course")
 
 class ModFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Mod
 		fields = ("by", "state", "date")
 
-class ModType(DjangoObjectType):
-	class Meta:
-		model = core_models.Mod
-		interfaces = (graphene.relay.Node,)
-
 class ClassificationFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Classification
 		fields = ("year", "courses")
-
-class ClassificationType(DjangoObjectType):
-	class Meta:
-		model = core_models.Classification
-		interfaces = (graphene.relay.Node,)
 
 class CourseFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Course
 		fields = ("title", "outline", "code")
 
-class CourseType(DjangoObjectType):
-	class Meta:
-		model = core_models.Course
-		interfaces = (graphene.relay.Node,)
-
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Lecture
 		fields = ("title", "body", "user", "course")
+
+class QuestionFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Question
+		fields = ("title", "body", "user", "course")
+
+class AnswerFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Answer
+		fields = ("question", "title", "body", "user", "course")
+
+class QuizFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Quiz
+		fields = ("title", "user")
+
+class ResourceFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Resource
+		fields = ("title", "body", "user", "course")
+
+class SummaryFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Summary
+		fields = ("title", "body", "user", "course")
+
+class VoteFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Vote
+		fields = ("value", "user")
+
+class ModType(DjangoObjectType):
+	class Meta:
+		model = core_models.Mod
+		interfaces = (graphene.relay.Node,)
+
+class ClassificationType(DjangoObjectType):
+	class Meta:
+		model = core_models.Classification
+		interfaces = (graphene.relay.Node,)
+
+class CourseType(DjangoObjectType):
+	class Meta:
+		model = core_models.Course
+		interfaces = (graphene.relay.Node,)
 
 class LectureType(DjangoObjectType):
 	class Meta:
@@ -54,11 +93,19 @@ class LectureType(DjangoObjectType):
 
 	# Using 'core.schema.Tag' is the solution to the
 	# circular dependency between Tag and rest of Tag.contents' Models
-	tag_set = graphene.List('core.schema.TagType')	
+	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 	mod = graphene.Field('core.schema.ModType')
 
 	def resolve_tag_set(obj, info, **kwargs):
+		"return the current object's tags"
 		return obj.tag_set.all()
+
+	def resolve_attachment_set(obj, info, **kwargs):
+		"return the current object's attachments"
+		return core_models.Attachment.objects.filter(
+			lecture = obj
+		)
 
 class CreateLecture(graphene.relay.ClientIDMutation):
 	lecture = graphene.Field(LectureType)
@@ -78,20 +125,21 @@ class CreateLecture(graphene.relay.ClientIDMutation):
 			lecture = lecture_serializer.save()
 			return CreateLecture(lecture=lecture)
 
-class QuestionFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Question
-		fields = ("title", "body", "user", "course")
-
 class QuestionType(DjangoObjectType):
 	class Meta:
 		model = core_models.Question
 		interfaces = (graphene.relay.Node,)
 
-	tag_set = graphene.List('core.schema.TagType')	
+	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
+
+	def resolve_attachment_set(obj, info, **kwargs):
+		return core_models.Attachment.objects.filter(
+			question = obj
+		)
 
 class CreateQuestion(graphene.relay.ClientIDMutation):
 	question = graphene.Field(QuestionType)
@@ -109,21 +157,21 @@ class CreateQuestion(graphene.relay.ClientIDMutation):
 			question = question_serializer.save()
 			return CreateQuestion(question=question)
 
-class AnswerFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Answer
-		fields = ("question", "title", "body", "user", "course")
-
 class AnswerType(DjangoObjectType):
 	class Meta:
 		model = core_models.Answer
 		interfaces = (graphene.relay.Node,)
 
-	tag_set = graphene.List('core.schema.TagType')	
+	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
 
+	def resolve_attachment_set(obj, info, **kwargs):
+		return core_models.Attachment.objects.filter(
+			answer = obj
+		)
 class CreateAnswer(graphene.relay.ClientIDMutation):
 	answer = graphene.Field(AnswerType)
 
@@ -141,20 +189,21 @@ class CreateAnswer(graphene.relay.ClientIDMutation):
 			answer = answer_serializer.save()
 			return CreateAnswer(answer=answer)
 
-class QuizFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Quiz
-		fields = ("title", "user")
-
 class QuizType(DjangoObjectType):
 	class Meta:
 		model = core_models.Quiz
 		interfaces = (graphene.relay.Node,)
 
-	tag_set = graphene.List('core.schema.TagType')	
+	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
+
+	def resolve_attachment_set(obj, info, **kwargs):
+		return core_models.Attachment.objects.filter(
+			quiz = obj
+		)
 
 class CreateQuiz(graphene.relay.ClientIDMutation):
 	quiz = graphene.Field(QuizType)
@@ -176,20 +225,21 @@ class CreateQuiz(graphene.relay.ClientIDMutation):
 			quiz = quiz_serializer.save()
 			return CreateQuiz(quiz=quiz)
 
-class ResourceFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Resource
-		fields = ("title", "body", "user", "course")
-
 class ResourceType(DjangoObjectType):
 	class Meta:
 		model = core_models.Resource
 		interfaces = (graphene.relay.Node,)
 
-	tag_set = graphene.List('core.schema.TagType')	
+	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
+
+	def resolve_attachment_set(obj, info, **kwargs):
+		return core_models.Attachment.objects.filter(
+			resource = obj
+		)
 
 class CreateResource(graphene.relay.ClientIDMutation):
 	resource = graphene.Field(ResourceType)
@@ -207,20 +257,21 @@ class CreateResource(graphene.relay.ClientIDMutation):
 			resource = resource_serializer.save()
 			return CreateResource(resource=resource)
 
-class SummaryFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Summary
-		fields = ("title", "body", "user", "course")
-
 class SummaryType(DjangoObjectType):
 	class Meta:
 		model = core_models.Summary
 		interfaces = (graphene.relay.Node,)
 
-	tag_set = graphene.List('core.schema.TagType')	
+	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
+
+	def resolve_attachment_set(obj, info, **kwargs):
+		return core_models.Attachment.objects.filter(
+			summary = obj
+		)
 
 class CreateSummary(graphene.relay.ClientIDMutation):
 	summary = graphene.Field(SummaryType)
@@ -258,11 +309,6 @@ class ContentObjectEnum(graphene.Enum):
 def convert_field_to_string(field, registry=None):
     return graphene.List(ContentsType, source='get_contents') # 'get_contents' is a property in the model 'Tag'.
 
-class TagFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Tag
-		fields = ("title", "body", "user", "course")
-
 class TagType(DjangoObjectType):
 	class Meta:
 		model = core_models.Tag
@@ -287,13 +333,10 @@ class CreateTags(graphene.relay.ClientIDMutation):
 		for tag in input_data["tags"]:
 			try:
 				tag = core_models.Tag.objects.get(title=tag.title)
-				cprint.info("TAG")
 			except:
 				mod = core_models.Mod.objects.create()
-				cprint.info("MOD")
 				try:
 					course = core_models.Course.objects.get(id=input_data["course"])
-					cprint.info("COURSE")
 				except:
 					raise Exception("Course dones't exist")
 				tag = core_models.Tag.objects.create(
@@ -304,7 +347,6 @@ class CreateTags(graphene.relay.ClientIDMutation):
 					mod=mod,
 					course=course
 				)
-				cprint.info("TAG")
 			
 			contents = {
 				"lecture": core_models.Lecture,
@@ -323,13 +365,7 @@ class CreateTags(graphene.relay.ClientIDMutation):
 
 			tag.contents.add(content)
 			tags.append(tag)
-			cprint.fatal(tags)
 		return CreateTags(tags=tags)
-
-class VoteFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Vote
-		fields = ("value", "user")
 
 class VoteType(DjangoObjectType):
 	class Meta:
@@ -352,11 +388,6 @@ class CreateVote(graphene.relay.ClientIDMutation):
 		if vote_serializer.is_valid():
 			vote = vote_serializer.save()
 			return CreateVote(vote=vote)
-
-class AttachmentFilter(django_filters.FilterSet):
-	class Meta:
-		model = core_models.Attachment
-		fields = ("url", "attm_type", "user")
 
 class AttachmentType(DjangoObjectType):
 	class Meta:
