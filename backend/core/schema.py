@@ -5,6 +5,9 @@ from graphene_django.converter import convert_django_field
 from graphene_django.filter import DjangoFilterConnectionField
 from gm2m import GM2MField
 import django_filters
+from django.contrib.auth import get_user_model
+from cprint import *
+
 from core import models as core_models
 from core import serializers as core_serializers
 from accounts import models as accounts_models
@@ -239,6 +242,16 @@ class ContentsType(graphene.Union):
 	class Meta:
 		types = (LectureType, QuestionType, AnswerType, QuizType, ResourceType, SummaryType)
 
+
+class ContentObjectEnum(graphene.Enum):
+	lecture = "lecture"
+	question = "question"
+	answer = "answer"
+	quiz = "quiz"
+	resource = "resource"
+	summary = "summary"
+
+
 # Registering the GM2MField in graphene (must be defined before the DjangoObjectType Tag)
 # https://stackoverflow.com/a/51035755
 @convert_django_field.register(GM2MField)
@@ -255,21 +268,63 @@ class TagType(DjangoObjectType):
 		model = core_models.Tag
 		interfaces = (graphene.relay.Node,)
 
-class CreateTag(graphene.relay.ClientIDMutation):
-	tag = graphene.Field(TagType)
+class TagInput(graphene.InputObjectType):
+	title = graphene.String(required=True)
+	body = graphene.String(required=True)
+	tag_type = graphene.Enum.from_enum(core_models.Tag.TAG_TYPE)(required=True)
+
+class CreateTags(graphene.relay.ClientIDMutation):
+	tags = graphene.Field(graphene.List(TagType))
 
 	class Input:
-		title = graphene.String(required=True)
-		body = graphene.String(required=True)
-		mod = graphene.String()
+		tags = graphene.List(TagInput)
+		content_type = ContentObjectEnum(required=True)
+		content_object = graphene.String(required=True)
 		course = graphene.String(required=True)
 
 	def mutate_and_get_payload(obj, info, **input_data):
-		input_data["user"] = info.context.user.id
-		tag_serializer = core_serializers.TagSerializer(data=input_data)
-		if tag_serializer.is_valid():
-			tag = tag_serializer.save()
-			return CreateTag(tag=tag)	
+		tags = []
+		for tag in input_data["tags"]:
+			try:
+				tag = core_models.Tag.objects.get(title=tag.title)
+				cprint.info("TAG")
+			except:
+				mod = core_models.Mod.objects.create()
+				cprint.info("MOD")
+				try:
+					course = core_models.Course.objects.get(id=input_data["course"])
+					cprint.info("COURSE")
+				except:
+					raise Exception("Course dones't exist")
+				tag = core_models.Tag.objects.create(
+					title=tag.title,
+					body=tag.body,
+					tag_type=tag.tag_type,
+					user = info.context.user,
+					mod=mod,
+					course=course
+				)
+				cprint.info("TAG")
+			
+			contents = {
+				"lecture": core_models.Lecture,
+				"question": core_models.Question,
+				"answer": core_models.Answer,
+				"quiz": core_models.Quiz,
+				"resource": core_models.Resource,
+				"summary": core_models.Summary 
+			}
+			try:
+				content = contents[input_data["content_type"]].objects.get(
+					id=input_data["content_object"]
+				)
+			except:
+				raise contents[input_data["content_type"]].DoesNotExist()
+
+			tag.contents.add(content)
+			tags.append(tag)
+			cprint.fatal(tags)
+		return CreateTags(tags=tags)
 
 class VoteFilter(django_filters.FilterSet):
 	class Meta:
@@ -282,14 +337,6 @@ class VoteType(DjangoObjectType):
 		interfaces = (graphene.relay.Node,)
 
 	content_object = ContentsType()
-
-class ContentObjectEnum(graphene.Enum):
-	lecture = "lecture"
-	question = "question"
-	answer = "answer"
-	quiz = "quiz"
-	resource = "resource"
-	summary = "summary"
 
 class CreateVote(graphene.relay.ClientIDMutation):
 	vote = graphene.Field(VoteType)
@@ -379,7 +426,7 @@ class Mutation(graphene.ObjectType):
 	create_resource = CreateResource.Field()
 	create_summary = CreateSummary.Field()
 	create_vote = CreateVote.Field()
-	create_tag = CreateTag.Field()
+	create_tags = CreateTags.Field()
 	create_attachment = CreateAttachment.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

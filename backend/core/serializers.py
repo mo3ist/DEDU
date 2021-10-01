@@ -3,19 +3,6 @@ from rest_framework import serializers
 from generic_relations.relations import GenericRelatedField
 from core import models 
 
-class TagSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = models.Tag
-		fields = ("id", "title", "body", "user", "mod")
-
-	id = serializers.CharField(required=False) 
-	mod = serializers.PrimaryKeyRelatedField(queryset=models.Mod.objects.all(), required=False)
-
-	def create(self, validated_data):
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
-		tag = models.Tag.objects.create(mod=mod, **validated_data)
-		return tag
-
 class LectureSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Lecture
