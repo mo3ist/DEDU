@@ -39,7 +39,17 @@ class CourseFilter(django_filters.FilterSet):
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Lecture
-		fields = ("title", "body", "user", "course")
+		fields = ("title", "body", "user", "course", "tag__title")  # YES! you can use reverse GM2M relations here!
+
+	tag__title = django_filters.CharFilter(lookup_expr='icontains')
+
+	@property
+	def qs(self):
+		if self.data.get('tag__title', None):
+			# Order by title
+			return super().qs.order_by('tag__title') 		
+		
+		return super().qs
 
 class QuestionFilter(django_filters.FilterSet):
 	class Meta:
