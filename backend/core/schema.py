@@ -21,6 +21,16 @@ class TagFilter(django_filters.FilterSet):
 		model = core_models.Tag
 		fields = ("title", "body", "tag_type", "user", "course")
 
+	title = django_filters.CharFilter(lookup_expr='icontains')
+
+	@property
+	def qs(self):
+		if self.data.get('title', None):
+			# Order by title
+			return super().qs.order_by('title') 		
+		
+		return super().qs
+
 class ModFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Mod
@@ -323,10 +333,6 @@ class TagType(DjangoObjectType):
 	class Meta:
 		model = core_models.Tag
 		interfaces = (graphene.relay.Node,)
-		filter_fields = {
-			'title': ['iexact', 'istartswith', 'icontains'],
-			'tag_type': ['iexact']
-		}
 
 class TagInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
@@ -459,7 +465,7 @@ class Query(graphene.ObjectType):
 	votes = DjangoFilterConnectionField(VoteType, filterset_class=VoteFilter)
 
 	tag = graphene.relay.node.Field(TagType)
-	tags = DjangoFilterConnectionField(TagType)
+	tags = DjangoFilterConnectionField(TagType, filterset_class=TagFilter)
 
 	mod = graphene.relay.node.Field(ModType)
 	mods = DjangoFilterConnectionField(ModType, filterset_class=ModFilter)
