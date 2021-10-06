@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CoursePage from './pages/course-page/course-page'
 import LectureListingPage from './pages/lecture-listing-page/lecture-listing-page'
 import QnAListingPage from './pages/qna-listing-page/qna-listing-page';
+import ResourceListingPage from './pages/resource-listing-page/resource-listing-page';
 
 const client = new ApolloClient({
 	uri: 'http://127.0.0.1:8000/graphql/',
@@ -23,7 +24,20 @@ const client = new ApolloClient({
 								]
 							}
 						}
-					}
+					},
+					resources: {
+						keyArgs: ['tag_Title'],
+						merge(existing = {edges: [], pageInfo: {}}, incoming){
+							// clean this shit please
+							return {
+								...incoming, 
+								edges: [
+									...existing?.edges,
+									...incoming?.edges
+								]
+							}
+						}
+					}, 
 				}
 			}
 		}
@@ -48,7 +62,7 @@ function App() {
 					<h1>{"<Quizzes />"}</h1>
 				</Route>
 				<Route path="/courses/:course/resources/">
-					<h1>{"<Resources />"}</h1>
+					<ResourceListingPage />
 				</Route>
 				<Route path="/courses/">
 					<CoursePage />
