@@ -6,6 +6,8 @@ from graphene_django.filter import DjangoFilterConnectionField
 from gm2m import GM2MField
 import django_filters
 from django.contrib.auth import get_user_model
+from django.db.models import Q
+from itertools import chain
 
 from core import models as core_models
 from core import serializers as core_serializers
@@ -62,9 +64,28 @@ class LectureFilter(django_filters.FilterSet):
 		return super().qs
 
 class QuestionFilter(django_filters.FilterSet):
+
+	tag__title = django_filters.CharFilter(method='filter_tag__title')
+
 	class Meta:
 		model = core_models.Question
-		fields = ("title", "body", "user", "course")
+		fields = ("title", "body", "user", "course", "tag__title")
+
+	def filter_tag__title(self, queryset, name, value):
+		"Support comma separated tags."
+		from cprint import cprint
+
+		qs = core_models.Question.objects.none()
+		for title in value.split(','):
+			q = core_models.Question.objects.filter(Q(tag__title=title))
+			cprint.info(q)
+			qs = qs.union(q)
+		
+		return qs
+		
+	# @property
+	# def qs(self):
+	# 	return super().qs
 
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:

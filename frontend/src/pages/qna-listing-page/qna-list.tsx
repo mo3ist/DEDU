@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react"
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
 import QnAListItem from "./qna-list-item";
 import { GetQnAs } from "./__generated__/GetQnAs";
+import TagSearch from "../../common/components/tag-search/tag-search";
 
 interface Props {
 
 }
 
 const GET_QNAS = gql `
-	query GetQnAs($first: Int, $after: String) {
-		questions(first: $first, after: $after) {
+	query GetQnAs($first: Int, $after: String, $tag_Title: String) {
+		questions(first: $first, after: $after, tag_Title: $tag_Title) {
 			edges {
 				node {
 					title 
@@ -31,7 +32,7 @@ const QnAList: React.FC<Props> = () => {
 	const FIRST = 1;
 	const [ after, setAfter ] = useState<String>(""); 
 
-	const { loading, error, data, fetchMore } = useQuery<GetQnAs>(GET_QNAS, {
+	const [getQnAs, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQnAs>(GET_QNAS, {
 		variables: {
 			first: FIRST,
 			after: after
@@ -39,11 +40,23 @@ const QnAList: React.FC<Props> = () => {
 	});
 
 	useEffect(() => {
-		// getQnAs();
-	}, []);
+		getQnAs()
+	}, [])
 
 	return (
 		<div>
+			<TagSearch 
+				onSearch={(tags) => {
+					getQnAs({
+						variables: {
+							tag_Title: tags,
+							after: ""
+						}
+					})
+					setAfter("")
+				}
+			}/>
+
 			{data?.questions?.edges.map(edge => {
 				return (
 					edge && <QnAListItem question={edge} />

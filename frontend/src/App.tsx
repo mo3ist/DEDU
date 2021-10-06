@@ -12,10 +12,9 @@ const client = new ApolloClient({
 			Query: {
 				fields: {
 					questions: {
-						keyArgs: [],
+						keyArgs: ['tag_Title'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
-							console.log(incoming)
 							return {
 								...incoming, 
 								edges: [
