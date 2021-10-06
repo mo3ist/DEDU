@@ -73,19 +73,12 @@ class QuestionFilter(django_filters.FilterSet):
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
-		from cprint import cprint
-
 		qs = core_models.Question.objects.none()
 		for title in value.split(','):
 			q = core_models.Question.objects.filter(Q(tag__title=title))
-			cprint.info(q)
 			qs = qs.union(q)
 		
 		return qs
-		
-	# @property
-	# def qs(self):
-	# 	return super().qs
 
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:
@@ -107,20 +100,28 @@ class ResourceFilter(django_filters.FilterSet):
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
-		from cprint import cprint
-
 		qs = core_models.Resource.objects.none()
 		for title in value.split(','):
 			q = core_models.Resource.objects.filter(Q(tag__title=title))
-			cprint.info(q)
 			qs = qs.union(q)
 		
 		return qs
 
 class SummaryFilter(django_filters.FilterSet):
+	tag__title = django_filters.CharFilter(method='filter_tag__title')
+
 	class Meta:
 		model = core_models.Summary
-		fields = ("title", "body", "user", "course")
+		fields = ("title", "body", "user", "course", "tag__title")
+
+	def filter_tag__title(self, queryset, name, value):
+		"Support comma separated tags."
+		qs = core_models.Summary.objects.none()
+		for title in value.split(','):
+			q = core_models.Summary.objects.filter(Q(tag__title=title))
+			qs = qs.union(q)
+		
+		return qs
 
 class VoteFilter(django_filters.FilterSet):
 	class Meta:

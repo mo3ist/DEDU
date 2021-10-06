@@ -5,6 +5,7 @@ import CoursePage from './pages/course-page/course-page'
 import LectureListingPage from './pages/lecture-listing-page/lecture-listing-page'
 import QnAListingPage from './pages/qna-listing-page/qna-listing-page';
 import ResourceListingPage from './pages/resource-listing-page/resource-listing-page';
+import SummaryListingPage from './pages/summary-listing-page/summary-listing-page';
 
 const client = new ApolloClient({
 	uri: 'http://127.0.0.1:8000/graphql/',
@@ -38,11 +39,26 @@ const client = new ApolloClient({
 							}
 						}
 					}, 
+					summaries: {
+						keyArgs: ['tag_Title'],
+						merge(existing = {edges: [], pageInfo: {}}, incoming){
+							// clean this shit please
+							return {
+								...incoming, 
+								edges: [
+									...existing?.edges,
+									...incoming?.edges
+								]
+							}
+						}
+					}, 
 				}
 			}
 		}
 	})
 });
+
+// I DON'T BELIEVE IN REDUNDANCY LOL
 
 function App() {
   return (
@@ -56,7 +72,7 @@ function App() {
 					<QnAListingPage />
 				</Route>
 				<Route path="/courses/:course/summaries/">
-					<h1>{"<Summaries />"}</h1>
+					<SummaryListingPage />
 				</Route>
 				<Route path="/courses/:course/quizzes/">
 					<h1>{"<Quizzes />"}</h1>

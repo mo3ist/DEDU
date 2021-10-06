@@ -6,7 +6,7 @@ interface Props {
 	resource: GetResources_resources_edges 
 }
 
-const QnAListItem: React.FC<Props> = ({ resource }) => {
+const ResourceListItem: React.FC<Props> = ({ resource }) => {
 
 	return (
 		<div>
@@ -15,4 +15,4 @@ const QnAListItem: React.FC<Props> = ({ resource }) => {
 	)
 }
 
-export default QnAListItem;
+export default ResourceListItem;
