@@ -7,7 +7,11 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+	<div
+		className="bg-secondary min-h-screen flex"
+	>
+		<App />
+	</div>
   </React.StrictMode>,
   document.getElementById('root')
 );

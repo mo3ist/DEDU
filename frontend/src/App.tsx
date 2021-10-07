@@ -62,30 +62,34 @@ const client = new ApolloClient({
 
 function App() {
   return (
-	<ApolloProvider client={ client }>
-		<Router>
-			<Switch>
-				<Route path="/courses/:course/lectures/">
-					<LectureListingPage />
-				</Route>
-				<Route path="/courses/:course/qnas/">
-					<QnAListingPage />
-				</Route>
-				<Route path="/courses/:course/summaries/">
-					<SummaryListingPage />
-				</Route>
-				<Route path="/courses/:course/quizzes/">
-					<h1>{"<Quizzes />"}</h1>
-				</Route>
-				<Route path="/courses/:course/resources/">
-					<ResourceListingPage />
-				</Route>
-				<Route path="/courses/">
-					<CoursePage />
-				</Route>
-			</Switch>
-		</Router>
-	</ApolloProvider>
+	  <div
+	  	className="flex-1"
+	  >
+		<ApolloProvider client={ client }>
+			<Router>
+				<Switch>
+					<Route path="/courses/:course/lectures/">
+						<LectureListingPage />
+					</Route>
+					<Route path="/courses/:course/qnas/">
+						<QnAListingPage />
+					</Route>
+					<Route path="/courses/:course/summaries/">
+						<SummaryListingPage />
+					</Route>
+					<Route path="/courses/:course/quizzes/">
+						<h1>{"<Quizzes />"}</h1>
+					</Route>
+					<Route path="/courses/:course/resources/">
+						<ResourceListingPage />
+					</Route>
+					<Route path="/courses/">
+						<CoursePage />
+					</Route>
+				</Switch>
+			</Router>
+		</ApolloProvider>
+	  </div>
   );
 }
 

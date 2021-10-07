@@ -11,23 +11,42 @@ interface Props {
 
 export const CoursePage: React.FC<Props> = () => {
 
-	const [activeCourse, setActiveCourse] = useState<string | null>()
+	const [activeCourse, setActiveCourse] = useState<string | null>("")
 
 	return (
 		<div
-		className="grid grid-cols-2 gap-3"
+			className="flex flex-row h-full gap-8"
 		>
-			<div>
-				{activeCourse && <CourseStatistics />}
+			<div
+				className="flex flex-col flex-grow w-2/3 gap-8"
+			>
+				<div
+					className="bg-secondary-light flex-initial"
+				>
+					{activeCourse && <CourseStatistics />}
+				</div>
+
+				<div
+					className="flex-grow"
+				>
+					{activeCourse && <ContentListing activeCourse={activeCourse!} />}
+				</div>
 			</div>
-			<div>
-				<CourseListing setActiveCourse={setActiveCourse} />
-			</div>
-			<div>
-				{activeCourse && <ContentListing activeCourse={activeCourse!} />}
-			</div>
-			<div>
-			 	{activeCourse && <CourseOutline />}
+
+			<div
+				className="flex flex-col flex-grow gap-8 w-1/3"
+			>
+				<div
+					className="flex-initial"
+				>
+					<CourseListing activeCourse={activeCourse} setActiveCourse={setActiveCourse} />
+				</div>
+				
+				<div
+					className="bg-secondary-light flex-grow"
+				>
+					{activeCourse && <CourseOutline />}
+				</div>
 			</div>
 		</div>
 	)

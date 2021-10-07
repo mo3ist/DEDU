@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.clsfn-btn {
+		@apply py-2 px-2 text-secondary-light
+	}
+
+	.clsfn-btn-selected {
+		@apply py-2 px-2 text-secondary bg-secondary-light
+	}
+
+	.course-btn {
+		@apply py-2 px-2 text-secondary-light 
+	}
+
+	.course-btn-selected {
+		@apply py-2 px-2 text-secondary bg-secondary-light rounded-l-full
+	}
+
+	.clsfn-btn-container {
+		@apply flex flex-col w-3/6
+	}
+}
