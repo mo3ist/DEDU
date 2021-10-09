@@ -4,7 +4,38 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+		fontFamily: {
+			'cairo': 'Cairo',
+		},
+		typography: {
+			DEFAULT: {
+				css: {
+					color: "#353535",
+					"line-height": "1",
+					h1: {
+						color: "#353535"
+					},
+					h2: {
+						color: "#353535"
+					},
+					h3: {
+						color: "#353535"
+					},
+					ul: {
+						margin: 0,
+						padding: 0,
+						"list-style-type": "circle",
+						"list-style-position": "inside"
+					},
+					"li::before": {
+						display: "none"
+					}
+					
+				}
+			}
+		}
+	},
 	colors: {
 		primary: {
 			light: "#C89978",
@@ -25,5 +56,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+	require('@tailwindcss/typography'),
+  ],
 }

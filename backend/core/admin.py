@@ -34,6 +34,9 @@ class ModAdmin(admin.ModelAdmin):
 class AttachmentAdmin(admin.ModelAdmin):
 	list_display = ['__str__']
 
+class TeacherAdmin(admin.ModelAdmin):
+	list_display = ['__str__']
+
 admin.site.register(models.Lecture, LectureAdmin)
 admin.site.register(models.Question, QuestionAdmin)
 admin.site.register(models.Answer, AnswerAdmin)
@@ -45,3 +48,4 @@ admin.site.register(models.Course, CourseAdmin)
 admin.site.register(models.Tag, TagAdmin)
 admin.site.register(models.Mod, ModAdmin)
 admin.site.register(models.Attachment, AttachmentAdmin)
+admin.site.register(models.Teacher, TeacherAdmin)

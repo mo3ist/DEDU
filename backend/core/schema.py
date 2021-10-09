@@ -2,7 +2,10 @@ from re import search
 import graphene
 from graphene_django import DjangoObjectType
 from graphene_django.converter import convert_django_field
-from graphene_django.filter import DjangoFilterConnectionField
+from graphene_django.filter import DjangoFilterConnectionField, GlobalIDFilter
+from pathlib import Path
+from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 from gm2m import GM2MField
 import django_filters
 from django.contrib.auth import get_user_model
@@ -46,7 +49,12 @@ class ClassificationFilter(django_filters.FilterSet):
 class CourseFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Course
-		fields = ("title", "outline", "code")
+		fields = ("id", "title", "outline", "code")
+
+class TeacherFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Teacher
+		fields = ("title",)
 
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
@@ -141,6 +149,81 @@ class ClassificationType(DjangoObjectType):
 class CourseType(DjangoObjectType):
 	class Meta:
 		model = core_models.Course
+		interfaces = (graphene.relay.Node,)
+
+	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
+	contribs = graphene.Int()
+	contribs_users = graphene.Int()
+	teachers = DjangoFilterConnectionField('core.schema.TeacherType', filterset_class=TeacherFilter)
+	lectures_count = graphene.Int()
+	questions_count = graphene.Int()
+	answers_count = graphene.Int()
+	quizzes_count = graphene.Int()
+	resources_count = graphene.Int()
+	summaries_count = graphene.Int()
+
+	def resolve_lectures_count(obj, info, **kwargs):
+		return obj.lecture_set.all().count()
+	
+	def resolve_questions_count(obj, info, **kwargs):
+		return obj.question_set.all().count()
+	
+	def resolve_answers_count(obj, info, **kwargs):
+		return obj.answer_set.all().count()
+	
+	def resolve_quizzes_count(obj, info, **kwargs):
+		return obj.quiz_set.all().count()
+	
+	def resolve_resources_count(obj, info, **kwargs):
+		return obj.resource_set.all().count()
+	
+	def resolve_summaries_count(obj, info, **kwargs):
+		return obj.summary_set.all().count()
+
+	def resolve_attachment_set(obj, info, **kwargs):
+		"return the current object's attachments"
+		return core_models.Attachment.objects.filter(
+			course = obj
+		)
+	
+	def resolve_contribs(obj, info, **kwargs):
+		contents = {
+				"lecture": core_models.Lecture,
+				"question": core_models.Question,
+				"answer": core_models.Answer,
+				"quiz": core_models.Quiz,
+				"resource": core_models.Resource,
+				"summary": core_models.Summary 
+		}
+
+		total = 0
+		for Model in contents.values():
+			total += Model.objects.filter(course=obj).count()
+
+		return total
+
+	def resolve_contribs_users(obj, info, **kwargs):
+		User = get_user_model()
+
+		contents_query_names = {
+			"lecture": "lecture__course",
+			"question": "question__course",
+			"answer": "answer__course",
+			"quiz": "quiz__course",
+			"resource": "resource__course",
+			"summary": "summary__course" 
+		}
+
+		query = Q()
+		# OR the contents queries (get all the (unique) users that contributed)
+		for qn in contents_query_names.values():
+			query |= Q(**{qn: obj})	 
+
+		return User.objects.filter(query).distinct().count()
+
+class TeacherType(DjangoObjectType):
+	class Meta:
+		model = core_models.Teacher
 		interfaces = (graphene.relay.Node,)
 
 class LectureType(DjangoObjectType):
@@ -453,6 +536,12 @@ class AttachmentType(DjangoObjectType):
 
 	content_object = ContentsType()
 
+	def resolve_file(obj, info, **kwargs):
+		"return full url"
+		domain = get_current_site(info.context).domain
+		img_path = Path(settings.MEDIA_URL, str(obj.file))
+		return f"http://{domain}{img_path}"
+
 class CreateAttachment(graphene.relay.ClientIDMutation):
 	attachment = graphene.Field(AttachmentType)
 
@@ -476,6 +565,9 @@ class Query(graphene.ObjectType):
 	
 	course = graphene.relay.node.Field(CourseType)
 	courses = DjangoFilterConnectionField(CourseType, filterset_class=CourseFilter)
+	
+	teacher = graphene.relay.node.Field(TeacherType)
+	teachers = DjangoFilterConnectionField(TeacherType, filterset_class=TeacherFilter)
 
 	attachment = graphene.relay.node.Field(AttachmentType)
 	attachments = DjangoFilterConnectionField(AttachmentType, filterset_class=AttachmentFilter)

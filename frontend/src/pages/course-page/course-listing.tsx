@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import classname from 'classnames'
 
@@ -7,8 +7,10 @@ import { GetClassifications } from './__generated__/GetClassifications'
 import './course-listing.css'
 
 interface Props {
-	activeCourse: String | null;
-	setActiveCourse: (course: string | null) => void; 
+	activeCourseId: String | null;
+	setActiveCourseId: (course: string | null) => void; 
+	activeClsfnId: string | null;
+	setActiveClsfnId: (clsfn: string | null) => void
 };
 
 const GET_CLASSIFICATIONS = gql`
@@ -33,11 +35,13 @@ const GET_CLASSIFICATIONS = gql`
 	}
 `
 
-export const CourseListing: React.FC<Props> = ({ activeCourse, setActiveCourse }) => {
+export const CourseListing: React.FC<Props> = ({ activeCourseId, setActiveCourseId, activeClsfnId, setActiveClsfnId }) => {
 	
 	const { loading, error, data } = useQuery<GetClassifications>(GET_CLASSIFICATIONS)
 	
-	const [activeCls, setActiveCls] = useState<string | null>("FIRST_YEAR_GENERAL")
+	useEffect(() => {
+		console.log(activeCourseId, data)
+	})
 
 	return (
 		<div
@@ -49,9 +53,9 @@ export const CourseListing: React.FC<Props> = ({ activeCourse, setActiveCourse }
 				{data?.classifications?.edges?.map(edge => {
 					return (
 						<button
-							className={classname({"clsfn-btn": activeCls != edge?.node?.year, "clsfn-btn-selected": activeCls === edge?.node?.year})}
+							className={classname({"clsfn-btn": activeClsfnId != edge?.node?.id, "clsfn-btn-selected": activeClsfnId === edge?.node?.id})}
 							key={edge?.node?.id}
-							onClick={() => setActiveCls(edge?.node?.year.toString()!)}
+							onClick={() => setActiveClsfnId(edge?.node?.id.toString()!)}
 						>
 							{edge?.node?.year}
 						</button>
@@ -61,13 +65,13 @@ export const CourseListing: React.FC<Props> = ({ activeCourse, setActiveCourse }
 			<div
 				className="border-r-4 border-secondary-light w-3/6 clsfn-btn-container"
 			>
-				{data?.classifications?.edges?.filter(edge => edge?.node?.year === activeCls).map(edge => {
+				{data?.classifications?.edges?.filter(edge => edge?.node?.id === activeClsfnId).map(edge => {
 					return edge?.node?.courses?.edges?.map(edge => {
 						return (
 							<button
-							className={classname({"course-btn": activeCourse != edge?.node?.code, "course-btn-selected": activeCourse === edge?.node?.code})}
+							className={classname({"course-btn": activeCourseId != edge?.node?.id, "course-btn-selected": activeCourseId === edge?.node?.id})}
 								key={edge?.node?.id}	
-								onClick={() => setActiveCourse(edge?.node?.code.toString()!) }
+								onClick={() => setActiveCourseId(edge?.node?.id.toString()!) }
 							> 
 								{edge?.node?.title} 
 							</button>

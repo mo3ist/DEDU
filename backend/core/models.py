@@ -95,10 +95,33 @@ class Vote(models.Model):
 			if not other:
 				super().save(*args, **kwargs)
 
+class Attachment(models.Model):
+
+	class ATTM_TYPE(models.TextChoices):
+		IMAGE = ("IMAGE", "Image")
+		VIDEO = ("VIDEO", "Video")
+		AUDIO = ("AUDIO", "Audio")
+		DOCUMENT = ("DOCUMENT", "Document")
+
+	url = models.URLField(null=True, blank=True)
+	file = models.FileField(null=True, blank=True)
+	title = models.CharField(max_length=100)
+	attm_type = models.CharField(max_length=100, choices=ATTM_TYPE.choices)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
+
+	content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+	object_id = models.PositiveIntegerField()
+	content_object = GenericForeignKey()
+
+	def __str__(self):
+		return f"{self.attm_type}<{self.content_type}>: {str(self.content_object)}"
+
 class Course(models.Model):
 	title = models.CharField(max_length=500)
+	description = models.TextField(max_length=500)
+	attachments = GenericRelation(Attachment, related_query_name="course")
 	code = models.CharField(max_length=15)
-	outline = models.CharField(max_length=5000)
+	outline = models.TextField(max_length=5000)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	
 	def __str__(self):
@@ -125,25 +148,19 @@ class Classification(models.Model):
 	def __str__(self):
 		return self.year
 
-class Attachment(models.Model):
+class Teacher(models.Model):
 
-	class ATTM_TYPE(models.TextChoices):
-		IMAGE = ("IMAGE", "Image")
-		VIDEO = ("VIDEO", "Video")
-		AUDIO = ("AUDIO", "Audio")
-		DOCUMENT = ("DOCUMENT", "Document")
+	class TEACHER_TYPE(models.TextChoices):
+		PROF = ("PROF", "Professor")
+		ASSC_PROF = ("ASSC_PROF", "Associate Professor")
+		TA = ("TA", "Teacher Assistant")
 
-	url = models.URLField()
+	teacher_type = models.CharField(max_length=20, choices=TEACHER_TYPE.choices, default=TEACHER_TYPE.PROF)
 	title = models.CharField(max_length=100)
-	attm_type = models.CharField(max_length=100, choices=ATTM_TYPE.choices)
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
-
-	content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-	object_id = models.PositiveIntegerField()
-	content_object = GenericForeignKey()
+	courses = models.ManyToManyField(Course, null=True, blank=True, related_name="teachers")
 
 	def __str__(self):
-		return f"{self.attm_type}<{self.content_type}>: {str(self.content_object)}"
+		return self.title
 
 class Lecture(models.Model):
 

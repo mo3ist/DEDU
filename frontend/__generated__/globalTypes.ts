@@ -44,6 +44,15 @@ export enum TagTagType {
   SYLLABUS = "SYLLABUS",
 }
 
+/**
+ * An enumeration.
+ */
+export enum TeacherTeacherType {
+  ASSC_PROF = "ASSC_PROF",
+  PROF = "PROF",
+  TA = "TA",
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

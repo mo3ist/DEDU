@@ -5,5 +5,7 @@ backend/*/migrations/*
 backend/*/__pycache__/
 backend/db.sqlite3
 backend/.ipynb_checkpoints/
+backend/meida/*
+!backend/media/.gitkeep
 *.ipynb
 .env
