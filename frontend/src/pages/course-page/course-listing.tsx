@@ -63,7 +63,7 @@ export const CourseListing: React.FC<Props> = ({ activeCourseId, setActiveCourse
 				})}
 			</div>	
 			<div
-				className="border-r-4 border-secondary-light w-3/6 clsfn-btn-container"
+				className="border-r-4 border-secondary-100 w-3/6 clsfn-btn-container"
 			>
 				{data?.classifications?.edges?.filter(edge => edge?.node?.id === activeClsfnId).map(edge => {
 					return edge?.node?.courses?.edges?.map(edge => {

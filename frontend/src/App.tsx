@@ -52,6 +52,19 @@ const client = new ApolloClient({
 							}
 						}
 					}, 
+					tags: {
+						keyArgs: ['title', 'tagType'],
+						merge(existing = {edges: [], pageInfo: {}}, incoming){
+							// clean this shit please
+							return {
+								...incoming, 
+								edges: [
+									...existing?.edges,
+									...incoming?.edges
+								]
+							}
+						}
+					}
 				}
 			}
 		}
@@ -63,7 +76,7 @@ const client = new ApolloClient({
 function App() {
   return (
 	  <div
-	  	className="flex-1 font-cairo"
+	  	className="flex-1 font-cairo w-full"
 	  >
 		<ApolloProvider client={ client }>
 			<Router>

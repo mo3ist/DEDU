@@ -249,6 +249,7 @@ class Tag(models.Model):
 	
 	class TAG_TYPE(models.TextChoices):
 		SYLLABUS = ("SYLLABUS", "Syllabus")
+		CHAPTER = ("CHAPTER", "Chapter")
 		LECTURE = ("LECTURE", "Lecture")
 		CONCEPT = ("CONCEPT", "Concept")
 		OTHER = ("OTHER", "Other")

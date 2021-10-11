@@ -20,12 +20,36 @@ export interface SearchTags_tags_edges {
   node: SearchTags_tags_edges_node | null;
 }
 
+export interface SearchTags_tags_pageInfo {
+  __typename: "PageInfo";
+  /**
+   * When paginating backwards, the cursor to continue.
+   */
+  startCursor: string | null;
+  /**
+   * When paginating forwards, the cursor to continue.
+   */
+  endCursor: string | null;
+  /**
+   * When paginating forwards, are there more items?
+   */
+  hasNextPage: boolean;
+  /**
+   * When paginating backwards, are there more items?
+   */
+  hasPreviousPage: boolean;
+}
+
 export interface SearchTags_tags {
   __typename: "TagTypeConnection";
   /**
    * Contains the nodes in this connection.
    */
   edges: (SearchTags_tags_edges | null)[];
+  /**
+   * Pagination data for this connection.
+   */
+  pageInfo: SearchTags_tags_pageInfo;
 }
 
 export interface SearchTags {
@@ -34,4 +58,6 @@ export interface SearchTags {
 
 export interface SearchTagsVariables {
   title: string;
+  tagType?: string | null;
+  after?: string | null;
 }

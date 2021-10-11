@@ -45,7 +45,7 @@ const SummaryList: React.FC<Props> = () => {
 
 	return (
 		<div>
-			<TagSearch 
+			{/* <TagSearch 
 				onSearch={(tags) => {
 					getSummaries({
 						variables: {
@@ -55,7 +55,7 @@ const SummaryList: React.FC<Props> = () => {
 					})
 					setAfter("")
 				}
-			}/>
+			}/> */}
 
 			{data?.summaries?.edges.map(edge => {
 				return (

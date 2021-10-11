@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
 	<div
-		className="bg-secondary min-h-screen flex"
+		className="bg-secondary min-h-screen flex overflow-hide"
 	>
 		<App />
 	</div>

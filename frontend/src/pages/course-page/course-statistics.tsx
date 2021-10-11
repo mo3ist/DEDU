@@ -48,7 +48,7 @@ export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
 
 	return (
 		<div
-			className="bg-secondary-light h-64 flex flex-row items-center justify-center gap-4 rtl p-4"
+			className="bg-secondary-100 h-64 flex flex-row items-center justify-center gap-4 rtl p-4"
 		>
 			{/* data */}
 			<div

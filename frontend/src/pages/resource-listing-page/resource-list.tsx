@@ -45,7 +45,7 @@ const ResourceList: React.FC<Props> = () => {
 
 	return (
 		<div>
-			<TagSearch 
+			{/* <TagSearch 
 				onSearch={(tags) => {
 					getResources({
 						variables: {
@@ -55,7 +55,7 @@ const ResourceList: React.FC<Props> = () => {
 					})
 					setAfter("")
 				}
-			}/>
+			}/> */}
 
 			{data?.resources?.edges.map(edge => {
 				return (

@@ -9,7 +9,6 @@
 
 export interface GetCourseOutline_courses_edges_node {
   __typename: "CourseType";
-  title: string;
   outline: string;
 }
 

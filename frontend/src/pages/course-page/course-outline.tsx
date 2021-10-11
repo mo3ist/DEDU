@@ -31,7 +31,7 @@ export const CourseOutline: React.FC<Props> = ({ activeCourseId }) => {
 
 	return (
 		<div
-			className="bg-secondary-light p-4"
+			className="bg-secondary-100 p-4"
 		>
 			<article
 				className="prose"

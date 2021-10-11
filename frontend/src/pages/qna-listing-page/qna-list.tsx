@@ -3,10 +3,9 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
 import QnAListItem from "./qna-list-item";
 import { GetQnAs } from "./__generated__/GetQnAs";
-import TagSearch from "../../common/components/tag-search/tag-search";
 
 interface Props {
-
+	tags: Array<String> | null
 }
 
 const GET_QNAS = gql `
@@ -27,15 +26,16 @@ const GET_QNAS = gql `
 	}
 `
 
-const QnAList: React.FC<Props> = () => {
+const QnAList: React.FC<Props> = ({ tags }) => {
 
-	const FIRST = 1;
+	const FIRST = 10;
 	const [ after, setAfter ] = useState<String>(""); 
 
 	const [getQnAs, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQnAs>(GET_QNAS, {
 		variables: {
 			first: FIRST,
-			after: after
+			after: after,
+			tag_Title: tags?.join(",")
 		}
 	});
 
@@ -45,18 +45,6 @@ const QnAList: React.FC<Props> = () => {
 
 	return (
 		<div>
-			<TagSearch 
-				onSearch={(tags) => {
-					getQnAs({
-						variables: {
-							tag_Title: tags,
-							after: ""
-						}
-					})
-					setAfter("")
-				}
-			}/>
-
 			{data?.questions?.edges.map(edge => {
 				return (
 					edge && <QnAListItem question={edge} />
