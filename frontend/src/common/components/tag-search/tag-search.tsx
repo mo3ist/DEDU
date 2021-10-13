@@ -6,11 +6,12 @@ import { SearchTags } from './__generated__/SearchTags'
 interface Props {
 	tags: Array<String> | null;
 	setTags : Function;
+	courseCode: String;
 }
 
 const SEARCH_TAGS = gql`
-	query SearchTags($title: String!, $tagType: String, $first: Int, $after: String){
-		tags(title: $title, tagType: $tagType , first: $first, after: $after){
+	query SearchTags($title: String!, $tagType: String, $first: Int, $after: String, $course_Code: String){
+		tags(title: $title, tagType: $tagType , first: $first, after: $after, course_Code: $course_Code){
 			edges {
 				node {
 					title
@@ -26,7 +27,7 @@ const SEARCH_TAGS = gql`
 	}
 ` 
 
-const TagSearch: React.FC<Props> = ({  tags, setTags }) => {
+const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 
 	const [tag, setTag] = useState("");
 	const [toggleTypesMenu, setToggleTypesMenu] = useState<boolean>(false)
@@ -47,7 +48,8 @@ const TagSearch: React.FC<Props> = ({  tags, setTags }) => {
 		variables: {
 			title: tag,
 			first: FIRST,
-			tagType: types[selectedType][1] 
+			tagType: types[selectedType][1] ,
+			course_Code: courseCode
 		}
 	});
 
@@ -57,7 +59,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags }) => {
 
 	return (
 		<div
-			className="flex flex-col h-44 w-full items-center justify-center text-secondary"
+			className="flex flex-col h-36 w-full items-center justify-center text-secondary"
 		>
 			{/* Wrapper for design (bg-color) */}
 			<div
@@ -154,7 +156,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags }) => {
 						<button
 							className="h-full w-full text-xl bg-secondary-200 font-semibold"
 						>
-							{`على ال${types[selectedType][0]}`}
+							{`حسب ال${types[selectedType][0]}`}
 						</button>
 
 						{toggleTypesMenu && <div
@@ -181,7 +183,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags }) => {
 					className="h-2/3 w-full overflow-y-scroll relative bg-secondary-100"
 				>
 					<button
-						className="fixed bg-primary-100 w-10 h-10 shadow-md rounded-br-md"
+						className="absolute bg-primary-100 w-10 h-10 shadow-md rounded-br-md"
 						onClick={() => {
 							setTags([])
 						}}

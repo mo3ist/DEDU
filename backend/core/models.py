@@ -84,9 +84,10 @@ class Vote(models.Model):
 
 	def save(self, *args, **kwargs):
 		# Validations
-		# https://stackoverflow.com/a/36166644/
 		if not self.id:
-			model_query = { str(self.content_type): self.content_object } # dynamically get the query {model type: value}
+			# dynamically get the query {model type: value}
+			# NOTE: I named the reverse query the same as the model name but in nowercase 
+			model_query = { str(self.content_object.__class__.__name__.lower()): self.content_object } 
 			other = Vote.objects.filter(
 				Q(**model_query),
 				user=self.user, 
@@ -188,6 +189,7 @@ class Question(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	created = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.title
@@ -271,7 +273,7 @@ class Tag(models.Model):
 
 	def save(self, *args, **kwargs):
 		if not self.id:
-			other = Tag.objects.filter(title=self.title)
+			other = Tag.objects.filter(title=self.title, course=self.course)
 			if other:
 				raise Exception("A tag with the same name already exists.")
 			super().save(*args, **kwargs)

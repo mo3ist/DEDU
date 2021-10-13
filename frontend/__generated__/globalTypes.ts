@@ -38,6 +38,7 @@ export enum LectureLectureType {
  * An enumeration.
  */
 export enum TagTagType {
+  CHAPTER = "CHAPTER",
   CONCEPT = "CONCEPT",
   LECTURE = "LECTURE",
   OTHER = "OTHER",

@@ -59,5 +59,6 @@ export interface SearchTags {
 export interface SearchTagsVariables {
   title: string;
   tagType?: string | null;
+  first?: number | null;
   after?: string | null;
 }

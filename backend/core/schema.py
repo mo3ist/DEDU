@@ -24,9 +24,10 @@ class AttachmentFilter(django_filters.FilterSet):
 class TagFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Tag
-		fields = ("title", "body", "tag_type", "user", "course")
+		fields = ("title", "body", "tag_type", "user", "course__code")
 
 	title = django_filters.CharFilter(lookup_expr='icontains')
+	course__code = django_filters.CharFilter(lookup_expr='iexact')
 
 	@property
 	def qs(self):
@@ -74,19 +75,20 @@ class LectureFilter(django_filters.FilterSet):
 class QuestionFilter(django_filters.FilterSet):
 
 	tag__title = django_filters.CharFilter(method='filter_tag__title')
+	course__code = django_filters.CharFilter(lookup_expr='iexact')
+	tag__course__code = django_filters.CharFilter(lookup_expr='iexact')	# The tag is unique together (title + course)
 
 	class Meta:
 		model = core_models.Question
-		fields = ("title", "body", "user", "course", "tag__title")
+		fields = ("title", "body", "user", "tag__title", "tag__course__code", "course__code")
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
-		qs = core_models.Question.objects.none()
+		q = Q()
 		for title in value.split(','):
-			q = core_models.Question.objects.filter(Q(tag__title=title))
-			qs = qs.union(q)
-		
-		return qs
+			q |= Q(tag__title=title)
+
+		return queryset.filter(q).distinct()
 
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:
@@ -108,12 +110,11 @@ class ResourceFilter(django_filters.FilterSet):
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
-		qs = core_models.Resource.objects.none()
+		q = Q()
 		for title in value.split(','):
-			q = core_models.Resource.objects.filter(Q(tag__title=title))
-			qs = qs.union(q)
-		
-		return qs
+			q |= Q(tag__title=title)
+
+		return core_models.Resource.objects.filter(q).distinct()
 
 class SummaryFilter(django_filters.FilterSet):
 	tag__title = django_filters.CharFilter(method='filter_tag__title')
@@ -124,12 +125,11 @@ class SummaryFilter(django_filters.FilterSet):
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
-		qs = core_models.Summary.objects.none()
+		q = Q()
 		for title in value.split(','):
-			q = core_models.Summary.objects.filter(Q(tag__title=title))
-			qs = qs.union(q)
-		
-		return qs
+			q |= Q(tag__title=title)
+
+		return core_models.Summary.objects.filter(q).distinct()
 
 class VoteFilter(django_filters.FilterSet):
 	class Meta:
@@ -272,6 +272,15 @@ class QuestionType(DjangoObjectType):
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
+
+	vote_count = graphene.Int()
+	answer_count = graphene.Int()
+
+	def resolve_vote_count(obj, info, **kwargs):
+		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
+
+	def resolve_answer_count(obj, info, **kwargs):
+		return obj.answer_set.all().count()
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()

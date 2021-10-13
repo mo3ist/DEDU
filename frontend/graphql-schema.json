@@ -5995,6 +5995,22 @@
             "deprecationReason": null
           },
           {
+            "name": "created",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTime",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "answerSet",
             "description": "",
             "args": [
@@ -6320,6 +6336,30 @@
             "type": {
               "kind": "OBJECT",
               "name": "AttachmentTypeConnection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "voteCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "answerCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8511,6 +8551,12 @@
           {
             "name": "SYLLABUS",
             "description": "Syllabus",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CHAPTER",
+            "description": "Chapter",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -11051,6 +11097,12 @@
         "enumValues": [
           {
             "name": "SYLLABUS",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CHAPTER",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

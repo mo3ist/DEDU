@@ -14,7 +14,7 @@ const client = new ApolloClient({
 			Query: {
 				fields: {
 					questions: {
-						keyArgs: ['tag_Title'],
+						keyArgs: ['tag_Title', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {
@@ -53,7 +53,7 @@ const client = new ApolloClient({
 						}
 					}, 
 					tags: {
-						keyArgs: ['title', 'tagType'],
+						keyArgs: ['title', 'tagType', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {
