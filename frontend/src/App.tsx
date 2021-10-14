@@ -27,7 +27,7 @@ const client = new ApolloClient({
 						}
 					},
 					resources: {
-						keyArgs: ['tag_Title'],
+						keyArgs: ['tag_Title', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {

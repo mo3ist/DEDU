@@ -61,4 +61,5 @@ export interface SearchTagsVariables {
   tagType?: string | null;
   first?: number | null;
   after?: string | null;
+  course_Code?: string | null;
 }

@@ -59,7 +59,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 
 	return (
 		<div
-			className="flex flex-col h-36 w-full items-center justify-center text-secondary"
+			className="flex flex-col h-36 w-full items-center justify-center text-secondary border-2 border-secondary-200"
 		>
 			{/* Wrapper for design (bg-color) */}
 			<div
@@ -83,7 +83,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 					>
 						<input 
 							className="h-full w-full rtl px-4 bg-secondary-200 text-lg font-semibolهذ"
-							placeholder={`البحث في ال${types[selectedType][0]}`}
+							placeholder={`البحث حسب ال${types[selectedType][0]}`}
 							ref={inputTag}
 							onChange={(e) => {
 								setTag(e.target.value);
@@ -99,7 +99,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 							
 						>
 							<div
-								className="h-44 w-full overflow-y-scroll grid grid-cols-1 gap-2 p-2"
+								className="h-56 w-full overflow-y-scroll grid grid-cols-1 gap-2 p-2"
 								ref={divSearch}
 								onScroll={() => {
 									if (divSearch.current?.scrollHeight! - divSearch.current?.scrollTop! === divSearch.current?.clientHeight!) {
@@ -168,6 +168,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 										className="h-10 w-full bg-primary-100 rounded-sm font-semibold"
 										onClick={() => {
 											setSelectedType(index)
+											setToggleTypesMenu(false)
 										}}
 									>
 										{entry[0]}
@@ -180,7 +181,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 					</div>
 				</div>
 				<div
-					className="h-2/3 w-full overflow-y-scroll relative bg-secondary-100"
+					className="h-2/3 w-full relative bg-secondary-100"
 				>
 					<button
 						className="absolute bg-primary-100 w-10 h-10 shadow-md rounded-br-md"
@@ -191,7 +192,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 						x
 					</button>
 					<div
-						className="flex-grow flex flex-row justify-end gap-4 p-4 flex-wrap"
+						className="flex-grow flex flex-row justify-end gap-4 p-4 flex-wrap overflow-y-scroll h-full"
 					>
 						{tags?.length === 0 && <p
 							className="text-lg opacity-50 h-full w-full text-center"
@@ -201,7 +202,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 						{tags?.map(tag => {
 							return (
 								<div
-									className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary px-2 py-1 rounded-full"
+									className="flex flex-row h-10 items-center justify-center gap-2 text-secondary bg-primary px-2 py-1 rounded-full"
 								>
 									<p
 										className="inline-block font-semibold"

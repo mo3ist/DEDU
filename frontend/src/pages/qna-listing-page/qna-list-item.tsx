@@ -10,11 +10,9 @@ interface Props {
 
 const QnAListItem: React.FC<Props> = ({ question }) => {
 
-	const tags = ['test', 'test2', 'test2', 'test2', 'test2', 'test2', 'test2']
-
 	return (
 		<div
-			className="h-54 bg-secondary-100 flex flex-col gap-1 p-1 rtl rounded-sm text-secondary"
+			className="h-54 bg-secondary-100 flex flex-col gap-1 p-1 rtl rounded-sm text-secondary border-2 border-secondary-200"
 		>
 			{/* upper part */}
 			<div
@@ -22,7 +20,7 @@ const QnAListItem: React.FC<Props> = ({ question }) => {
 			>
 				{/* votes */}
 				<div
-					className="flex flex-col w-16 items-center justfiy-center"
+					className="flex flex-col w-10 items-center justfiy-center"
 				>
 					{/* upvote */}
 					<button
@@ -51,7 +49,7 @@ const QnAListItem: React.FC<Props> = ({ question }) => {
 					className="flex-grow flex flex-col items-start justify-center gap-1 w-4/6"
 				>
 					<p
-						className="flex-grow text-3xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
+						className="flex-grow text-xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
 					>
 						{question.node?.title}
 					</p>

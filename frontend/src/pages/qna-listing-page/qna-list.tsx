@@ -54,8 +54,6 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 		}
 	});
 
-	const dummyData = ["test", "test", "test", "Test", "test" ,"test"]
-
 	useEffect(() => {
 		getQnAs()
 	}, [])

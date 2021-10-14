@@ -88,4 +88,5 @@ export interface GetQnAsVariables {
   first?: number | null;
   after?: string | null;
   tag_Title?: string | null;
+  course_Code?: string | null;
 }
