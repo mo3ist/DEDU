@@ -120,10 +120,12 @@ class ResourceFilter(django_filters.FilterSet):
 
 class SummaryFilter(django_filters.FilterSet):
 	tag__title = django_filters.CharFilter(method='filter_tag__title')
+	course__code = django_filters.CharFilter(lookup_expr='iexact')
+	tag__course__code = django_filters.CharFilter(lookup_expr='iexact')	# The tag is unique together (title + course)
 
 	class Meta:
 		model = core_models.Summary
-		fields = ("title", "body", "user", "course", "tag__title")
+		fields = ("title", "body", "user", "course", "tag__title", "tag__course__code", "course__code")
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
@@ -383,7 +385,6 @@ class ResourceType(DjangoObjectType):
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
-
 	vote_count = graphene.Int()
 
 	def resolve_vote_count(obj, info, **kwargs):
@@ -420,6 +421,10 @@ class SummaryType(DjangoObjectType):
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
+	vote_count = graphene.Int()
+
+	def resolve_vote_count(obj, info, **kwargs):
+		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
