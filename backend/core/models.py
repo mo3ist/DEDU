@@ -149,20 +149,6 @@ class Classification(models.Model):
 	def __str__(self):
 		return self.year
 
-class Teacher(models.Model):
-
-	class TEACHER_TYPE(models.TextChoices):
-		PROF = ("PROF", "Professor")
-		ASSC_PROF = ("ASSC_PROF", "Associate Professor")
-		TA = ("TA", "Teacher Assistant")
-
-	teacher_type = models.CharField(max_length=20, choices=TEACHER_TYPE.choices, default=TEACHER_TYPE.PROF)
-	title = models.CharField(max_length=100)
-	courses = models.ManyToManyField(Course, null=True, blank=True, related_name="teachers")
-
-	def __str__(self):
-		return self.title
-
 class Lecture(models.Model):
 
 	class LECTURE_TYPE(models.TextChoices):
@@ -177,6 +163,22 @@ class Lecture(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	created = models.DateTimeField(auto_now_add=True)
+	
+	def __str__(self):
+		return self.title
+
+class Teacher(models.Model):
+
+	class TEACHER_TYPE(models.TextChoices):
+		PROF = ("PROF", "Professor")
+		ASSC_PROF = ("ASSC_PROF", "Associate Professor")
+		TA = ("TA", "Teacher Assistant")
+
+	teacher_type = models.CharField(max_length=20, choices=TEACHER_TYPE.choices, default=TEACHER_TYPE.PROF)
+	title = models.CharField(max_length=100)
+	courses = models.ManyToManyField(Course, null=True, blank=True, related_name="teachers")
+	lectures = models.ManyToManyField(Lecture, null=True, blank=True, related_name="teachers")
 
 	def __str__(self):
 		return self.title

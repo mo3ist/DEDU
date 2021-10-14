@@ -60,15 +60,17 @@ class TeacherFilter(django_filters.FilterSet):
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Lecture
-		fields = ("title", "body", "user", "course", "tag__title")  # YES! you can use reverse GM2M relations here!
+		fields = ("title", "body", "user", "course", "lecture_type", "tag__title", "tag__course__code", "course__code")  # YES! you can use reverse GM2M relations here!
 
 	tag__title = django_filters.CharFilter(lookup_expr='icontains')
+	course__code = django_filters.CharFilter(lookup_expr='iexact')
+	tag__course__code = django_filters.CharFilter(lookup_expr='iexact')	# The tag is unique together (title + course)
 
 	@property
 	def qs(self):
 		if self.data.get('tag__title', None):
 			# Order by title
-			return super().qs.order_by('tag__title') 		
+			return super().qs.order_by('tag__title')
 		
 		return super().qs
 
@@ -240,6 +242,22 @@ class LectureType(DjangoObjectType):
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 	mod = graphene.Field('core.schema.ModType')
+
+	question_count = graphene.Int()
+	summary_count = graphene.Int()
+	resource_count = graphene.Int()
+
+	def resolve_question_count(obj, info, **kwargs):
+		"Has a tag with the same title as the lecture"
+		return core_models.Question.objects.filter(tag__title=obj.title, course=obj.course).count()
+	
+	def resolve_summary_count(obj, info, **kwargs):
+		"Has a tag with the same title as the lecture"
+		return core_models.Summary.objects.filter(tag__title=obj.title, course=obj.course).count()
+	
+	def resolve_resource_count(obj, info, **kwargs):
+		"Has a tag with the same title as the lecture"
+		return core_models.Resource.objects.filter(tag__title=obj.title, course=obj.course).count()
 
 	def resolve_tag_set(obj, info, **kwargs):
 		"return the current object's tags"

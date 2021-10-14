@@ -13,6 +13,19 @@ const client = new ApolloClient({
 		typePolicies: {
 			Query: {
 				fields: {
+					// lectures: {
+					// 	keyArgs: ['tag_Title', 'course_Code'],
+					// 	merge(existing = {edges: [], pageInfo: {}}, incoming){
+					// 		// clean this shit please
+					// 		return {
+					// 			...incoming, 
+					// 			edges: [
+					// 				...existing?.edges,
+					// 				...incoming?.edges
+					// 			]
+					// 		}
+					// 	}
+					// },
 					questions: {
 						keyArgs: ['tag_Title', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
