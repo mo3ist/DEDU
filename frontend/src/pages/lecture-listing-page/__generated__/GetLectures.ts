@@ -134,8 +134,8 @@ export interface GetLectures {
 }
 
 export interface GetLecturesVariables {
-  tagTitle?: string | null;
   courseCode?: string | null;
   first?: number | null;
   after?: string | null;
+  lectureType?: string | null;
 }

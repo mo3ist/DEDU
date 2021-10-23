@@ -7,6 +7,7 @@ interface Props {
 	tags: Array<String> | null;
 	setTags : Function;
 	courseCode: String;
+	creatable?: boolean;	// For tag creation...
 }
 
 const SEARCH_TAGS = gql`
@@ -27,7 +28,7 @@ const SEARCH_TAGS = gql`
 	}
 ` 
 
-const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
+const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode, creatable=false }) => {
 
 	const [tag, setTag] = useState("");
 	const [toggleTypesMenu, setToggleTypesMenu] = useState<boolean>(false)
@@ -85,6 +86,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 							className="h-full w-full rtl px-4 bg-secondary-200 text-lg font-semibolهذ"
 							placeholder={`البحث حسب ال${types[selectedType][0]}`}
 							ref={inputTag}
+							value={tag}
 							onChange={(e) => {
 								setTag(e.target.value);
 								getSearchTags({
@@ -95,50 +97,71 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode }) => {
 							}} 
 						/>
 						{toggleSearch && <div
-							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10"
+							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 h-56"
 							
 						>
+							{/* Wrapper for scroll */}
 							<div
-								className="h-56 w-full overflow-y-scroll grid grid-cols-1 gap-2 p-2"
-								ref={divSearch}
-								onScroll={() => {
-									if (divSearch.current?.scrollHeight! - divSearch.current?.scrollTop! === divSearch.current?.clientHeight!) {
-										if (data?.tags?.pageInfo.hasNextPage){
-											const nextAfter = data?.tags?.pageInfo?.endCursor!
-											fetchMore!({
-												variables: {
-													after: nextAfter
-												}
-											});
-										}
-									}
-								}}
+								className="h-full w-full overflow-y-scroll"
 							>
-								{
-								/* Filter items in list */}
-								{/* {data?.tags?.edges.filter(tag => tags?.indexOf(tag?.node?.title!) === -1).map(edge => { */}
-								{data?.tags?.edges.map(edge => {
-									return (
-										tags?.indexOf(edge?.node?.title!) === -1 ? <button
+								<div
+									className="w-full grid grid-cols-1 gap-2 p-2"
+									ref={divSearch}
+									onScroll={() => {
+										if (divSearch.current?.scrollHeight! - divSearch.current?.scrollTop! === divSearch.current?.clientHeight!) {
+											if (data?.tags?.pageInfo.hasNextPage){
+												const nextAfter = data?.tags?.pageInfo?.endCursor!
+												fetchMore!({
+													variables: {
+														after: nextAfter
+													}
+												});
+											}
+										}
+									}}
+								>
+									{/* If creatable */}
+									{creatable && data?.tags?.edges.length === 0 && tags?.indexOf(tag) === -1 &&
+										<button
 											className="flex-grow h-10 w-full bg-primary-100 rounded-sm font-semibold"
 											onClick={() => {
-												setTags(tags!?.concat(edge?.node?.title!))
+												setTags(tags!?.concat(tag))
+												setTag("")
 
 												// When the item gets removed from the div, its onHover event.currentTag.contains won't work 
 												inputTag.current?.focus()
 											}}
 										>
-											{edge?.node?.title}
-										</button> :
-										<button
-											className="h-10 w-full opacity-80 cursor-not-allowed"
-										>
-											{edge?.node?.title}
+											<span className="font-bold">{tag}</span>
 										</button>
+									}
 
-									)
-								})}
+									{/* Filter items in list */}
+									{/* {data?.tags?.edges.filter(tag => tags?.indexOf(tag?.node?.title!) === -1).map(edge => { */}
+									{data?.tags?.edges.map(edge => {
+										return (
+											tags?.indexOf(edge?.node?.title!) === -1 ? <button
+												className="flex-grow h-10 w-full bg-primary-100 rounded-sm font-semibold"
+												onClick={() => {
+													setTags(tags!?.concat(edge?.node?.title!))
+
+													// When the item gets removed from the div, its onHover event.currentTag.contains won't work 
+													inputTag.current?.focus()
+												}}
+											>
+												{edge?.node?.title}
+											</button> :
+											<button
+												className="h-10 w-full opacity-80 cursor-not-allowed"
+											>
+												{edge?.node?.title}
+											</button>
+
+										)
+									})}
+								</div>
 							</div>
+							
 						</div>}
 
 					</div>

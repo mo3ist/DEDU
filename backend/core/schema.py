@@ -142,6 +142,19 @@ class VoteFilter(django_filters.FilterSet):
 		model = core_models.Vote
 		fields = ("value", "user")
 
+class ContentObjectEnum(graphene.Enum):
+	lecture = "lecture"
+	question = "question"
+	answer = "answer"
+	quiz = "quiz"
+	resource = "resource"
+	summary = "summary"
+
+class NestedAttachmentInput(graphene.InputObjectType):
+	url = graphene.String(required=True)
+	title = graphene.String(required=True)
+	attm_type = graphene.String(required=True)
+	
 class ModType(DjangoObjectType):
 	class Meta:
 		model = core_models.Mod
@@ -424,6 +437,7 @@ class CreateResource(graphene.relay.ClientIDMutation):
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
+		attachment_set = graphene.List(NestedAttachmentInput)
 	
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -431,6 +445,9 @@ class CreateResource(graphene.relay.ClientIDMutation):
 		if resource_serializer.is_valid():
 			resource = resource_serializer.save()
 			return CreateResource(resource=resource)
+		
+		from cprint import cprint
+		cprint.info(resource_serializer.errors)
 
 class SummaryType(DjangoObjectType):
 	class Meta:
@@ -471,16 +488,6 @@ class CreateSummary(graphene.relay.ClientIDMutation):
 class ContentsType(graphene.Union):
 	class Meta:
 		types = (LectureType, QuestionType, AnswerType, QuizType, ResourceType, SummaryType)
-
-
-class ContentObjectEnum(graphene.Enum):
-	lecture = "lecture"
-	question = "question"
-	answer = "answer"
-	quiz = "quiz"
-	resource = "resource"
-	summary = "summary"
-
 
 # Registering the GM2MField in graphene (must be defined before the DjangoObjectType Tag)
 # https://stackoverflow.com/a/51035755

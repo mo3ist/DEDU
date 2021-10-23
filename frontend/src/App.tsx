@@ -1,14 +1,30 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { setContext } from '@apollo/client/link/context'
 
 import CoursePage from './pages/course-page/course-page'
 import LectureListingPage from './pages/lecture-listing-page/lecture-listing-page'
 import QnAListingPage from './pages/qna-listing-page/qna-listing-page';
 import ResourceListingPage from './pages/resource-listing-page/resource-listing-page';
 import SummaryListingPage from './pages/summary-listing-page/summary-listing-page';
+import ResourceCreationPage from './pages/resource-creation-page/resource-creation-page';
+
+const httpLink = createHttpLink({
+	uri: 'http://127.0.0.1:8000/graphql/',
+  });  
+
+const authLink = setContext((_, { headers }) => {
+	const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImV4cCI6MTYzNDM0MzE0Nywib3JpZ0lhdCI6MTYzNDM0Mjg0N30.VFrUdWpkJ50J36tQw6nngDXo_jw2vsMjAhClnPyfS7M";
+	return {
+	  headers: {
+		...headers,
+		authorization: token ? `JWT ${token}` : "",
+	  }
+	}
+  });
 
 const client = new ApolloClient({
-	uri: 'http://127.0.0.1:8000/graphql/',
+	link: authLink.concat(httpLink),
 	cache: new InMemoryCache({
 		typePolicies: {
 			Query: {
@@ -105,6 +121,9 @@ function App() {
 					</Route>
 					<Route path="/courses/:course/quizzes/">
 						<h1>{"<Quizzes />"}</h1>
+					</Route>
+					<Route path="/courses/:course/resources/create">
+						<ResourceCreationPage />
 					</Route>
 					<Route path="/courses/:course/resources/">
 						<ResourceListingPage />
