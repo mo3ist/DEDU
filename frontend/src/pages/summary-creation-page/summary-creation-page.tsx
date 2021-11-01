@@ -12,15 +12,15 @@ interface Props {
 
 }
 
-const CREATE_RESOURCE = gql`
-	mutation MutateResource($title: String!, $body: String!, $course: String!, $tags: [String]) {
-		createResource(input: {
+const CREATE_SUMMARY = gql`
+	mutation MutateSummary($title: String!, $body: String!, $course: String!, $tags: [String]) {
+		createSummary(input: {
 			title: $title,
 			body: $body,
 			course: $course,
 			tagSet: $tags,
 		}) {
-			resource {
+			summary {
 				title
 				body
 				course {
@@ -45,9 +45,10 @@ const EDITOR_TOOLS = {
 	image: Image
 }
 
-const ResourceCreationPage: React.FC<Props> = () => {
+const SummaryCreationPage: React.FC<Props> = () => {
 
-	const [createResource, { loading, error, data }] = useMutation(CREATE_RESOURCE)
+	
+	const [createSummary, { loading, error, data }] = useMutation(CREATE_SUMMARY)
 
 	const [tags, setTags] = useState<Array<string> | null>([])
 	const courseCode = useParams<{ course: string }>().course
@@ -93,7 +94,6 @@ const ResourceCreationPage: React.FC<Props> = () => {
 						url = res.url
 						
 					} catch (e) {
-						// url = "https://www.google.com/images/errors/robot.png"
 					}
 					newText = newText?.replace(img, url)!
 				}
@@ -101,16 +101,6 @@ const ResourceCreationPage: React.FC<Props> = () => {
 		)
 		return newText
 	} 
-
-	// if (data) {
-	// 	return (
-	// 		<div
-	// 			className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl"
-	// 		>
-	// 			<p className="text-secondary font-bold text-3xl">تم</p>
-	// 		</div>
-	// 	)
-	// }
 
 	return (
 		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative">
@@ -174,7 +164,7 @@ const ResourceCreationPage: React.FC<Props> = () => {
 					<span
 						className="font-normal text-sm text m-2 text-secondary"
 					>
-						(نبذة بسيطة عن المصدر مرفقة بالروابط)
+						(نبذة بسيطة عن الملخص مرفقة بالروابط)
 					</span>
 				</p>
 				<div
@@ -203,9 +193,10 @@ const ResourceCreationPage: React.FC<Props> = () => {
 					<span
 						className="font-normal text-sm text m-2 text-secondary"
 					>
-						(برجاء التدقيق في اختيار الوسوم)
+						(برجاء التدقيق في اختيار وسوم المحاضرات أو الفصول التي تم تلخيصها)
 					</span>
 				</p>
+				
 				<TagSearch tags={tags!} setTags={setTags} courseCode={courseCode} creatable={true}/>
 			</div>
 			<div>
@@ -214,7 +205,7 @@ const ResourceCreationPage: React.FC<Props> = () => {
 					onClick={async () => {
 						if (title?.length !== 0 && body?.length !== 0) {
 							const text = await base64toURL(body)
-							createResource({
+							createSummary({
 								variables: {
 									title: title,
 									body: text,
@@ -235,4 +226,4 @@ const ResourceCreationPage: React.FC<Props> = () => {
 	)
 }
 
-export default ResourceCreationPage;
+export default SummaryCreationPage;

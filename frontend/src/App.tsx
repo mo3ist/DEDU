@@ -8,6 +8,7 @@ import QnAListingPage from './pages/qna-listing-page/qna-listing-page';
 import ResourceListingPage from './pages/resource-listing-page/resource-listing-page';
 import SummaryListingPage from './pages/summary-listing-page/summary-listing-page';
 import ResourceCreationPage from './pages/resource-creation-page/resource-creation-page';
+import SummaryCreationPage from './pages/summary-creation-page/summary-creation-page';
 
 const httpLink = createHttpLink({
 	uri: 'http://127.0.0.1:8000/graphql/',
@@ -115,6 +116,13 @@ function App() {
 					</Route>
 					<Route path="/courses/:course/qnas/">
 						<QnAListingPage />
+					</Route>
+					<Route path="/courses/:course/summaries/create">
+						<div
+							className="flex flex-col"
+						>
+							<SummaryCreationPage />
+						</div>
 					</Route>
 					<Route path="/courses/:course/summaries/">
 						<SummaryListingPage />

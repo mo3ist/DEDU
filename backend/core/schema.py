@@ -484,6 +484,7 @@ class CreateSummary(graphene.relay.ClientIDMutation):
 		if summary_serializer.is_valid():
 			summary = summary_serializer.save()
 			return CreateSummary(summary=summary)
+		print(summary_serializer.errors)
 
 class ContentsType(graphene.Union):
 	class Meta:
