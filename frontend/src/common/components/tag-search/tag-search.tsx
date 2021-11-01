@@ -83,7 +83,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode, creatable=fals
 						}}
 					>
 						<input 
-							className="h-full w-full rtl px-4 bg-secondary-200 text-lg font-semibolهذ"
+							className="h-full w-full rtl px-4 bg-secondary-200 text-lg"
 							placeholder={`البحث حسب ال${types[selectedType][0]}`}
 							ref={inputTag}
 							value={tag}
@@ -121,7 +121,7 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode, creatable=fals
 									}}
 								>
 									{/* If creatable */}
-									{creatable && data?.tags?.edges.length === 0 && tags?.indexOf(tag) === -1 &&
+									{creatable && data?.tags?.edges.length === 0 && tags?.indexOf(tag) === -1 && tag.length > 0 &&
 										<button
 											className="flex-grow h-10 w-full bg-primary-100 rounded-sm font-semibold"
 											onClick={() => {
@@ -220,7 +220,8 @@ const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode, creatable=fals
 						{tags?.length === 0 && <p
 							className="text-lg opacity-50 h-full w-full text-center"
 						>
-							قم بتحديد وسم أو أكثر لفلترة النتائج	
+							{!creatable && "قم بتحديد وسم أو أكثر لفلترة النتائج"}	
+							{creatable && "قم بتحديد أو إضافة وسوم الى المشاركة"}	
 						</p>}
 						{tags?.map(tag => {
 							return (

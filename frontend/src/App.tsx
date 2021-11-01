@@ -123,7 +123,11 @@ function App() {
 						<h1>{"<Quizzes />"}</h1>
 					</Route>
 					<Route path="/courses/:course/resources/create">
-						<ResourceCreationPage />
+						<div
+							className="flex flex-col"
+						>
+							<ResourceCreationPage />
+						</div>
 					</Route>
 					<Route path="/courses/:course/resources/">
 						<ResourceListingPage />

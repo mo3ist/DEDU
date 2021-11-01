@@ -2,6 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import JoditEditor from "jodit-react";
+import classname from 'classnames'
 
 import TagSearch from '../../common/components/tag-search/tag-search';
 
@@ -53,7 +54,8 @@ const ResourceCreationPage: React.FC<Props> = () => {
 
 	const [title, setTitle] = useState<string | null>("")
 	const [body, setBody] = useState<string | null>("")
-	// const [tags, setTags] = useState<String | null>()
+
+	const [validForm, setValidForm] = useState<boolean>(true)
 
 	const [value, setValue] = useState('')
 	const config = {
@@ -61,6 +63,7 @@ const ResourceCreationPage: React.FC<Props> = () => {
 		uploader: {
 			insertImageAsBase64URI: true,
 		  },
+		placeholder: "اكتب هنا...",
 	}
 
 	const editor = useRef<JoditEditor>(null)
@@ -90,7 +93,7 @@ const ResourceCreationPage: React.FC<Props> = () => {
 						url = res.url
 						
 					} catch (e) {
-						url = "https://www.google.com/images/errors/robot.png"
+						// url = "https://www.google.com/images/errors/robot.png"
 					}
 					newText = newText?.replace(img, url)!
 				}
@@ -99,42 +102,117 @@ const ResourceCreationPage: React.FC<Props> = () => {
 		return newText
 	} 
 
+	// if (data) {
+	// 	return (
+	// 		<div
+	// 			className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl"
+	// 		>
+	// 			<p className="text-secondary font-bold text-3xl">تم</p>
+	// 		</div>
+	// 	)
+	// }
+
 	return (
-		<div className="grid grid-cols-1 gap-2">
-			<div>
-				<input type="text" placeholder="title" onChange={(e) => {setTitle(e.target.value)}}/>
+		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative">
+			{data && 
+				<div
+					className="absolute inset-0 bg-primary opacity-80 z-10 flex items-center justify-center"
+				>
+					<p
+						className="text-secondary font-bold text-3xl"
+					>
+						تم إرسال المشاركة وبانتظار المراجعة.
+					</p>
+				</div>
+			}
+			{loading && 
+			<div
+				className="absolute inset-0 bg-primary opacity-80 z-10 flex items-center justify-center"
+			>
+				<p
+					className="text-secondary font-bold text-3xl"
+				>
+					...
+				</p>
+			</div>
+			}
+			
+			<div
+				className="w-full"
+			>
+				<p
+					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+				>
+					العنوان
+				</p>
+				<div
+					className={classname({
+						"border-2 border-secondary-200": validForm,
+						"border-2 border-dashed border-primary-100": !validForm && title?.length === 0
+					})}
+				>
+					<input 
+						type="text" 
+						// placeholder="العنوان" 
+						onChange={(e) => {setTitle(e.target.value)}} 
+						className="w-full rounded-sm text-lg px-4 py-1"
+					/>
+				</div>
+			</div>
+			<div
+				className=""
+			>
+				<p
+					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+				>
+					الوصف
+				</p>
+				<div
+					className={classname({
+						"border-2 border-secondary-200": validForm,
+						"border-2 border-dashed border-primary-100": !validForm && body?.length === 0
+					})}
+				>
+					<JoditEditor
+						ref={editor}
+						value={value}
+						config={config}
+						// tabIndex={1} // tabIndex of textarea
+						onBlur={newContent => {
+							setBody(newContent)
+						}} // preferred to use only this option to update the content for performance reasons
+						
+						/>
+				</div>
 			</div>
 			<div>
-				<JoditEditor
-					ref={editor}
-					value={value}
-					config={config}
-					// tabIndex={1} // tabIndex of textarea
-					onBlur={newContent => {
-						setBody(newContent)
-					}} // preferred to use only this option to update the content for performance reasons
-					
-				/>
-			</div>
-			<div>
+				<p
+					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+				>
+					الوسوم
+				</p>
 				<TagSearch tags={tags!} setTags={setTags} courseCode={courseCode} creatable={true}/>
 			</div>
 			<div>
 				<button 
-					className="bg-secondary-100"
+					className="bg-secondary-200 w-full h-20 text-3xl text-secondary"
 					onClick={async () => {
-						const text = await base64toURL(body)
-						createResource({
-							variables: {
-								title: title,
-								body: text,
-								course: "1",
-								tags: tags,
-							}
-						})
+						if (title?.length !== 0 && body?.length !== 0) {
+							const text = await base64toURL(body)
+							createResource({
+								variables: {
+									title: title,
+									body: text,
+									course: "1",
+									tags: tags,
+								}
+							})
+						} else {
+							setValidForm(false)
+						}
 					}}
 				>
-					sumbit
+					مشاركة
 				</button>
 			</div>
 			
