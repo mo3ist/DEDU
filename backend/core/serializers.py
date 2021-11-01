@@ -72,7 +72,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Question
 		fields = ("id", "title", "body", "user", "tag_set", "mod", "course")
-
+	
+	course = serializers.CharField(required=True)
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
 		child=serializers.CharField(),
@@ -90,6 +91,36 @@ class QuestionSerializer(serializers.ModelSerializer):
 			except:
 				raise Exception("error")
 			tag.contents.add(question)
+		return question
+
+
+	def validate_course(self, value):
+		try:
+			course = models.Course.objects.get(code=value)
+		except models.Course.DoesNotExist:
+			raise serializers.ValidationError("Course dosen't exist.")
+
+		return course
+
+	def create(self, validated_data):
+		tag_set = validated_data.pop("tag_set", [])
+		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
+		user = validated_data["user"]
+		question = models.Question.objects.create(mod=mod, **validated_data)
+		for tag in tag_set:
+			try:
+				tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
+			except models.Tag.DoesNotExist:
+				tag = models.Tag.objects.create(
+					title=tag,
+					body="",
+					course=validated_data["course"],
+					user=user,
+					mod=models.Mod.objects.create(),
+					tag_type=models.Tag.TAG_TYPE.CONCEPT
+				)
+			tag.contents.add(question)
+			
 		return question
 
 class AnswerSerializer(serializers.ModelSerializer):

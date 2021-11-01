@@ -12,15 +12,15 @@ interface Props {
 
 }
 
-const CREATE_SUMMARY = gql`
-	mutation MutateSummary($title: String!, $body: String!, $course: String!, $tags: [String]) {
-		createSummary(input: {
+const CREATE_QUESTION = gql`
+	mutation MutateQuestion($title: String!, $body: String!, $course: String!, $tags: [String]) {
+		createQuestion(input: {
 			title: $title,
 			body: $body,
 			course: $course,
 			tagSet: $tags,
 		}) {
-			summary {
+			question {
 				title
 				body
 				course {
@@ -42,10 +42,10 @@ const EDITOR_TOOLS = {
 	image: Image
 }
 
-const SummaryCreationPage: React.FC<Props> = () => {
+const QuestionCreationPage: React.FC<Props> = () => {
 
 	
-	const [createSummary, { loading, error, data }] = useMutation(CREATE_SUMMARY)
+	const [createQuestion, { loading, error, data }] = useMutation(CREATE_QUESTION)
 
 	const [tags, setTags] = useState<Array<string> | null>([])
 	const courseCode = useParams<{ course: string }>().course
@@ -161,7 +161,7 @@ const SummaryCreationPage: React.FC<Props> = () => {
 					<span
 						className="font-normal text-sm text m-2 text-secondary"
 					>
-						(نبذة بسيطة عن الملخص مرفقة بالروابط)
+						(برجاء السؤال بوضوح واستفاضة وإرفاق ما يلزم من صور وروابط)
 					</span>
 				</p>
 				<div
@@ -190,7 +190,7 @@ const SummaryCreationPage: React.FC<Props> = () => {
 					<span
 						className="font-normal text-sm text m-2 text-secondary"
 					>
-						(برجاء التدقيق في اختيار وسوم المحاضرات أو الفصول التي تم تلخيصها)
+						(برجاء التدقيق في اختيار الوسوم)
 					</span>
 				</p>
 				
@@ -202,7 +202,7 @@ const SummaryCreationPage: React.FC<Props> = () => {
 					onClick={async () => {
 						if (title?.length !== 0 && body?.length !== 0) {
 							const text = await base64toURL(body)
-							createSummary({
+							createQuestion({
 								variables: {
 									title: title,
 									body: text,
@@ -223,4 +223,4 @@ const SummaryCreationPage: React.FC<Props> = () => {
 	)
 }
 
-export default SummaryCreationPage;
+export default QuestionCreationPage;

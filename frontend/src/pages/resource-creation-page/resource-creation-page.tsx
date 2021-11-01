@@ -26,9 +26,6 @@ const CREATE_RESOURCE = gql`
 				course {
 					code
 				}
-				user {
-					email
-				}
 				tagSet {
 					edges {
 						node {
