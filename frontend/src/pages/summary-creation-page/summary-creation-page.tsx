@@ -5,6 +5,7 @@ import JoditEditor from "jodit-react";
 import classname from 'classnames'
 
 import TagSearch from '../../common/components/tag-search/tag-search';
+import TextEditor from '../../common/components/text-editor/text-editor';
 
 const imgbbUploader = require('imgbb-uploader')
 
@@ -56,13 +57,6 @@ const SummaryCreationPage: React.FC<Props> = () => {
 	const [validForm, setValidForm] = useState<boolean>(true)
 
 	const [value, setValue] = useState('')
-	const config = {
-		readonly: false,
-		uploader: {
-			insertImageAsBase64URI: true,
-		  },
-		placeholder: "اكتب هنا...",
-	}
 
 	const editor = useRef<JoditEditor>(null)
 
@@ -170,16 +164,15 @@ const SummaryCreationPage: React.FC<Props> = () => {
 						"border-2 border-dashed border-primary-100": !validForm && body?.length === 0
 					})}
 				>
-					<JoditEditor
+					<TextEditor
 						ref={editor}
 						value={value}
-						config={config}
-						// tabIndex={1} // tabIndex of textarea
+						readonly={false}
 						onBlur={newContent => {
 							setBody(newContent)
 						}} // preferred to use only this option to update the content for performance reasons
 						
-						/>
+					/>
 				</div>
 			</div>
 			<div>

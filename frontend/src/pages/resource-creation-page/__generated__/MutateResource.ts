@@ -12,11 +12,6 @@ export interface MutateResource_createResource_resource_course {
   code: string;
 }
 
-export interface MutateResource_createResource_resource_user {
-  __typename: "UserType";
-  email: string;
-}
-
 export interface MutateResource_createResource_resource_tagSet_edges_node {
   __typename: "TagType";
   title: string;
@@ -43,7 +38,6 @@ export interface MutateResource_createResource_resource {
   title: string;
   body: string;
   course: MutateResource_createResource_resource_course;
-  user: MutateResource_createResource_resource_user;
   tagSet: MutateResource_createResource_resource_tagSet | null;
 }
 

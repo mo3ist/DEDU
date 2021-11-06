@@ -10,6 +10,7 @@ import SummaryListingPage from './pages/summary-listing-page/summary-listing-pag
 import ResourceCreationPage from './pages/resource-creation-page/resource-creation-page';
 import SummaryCreationPage from './pages/summary-creation-page/summary-creation-page';
 import QuestionCreationPage from './pages/question-creation-page/question-creation-page';
+import DetailedContent from './common/components/detailed-content/detailed-content';
 
 const httpLink = createHttpLink({
 	uri: 'http://127.0.0.1:8000/graphql/',
@@ -114,6 +115,9 @@ function App() {
 				<Switch>
 					<Route path="/courses/:course/lectures/">
 						<LectureListingPage />
+					</Route>
+					<Route path="/courses/:course/detailed/">
+						<DetailedContent contentId="UXVlc3Rpb25UeXBlOjM=" contentType={0}/>
 					</Route>
 					<Route path="/courses/:course/qnas/create">
 						<div

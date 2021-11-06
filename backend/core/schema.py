@@ -82,7 +82,7 @@ class QuestionFilter(django_filters.FilterSet):
 
 	class Meta:
 		model = core_models.Question
-		fields = ("title", "body", "user", "tag__title", "tag__course__code", "course__code")
+		fields = ("id", "title", "body", "user", "tag__title", "tag__course__code", "course__code")
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
@@ -110,7 +110,7 @@ class ResourceFilter(django_filters.FilterSet):
 
 	class Meta:
 		model = core_models.Resource
-		fields = ("title", "body", "user", "course", "tag__title", "tag__course__code", "course__code")
+		fields = ("id", "title", "body", "user", "course", "tag__title", "tag__course__code", "course__code")
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
@@ -127,7 +127,7 @@ class SummaryFilter(django_filters.FilterSet):
 
 	class Meta:
 		model = core_models.Summary
-		fields = ("title", "body", "user", "course", "tag__title", "tag__course__code", "course__code")
+		fields = ("id", "title", "body", "user", "course", "tag__title", "tag__course__code", "course__code")
 
 	def filter_tag__title(self, queryset, name, value):
 		"Support comma separated tags."
