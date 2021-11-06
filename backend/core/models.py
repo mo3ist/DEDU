@@ -45,6 +45,27 @@ class Mod(MPTTModel):
 				self.date = timezone.now()
 				if not self.by:
 					raise Exception("Field 'by' needs to be populated.")
+
+		# Copy relations
+		if self.state == Mod.APPROVED:
+			if self.parent:
+				# Somehow, MPTTModel doesn't recognize related_name when linked OneToOne (mod.resource for example won't work)
+				# a hack would be to search for the content instance in all the models it's linked with :')
+				related_models = [Resource, Summary, Quiz, Question, Answer]
+				
+				# I love python
+				get_content = lambda mod: next(content for content in [model.objects.filter(mod=mod) for model in related_models] if content)[0]
+				
+				# Copying from parent
+				child = get_content(self)
+				parent = get_content(self.parent)
+
+				child.votes.set(parent.votes.all())
+
+		if not self.id:
+			if self.state != Mod.PENDING:
+				raise Exception(f"You can't change the state to '{self.state}' without a OneToOne relation with a moderated Model.")
+
 		super().save(*args, **kwargs)
 		
 @receiver(post_save, sender=Mod)
@@ -56,7 +77,8 @@ def populate_fields(sender, instance, **kwargs):
 		if instance.parent:
 			Mod.objects.filter(id=instance.parent.id).update(history=True)
 
-	# Creation
+	# Creation: when user submits new pending content, 
+	# the old pending one gets deleted and replaced by the new one.
 	if instance.parent:
 		if instance.parent.state == Mod.PENDING:
 			old_parent = instance.parent
@@ -161,7 +183,7 @@ class Lecture(models.Model):
 	votes = GenericRelation(Vote, related_query_name="lecture")
 	attachments = GenericRelation(Attachment, related_query_name="lecture")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	# mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	created = models.DateTimeField(auto_now_add=True)
 	
@@ -189,7 +211,7 @@ class Question(models.Model):
 	votes = GenericRelation(Vote, related_query_name="question")
 	attachments = GenericRelation(Attachment, related_query_name="question")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="question")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	created = models.DateTimeField(auto_now_add=True)
 
@@ -203,7 +225,7 @@ class Answer(models.Model):
 	votes = GenericRelation(Vote, related_query_name="answer")
 	attachments = GenericRelation(Attachment, related_query_name="answer")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="answer")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -219,7 +241,7 @@ class Quiz(models.Model):
 	votes = GenericRelation(Vote, related_query_name="quiz")
 	attachments = GenericRelation(Attachment, related_query_name="quiz")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="quiz")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -231,7 +253,7 @@ class Resource(models.Model):
 	votes = GenericRelation(Vote, related_query_name="resource")
 	attachments = GenericRelation(Attachment, related_query_name="resource")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="resource")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	created = models.DateTimeField(auto_now_add=True)
 
@@ -244,7 +266,7 @@ class Summary(models.Model):
 	votes = GenericRelation(Vote, related_query_name="summary")
 	attachments = GenericRelation(Attachment, related_query_name="summary")
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="summary")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	created = models.DateTimeField(auto_now_add=True)
 
@@ -264,7 +286,7 @@ class Tag(models.Model):
 	body = models.CharField(max_length=5000, null=True)
 	contents = GM2MField(Lecture, Question, Answer, Quiz, Resource, Summary)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	mod = models.OneToOneField(Mod, on_delete=models.CASCADE)
+	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="tag")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	tag_type = models.CharField(max_length=50, choices=TAG_TYPE.choices)
 
