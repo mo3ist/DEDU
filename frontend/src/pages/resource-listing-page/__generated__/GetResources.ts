@@ -33,6 +33,10 @@ export interface GetResources_resources_edges_node_tagSet {
 
 export interface GetResources_resources_edges_node {
   __typename: "ResourceType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   voteCount: number | null;
   created: any;

@@ -10,7 +10,13 @@ import SummaryListingPage from './pages/summary-listing-page/summary-listing-pag
 import ResourceCreationPage from './pages/resource-creation-page/resource-creation-page';
 import SummaryCreationPage from './pages/summary-creation-page/summary-creation-page';
 import QuestionCreationPage from './pages/question-creation-page/question-creation-page';
-import DetailedContent from './common/components/detailed-content/detailed-content';
+import GenericDetail from './common/components/generic-detail/generic-detail';
+import SummaryDetail from './pages/summary-detail/summary-detail';
+import ResourceDetail from './pages/resource-detail/resource-detail';
+import QuestionDetail from './pages/question-detail/question-detail';
+import QuestionEdit from './pages/question-edit/question-edit';
+import ResourceEdit from './pages/resource-edit/resource-edit';
+import SummaryEdit from './pages/summary-edit/summary-edit';
 
 const httpLink = createHttpLink({
 	uri: 'http://127.0.0.1:8000/graphql/',
@@ -113,43 +119,60 @@ function App() {
 		<ApolloProvider client={ client }>
 			<Router>
 				<Switch>
-					<Route path="/courses/:course/lectures/">
+					<Route path="/courses/:course/resource/detail/:id/">
+						<ResourceDetail />
+					</Route>
+					<Route path="/courses/:course/summary/detail/:id/">
+						<SummaryDetail /> 
+					</Route>
+					<Route path="/courses/:course/question/detail/:id/">
+						<QuestionDetail />
+					</Route>
+					<Route path="/courses/:course/question/edit/:id/">
+						<QuestionEdit />
+					</Route>
+					<Route path="/courses/:course/resource/edit/:id/">
+						<ResourceEdit />
+					</Route>
+					<Route path="/courses/:course/summary/edit/:id/">
+						<SummaryEdit />
+					</Route>
+
+					<Route path="/courses/:course/lecture/">
 						<LectureListingPage />
 					</Route>
-					<Route path="/courses/:course/detailed/">
-						<DetailedContent contentId="UXVlc3Rpb25UeXBlOjM=" contentType={0}/>
-					</Route>
-					<Route path="/courses/:course/qnas/create">
+					
+					<Route path="/courses/:course/question/create">
 						<div
 							className="flex flex-col"
 						>
 							<QuestionCreationPage />
 						</div>
 					</Route>
-					<Route path="/courses/:course/qnas/">
+					<Route path="/courses/:course/question/">
 						<QnAListingPage />
 					</Route>
-					<Route path="/courses/:course/summaries/create">
+					<Route path="/courses/:course/summary/create">
 						<div
 							className="flex flex-col"
 						>
 							<SummaryCreationPage />
 						</div>
 					</Route>
-					<Route path="/courses/:course/summaries/">
+					<Route path="/courses/:course/summary/">
 						<SummaryListingPage />
 					</Route>
-					<Route path="/courses/:course/quizzes/">
+					<Route path="/courses/:course/quiz/">
 						<h1>{"<Quizzes />"}</h1>
 					</Route>
-					<Route path="/courses/:course/resources/create">
+					<Route path="/courses/:course/resource/create">
 						<div
 							className="flex flex-col"
 						>
 							<ResourceCreationPage />
 						</div>
 					</Route>
-					<Route path="/courses/:course/resources/">
+					<Route path="/courses/:course/resource/">
 						<ResourceListingPage />
 					</Route>
 					<Route path="/courses/">

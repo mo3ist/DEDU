@@ -66,25 +66,25 @@ export const ContentListing: React.FC<Props> = ({ activeCourseId: activeCourseId
 		{
 			title: "محاضرات",
 			type: 'lecture',
-			url: `${baseUrl}/lectures/`
+			url: `${baseUrl}/lecture/`
 		}, {
 			title: "ملخصات",
 			type: 'summary',
-			url: `${baseUrl}/summaries/`
+			url: `${baseUrl}/summary/`
 		},
 		{
 			title: "س&ج",
 			type: 'question',
-			url: `${baseUrl}/qnas/`
+			url: `${baseUrl}/question/`
 		}, {
 			title: "تدريبات",
 			type: 'quiz',
-			url: `${baseUrl}/quizzes/`
+			url: `${baseUrl}/quiz/`
 		},
 		{
 			title: "مصادر",
 			type: 'resource',
-			url: `${baseUrl}/resources/`
+			url: `${baseUrl}/resource/`
 		}
 	];
 

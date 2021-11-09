@@ -77,6 +77,10 @@ export interface GetLectures_lectures_edges_node_attachmentSet {
 
 export interface GetLectures_lectures_edges_node {
   __typename: "LectureType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   body: string;
   lectureType: LectureLectureType;

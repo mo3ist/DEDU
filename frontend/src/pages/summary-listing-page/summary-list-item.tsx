@@ -1,4 +1,5 @@
 import React from "react"
+import { Link, useLocation } from "react-router-dom"
 
 import { GetSummaries_summaries_edges } from './__generated__/GetSummaries'
 
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const SummaryListItem: React.FC<Props> = ({ summary }) => {
+
+	const location = useLocation()
 
 	return (
 		<div
@@ -51,7 +54,9 @@ const SummaryListItem: React.FC<Props> = ({ summary }) => {
 					<p
 						className="flex-grow text-xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
 					>
-						{summary.node?.title}
+						<Link to={`${location.pathname}detail/${summary?.node?.id!}`}>
+							{summary.node?.title}
+						</Link>
 					</p>
 					<div
 						className="flex flex-row items-center justify-start gap-1"

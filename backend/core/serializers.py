@@ -1,6 +1,8 @@
 from django.contrib.contenttypes import fields
 from rest_framework import serializers
 from generic_relations.relations import GenericRelatedField
+from graphql_relay.node.node import from_global_id
+
 from core import models 
 
 class AttachmentSerializer(serializers.ModelSerializer):
@@ -79,7 +81,17 @@ class QuestionSerializer(serializers.ModelSerializer):
 		child=serializers.CharField(),
 		required=False
 	)
-	mod = serializers.PrimaryKeyRelatedField(queryset=models.Mod.objects.all(), required=False)
+	mod = serializers.CharField(required=False)
+
+	def validate_mod(self, value):
+		"Get the Mod instance from Relay GlobalID"
+		
+		django_id = from_global_id(value)[1]
+		try: 
+			mod = models.Mod.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Mod' instance doesn't exist.")
+		return mod
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
@@ -92,7 +104,6 @@ class QuestionSerializer(serializers.ModelSerializer):
 				raise Exception("error")
 			tag.contents.add(question)
 		return question
-
 
 	def validate_course(self, value):
 		try:
@@ -133,7 +144,17 @@ class AnswerSerializer(serializers.ModelSerializer):
 		child=serializers.CharField(),
 		required=False
 	)
-	mod = serializers.PrimaryKeyRelatedField(queryset=models.Mod.objects.all(), required=False)
+	mod = serializers.CharField(required=False)
+
+	def validate_mod(self, value):
+		"Get the Mod instance from Relay GlobalID"
+		
+		django_id = from_global_id(value)[1]
+		try: 
+			mod = models.Mod.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Mod' instance doesn't exist.")
+		return mod
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
@@ -157,7 +178,17 @@ class QuizSerializer(serializers.ModelSerializer):
 		child=serializers.CharField(),
 		required=False
 	)
-	mod = serializers.PrimaryKeyRelatedField(queryset=models.Mod.objects.all(), required=False)
+	mod = serializers.CharField(required=False)
+
+	def validate_mod(self, value):
+		"Get the Mod instance from Relay GlobalID"
+		
+		django_id = from_global_id(value)[1]
+		try: 
+			mod = models.Mod.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Mod' instance doesn't exist.")
+		return mod
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
@@ -182,8 +213,18 @@ class ResourceSerializer(serializers.ModelSerializer):
 		child=serializers.CharField(),
 		required=False
 	)
-	mod = serializers.PrimaryKeyRelatedField(queryset=models.Mod.objects.all(), required=False)
 	attachment_set = NestedAttachmentSerializer(many=True, required=False)	# Used for nested attachment creation (just the needed fields)
+	mod = serializers.CharField(required=False)
+
+	def validate_mod(self, value):
+		"Get the Mod instance from Relay GlobalID"
+		
+		django_id = from_global_id(value)[1]
+		try: 
+			mod = models.Mod.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Mod' instance doesn't exist.")
+		return mod
 
 	def validate_course(self, value):
 		try:
@@ -214,14 +255,6 @@ class ResourceSerializer(serializers.ModelSerializer):
 				)
 			tag.contents.add(resource)
 		
-		# Nested Attachment creation 
-		# for attachment in attachment_set:
-		# 	atm = models.Attachment.objects.create(
-		# 		content_object=resource,
-		# 		user=user,
-		# 		**attachment
-		# 	)
-
 		return resource
 
 class SummarySerializer(serializers.ModelSerializer):
@@ -235,7 +268,17 @@ class SummarySerializer(serializers.ModelSerializer):
 		child=serializers.CharField(),
 		required=False
 	)
-	mod = serializers.PrimaryKeyRelatedField(queryset=models.Mod.objects.all(), required=False)
+	mod = serializers.CharField(required=False)
+
+	def validate_mod(self, value):
+		"Get the Mod instance from Relay GlobalID"
+
+		django_id = from_global_id(value)[1]
+		try: 
+			mod = models.Mod.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Mod' instance doesn't exist.")
+		return mod
 
 	def validate_course(self, value):
 		try:

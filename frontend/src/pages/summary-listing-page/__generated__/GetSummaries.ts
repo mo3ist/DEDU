@@ -33,6 +33,10 @@ export interface GetSummaries_summaries_edges_node_tagSet {
 
 export interface GetSummaries_summaries_edges_node {
   __typename: "SummaryType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   voteCount: number | null;
   created: any;

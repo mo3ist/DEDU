@@ -333,6 +333,7 @@ class CreateQuestion(graphene.relay.ClientIDMutation):
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
+		mod = graphene.ID(required=False)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -340,6 +341,7 @@ class CreateQuestion(graphene.relay.ClientIDMutation):
 		if question_serializer.is_valid():
 			question = question_serializer.save()
 			return CreateQuestion(question=question)
+		print(question_serializer.errors)
 
 class AnswerType(DjangoObjectType):
 	class Meta:
@@ -365,6 +367,7 @@ class CreateAnswer(graphene.relay.ClientIDMutation):
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
+		mod = graphene.ID(required=False)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -401,6 +404,7 @@ class CreateQuiz(graphene.relay.ClientIDMutation):
 		answer = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
+		mod = graphene.ID(required=False)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -437,7 +441,7 @@ class CreateResource(graphene.relay.ClientIDMutation):
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
-		attachment_set = graphene.List(NestedAttachmentInput)
+		mod = graphene.ID(required=False)
 	
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id
@@ -477,6 +481,7 @@ class CreateSummary(graphene.relay.ClientIDMutation):
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
+		mod = graphene.ID(required=False)
 
 	def mutate_and_get_payload(obj, info, **input_data):
 		input_data["user"] = info.context.user.id

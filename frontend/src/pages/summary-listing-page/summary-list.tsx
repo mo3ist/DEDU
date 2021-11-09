@@ -14,6 +14,7 @@ const GET_SUMMARIES = gql `
 		summaries (first: $first, after: $after, tag_Title: $tag_Title, tag_Course_Code: $course_Code, course_Code: $course_Code) {
 			edges {
 				node {
+					id
 					title 
 					voteCount
 					created

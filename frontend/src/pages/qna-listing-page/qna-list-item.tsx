@@ -1,4 +1,5 @@
 import React from "react"
+import { Link, useLocation } from "react-router-dom"
 
 import { GetQnAs_questions_edges } from './__generated__/GetQnAs'
 
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const QnAListItem: React.FC<Props> = ({ question }) => {
+
+	const location = useLocation()
 
 	return (
 		<div
@@ -51,7 +54,9 @@ const QnAListItem: React.FC<Props> = ({ question }) => {
 					<p
 						className="flex-grow text-xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
 					>
-						{question.node?.title}
+						<Link to={`${location.pathname}detail/${question?.node?.id!}`}>
+							{question.node?.title}
+						</Link>
 					</p>
 					<div
 						className="flex flex-row items-center justify-start gap-1"
@@ -89,19 +94,19 @@ const QnAListItem: React.FC<Props> = ({ question }) => {
 			<div
 				className="flex-grow flex flex-row justify-start gap-4 p-1"
 			>
-						{question.node?.tagSet?.edges?.map(edge => {
-							return (
-								<div
-									className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary-100 px-2 py-1 rounded-full"
-								>
-									<p
-										className="inline-block font-semibold text-secondary"
-									>
-										{edge?.node?.title}
-									</p>
-								</div>
-							)
-						})}
+				{question.node?.tagSet?.edges?.map(edge => {
+					return (
+						<div
+							className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary-100 px-2 py-1 rounded-full"
+						>
+							<p
+								className="inline-block font-semibold text-secondary"
+							>
+								{edge?.node?.title}
+							</p>
+						</div>
+					)
+				})}
 			</div>
 		</div>
 	)

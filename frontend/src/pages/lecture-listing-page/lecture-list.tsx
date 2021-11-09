@@ -18,6 +18,7 @@ const GET_LECTURES = gql`
 		lectures(course_Code: $courseCode, first: $first, after: $after, lectureType: $lectureType) {
 			edges {
 				node {
+					id
 					title 
 					body 
 					lectureType 

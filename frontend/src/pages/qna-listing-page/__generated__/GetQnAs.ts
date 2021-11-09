@@ -33,6 +33,10 @@ export interface GetQnAs_questions_edges_node_tagSet {
 
 export interface GetQnAs_questions_edges_node {
   __typename: "QuestionType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   voteCount: number | null;
   answerCount: number | null;

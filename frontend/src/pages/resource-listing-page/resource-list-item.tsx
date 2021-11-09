@@ -1,4 +1,6 @@
 import React from "react"
+import { Link } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 import { GetResources_resources_edges } from './__generated__/GetResources'
 
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const ResourceListItem: React.FC<Props> = ({ resource }) => {
+	
+	const location = useLocation()
 
 	return (
 		<div
@@ -48,11 +52,14 @@ const ResourceListItem: React.FC<Props> = ({ resource }) => {
 				<div
 					className="flex-grow flex flex-col items-start justify-center gap-1 w-4/6"
 				>
-					<p
-						className="flex-grow text-xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
-					>
-						{resource.node?.title}
-					</p>
+						<p
+							className="flex-grow text-xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
+						>
+							<Link to={`${location.pathname}detail/${resource?.node?.id!}`}>
+								{resource.node?.title}
+							</Link>
+						</p>
+					
 					<div
 						className="flex flex-row items-center justify-start gap-1"
 					>
