@@ -350,6 +350,10 @@ class AnswerType(DjangoObjectType):
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
+	vote_count = graphene.Int()
+
+	def resolve_vote_count(obj, info, **kwargs):
+		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
 
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()

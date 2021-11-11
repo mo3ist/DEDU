@@ -6,6 +6,7 @@ import { DetailedParams } from "../../common/interfaces/params"
 import { GetDetailedQuestion } from "./__generated__/GetDetailedQuestion"
 import GenericDetail from "../../common/components/generic-detail/generic-detail"
 import Loading from "../../common/components/loading/loading"
+import AnswerList from "../answer-list/answer-list"
 
 interface Props {
 
@@ -54,6 +55,7 @@ const QuestionDetail: React.FC<Props> = () => {
 			<GenericDetail
 				content={question!}
 			/>
+			<AnswerList questionId={question?.id!}/>
 		</div>
 	)
 }
