@@ -72,7 +72,7 @@ class LectureFilter(django_filters.FilterSet):
 			# Order by title
 			return super().qs.order_by('tag__title')
 		
-		return super().qs
+		return super().qs.distinct()
 
 class QuestionFilter(django_filters.FilterSet):
 
@@ -92,15 +92,35 @@ class QuestionFilter(django_filters.FilterSet):
 
 		return queryset.filter(q).distinct()
 
+	@property
+	def qs(self):
+
+		# This is a hack to prevent unexpected duplications
+		return super().qs.distinct()
+
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Answer
 		fields = ("question", "title", "body", "user", "course")
 
+	@property
+	def qs(self):
+
+		# This is a hack to prevent unexpected duplications
+		return super().qs.distinct()
+
+
 class QuizFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Quiz
 		fields = ("title", "user")
+
+	@property
+	def qs(self):
+
+		# This is a hack to prevent unexpected duplications
+		return super().qs.distinct()
+
 
 class ResourceFilter(django_filters.FilterSet):
 
@@ -120,6 +140,13 @@ class ResourceFilter(django_filters.FilterSet):
 
 		return core_models.Resource.objects.filter(q).distinct()
 
+	@property
+	def qs(self):
+
+		# This is a hack to prevent unexpected duplications
+		return super().qs.distinct()
+
+
 class SummaryFilter(django_filters.FilterSet):
 	tag__title = django_filters.CharFilter(method='filter_tag__title')
 	course__code = django_filters.CharFilter(lookup_expr='iexact')
@@ -136,6 +163,12 @@ class SummaryFilter(django_filters.FilterSet):
 			q |= Q(tag__title=title)
 
 		return core_models.Summary.objects.filter(q).distinct()
+
+	@property
+	def qs(self):
+
+		# This is a hack to prevent unexpected duplications
+		return super().qs.distinct()
 
 class VoteFilter(django_filters.FilterSet):
 	class Meta:

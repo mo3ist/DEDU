@@ -28,7 +28,7 @@ const SEARCH_TAGS = gql`
 	}
 ` 
 
-const TagSearch: React.FC<Props> = ({  tags, setTags, courseCode, creatable=false }) => {
+const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=false }) => {
 
 	const [tag, setTag] = useState("");
 	const [toggleTypesMenu, setToggleTypesMenu] = useState<boolean>(false)

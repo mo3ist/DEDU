@@ -11,11 +11,11 @@ interface Props {
 }
 
 const CREATE_RESOURCE = gql`
-	mutation MutateResource($title: String!, $body: String!, $course: String!, $tags: [String]) {
+	mutation MutateResource($title: String!, $body: String!, $courseCode: String!, $tags: [String]) {
 		createResource(input: {
 			title: $title,
 			body: $body,
-			course: $course,
+			course: $courseCode,
 			tagSet: $tags,
 		}) {
 			resource {

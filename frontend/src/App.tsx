@@ -1,7 +1,7 @@
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { setContext } from '@apollo/client/link/context'
+import { ApolloProvider } from '@apollo/client'
 
+import apolloClient from "./common/apollo-client/apollo-client"
 import CoursePage from './pages/course-page/course-page'
 import LectureListingPage from './pages/lecture-listing-page/lecture-listing-page'
 import QnAListingPage from './pages/qna-listing-page/qna-listing-page';
@@ -17,97 +17,8 @@ import QuestionDetail from './pages/question-detail/question-detail';
 import QuestionEdit from './pages/question-edit/question-edit';
 import ResourceEdit from './pages/resource-edit/resource-edit';
 import SummaryEdit from './pages/summary-edit/summary-edit';
+import Authenticate from './pages/authentication/authenticate';
 
-const httpLink = createHttpLink({
-	uri: 'http://127.0.0.1:8000/graphql/',
-  });  
-
-const authLink = setContext((_, { headers }) => {
-	const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImV4cCI6MTYzNDM0MzE0Nywib3JpZ0lhdCI6MTYzNDM0Mjg0N30.VFrUdWpkJ50J36tQw6nngDXo_jw2vsMjAhClnPyfS7M";
-	return {
-	  headers: {
-		...headers,
-		authorization: token ? `JWT ${token}` : "",
-	  }
-	}
-  });
-
-const client = new ApolloClient({
-	link: authLink.concat(httpLink),
-	cache: new InMemoryCache({
-		typePolicies: {
-			Query: {
-				fields: {
-					// lectures: {
-					// 	keyArgs: ['tag_Title', 'course_Code'],
-					// 	merge(existing = {edges: [], pageInfo: {}}, incoming){
-					// 		// clean this shit please
-					// 		return {
-					// 			...incoming, 
-					// 			edges: [
-					// 				...existing?.edges,
-					// 				...incoming?.edges
-					// 			]
-					// 		}
-					// 	}
-					// },
-					questions: {
-						keyArgs: ['tag_Title', 'course_Code'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					},
-					resources: {
-						keyArgs: ['tag_Title', 'course_Code'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					}, 
-					summaries: {
-						keyArgs: ['tag_Title'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					}, 
-					tags: {
-						keyArgs: ['title', 'tagType', 'course_Code'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					}
-				}
-			}
-		}
-	})
-});
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
 
@@ -116,9 +27,13 @@ function App() {
 	  <div
 	  	className="flex-1 font-cairo w-full"
 	  >
-		<ApolloProvider client={ client }>
+		<ApolloProvider client={ apolloClient }>
 			<Router>
 				<Switch>
+					<Route path="/auth/">
+						<Authenticate />
+					</Route>
+
 					<Route path="/courses/:course/resource/detail/:id/">
 						<ResourceDetail />
 					</Route>

@@ -11,11 +11,11 @@ interface Props {
 }
 
 const CREATE_SUMMARY = gql`
-	mutation MutateSummary($title: String!, $body: String!, $course: String!, $tags: [String]) {
+	mutation MutateSummary($title: String!, $body: String!, $courseCode: String!, $tags: [String]) {
 		createSummary(input: {
 			title: $title,
 			body: $body,
-			course: $course,
+			course: $courseCode,
 			tagSet: $tags,
 		}) {
 			summary {
