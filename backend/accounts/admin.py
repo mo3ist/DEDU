@@ -6,7 +6,7 @@ class UserAdmin(BaseUserAdmin):
 	list_display = ["__str__"]
 
 	fieldsets = (
-		(None, {'fields': ('email', 'password',)}),
+		(None, {'fields': ('name', 'email', 'password',)}),
 	)
 
 	add_fieldsets = (
