@@ -33,7 +33,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-	name = models.CharField(max_length=200)
+	name = models.CharField(max_length=200, blank=True, null=True)
+	profile_picture = models.URLField(blank=True, null=True)
 	email = models.EmailField(
 		verbose_name='email address',
 		max_length=255,

@@ -1,28 +1,38 @@
 import React, { useState } from "react"
 import GoogleLogin from "react-google-login"
 import  { gql, useMutation } from "@apollo/client"
-import { GetAccessToken } from "./__generated__/GetAccessToken"
+import { GetSocialUserData } from "./__generated__/GetSocialUserData"
 
 interface Props {
 
 }
 
-const GET_ACCESS_TOKEN = gql`
-	mutation GetAccessToken($accessToken: String!) {
+const GET_SOCIAL_USER_DATA = gql`
+	mutation GetSocialUserData($accessToken: String!, $name:String, $profilePicture: String ) {
   		socialAuth(
 				input: {
-				provider: "google-oauth2", 
-				accessToken: $accessToken
+					provider: "google-oauth2", 
+					accessToken: $accessToken,
+					name: $name
+					profilePicture: $profilePicture
 				}
 			) {
 			token
+			social {
+				user {
+					id
+					name
+					email
+					profilePicture
+				}
+			}
   		}
 	}
 `
 
 const Authenticate: React.FC<Props> = () => {
 
-	const [getAccessToken, { loading, error, data }] = useMutation<GetAccessToken>(GET_ACCESS_TOKEN, {
+	const [getAccessToken, { loading, error, data }] = useMutation<GetSocialUserData>(GET_SOCIAL_USER_DATA, {
 		onCompleted: (data) => {
 			localStorage.setItem("accessToken", data.socialAuth?.token!);
 		}
@@ -51,10 +61,15 @@ const Authenticate: React.FC<Props> = () => {
                     accessType="offline"
                     onSuccess={(data: any) => {
 						const accessToken = data.tokenObj.access_token;
+						const name = data.profileObj.name
+						const profilePicture = data.profileObj.imageUrl
+
 						getAccessToken({
 							variables: {
 								// Google OAuth2's access token
-								accessToken: accessToken 
+								accessToken: accessToken,
+								name: name,
+								profilePicture: profilePicture 
 							}
 						})
 					}}
