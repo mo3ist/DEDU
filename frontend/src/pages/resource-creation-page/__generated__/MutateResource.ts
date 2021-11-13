@@ -53,6 +53,6 @@ export interface MutateResource {
 export interface MutateResourceVariables {
   title: string;
   body: string;
-  course: string;
+  courseCode: string;
   tags?: (string | null)[] | null;
 }

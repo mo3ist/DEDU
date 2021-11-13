@@ -6,11 +6,12 @@ const httpLink = new HttpLink({ uri: 'http://localhost:8000/graphql/' });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
 	const token = localStorage.getItem("accessToken");
-	const operationType = getOperationDefinition(operation.query)?.operation
 
-	if (operationType === "mutation" && !token){
-		console.log("unauth")
-	}
+	// TODO: Stop the request from going forward
+	// const operationType = getOperationDefinition(operation.query)?.operation
+	// if (operationType === "mutation" && !token){
+	// 	window.location.href = "/auth" 
+	// }
 
 	// add the authorization to the headers
 	operation.setContext(({ headers = {} }) => ({
@@ -32,6 +33,15 @@ const apolloClient = new ApolloClient({
 	]),
 	cache: new InMemoryCache({
 		typePolicies: {
+			UserTypeConnection: {
+				fields: {
+					isLoggedIn: {
+						read(_, { variables }) {
+							return localStorage.getItem("accessToken") !== null;
+						}
+					}
+				}
+			},
 			Query: {
 				fields: {
 					// lectures: {
@@ -99,17 +109,12 @@ const apolloClient = new ApolloClient({
 							}
 						}
 					},
-					accessToken: {
-						read() {
-							return accessTokenVar()
-						}
-					}
 				}
 			}
 		}
 	})
 });
 
-export const accessTokenVar = makeVar([]);
+export const isLoggedIn = makeVar<boolean>(false);
 
 export default apolloClient

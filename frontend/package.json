@@ -39,7 +39,7 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "download-schema": "npx apollo service:download --endpoint=http://localhost:8000/graphql/ graphql-schema.json",
-    "codegen": "npm run download-schema && npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
+    "codegen": "npm run download-schema && npx apollo codegen:generate --localSchemaFile=graphql-schema.json,local-schema.graphql --target=typescript --tagName=gql"
   },
   "eslintConfig": {
     "extends": [

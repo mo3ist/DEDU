@@ -18,6 +18,7 @@ import QuestionEdit from './pages/question-edit/question-edit';
 import ResourceEdit from './pages/resource-edit/resource-edit';
 import SummaryEdit from './pages/summary-edit/summary-edit';
 import Authenticate from './pages/authentication/authenticate';
+import ProtectedRoute from './common/components/protected-route/protected-route';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -43,49 +44,39 @@ function App() {
 					<Route path="/courses/:course/question/detail/:id/">
 						<QuestionDetail />
 					</Route>
-					<Route path="/courses/:course/question/edit/:id/">
+
+					<ProtectedRoute path="/courses/:course/question/edit/:id/">
 						<QuestionEdit />
-					</Route>
-					<Route path="/courses/:course/resource/edit/:id/">
+					</ProtectedRoute>
+					<ProtectedRoute path="/courses/:course/resource/edit/:id/">
 						<ResourceEdit />
-					</Route>
-					<Route path="/courses/:course/summary/edit/:id/">
+					</ProtectedRoute>
+					<ProtectedRoute path="/courses/:course/summary/edit/:id/">
 						<SummaryEdit />
-					</Route>
+					</ProtectedRoute>
 
 					<Route path="/courses/:course/lecture/">
 						<LectureListingPage />
 					</Route>
 					
-					<Route path="/courses/:course/question/create">
-						<div
-							className="flex flex-col"
-						>
-							<QuestionCreationPage />
-						</div>
-					</Route>
+					<ProtectedRoute path="/courses/:course/question/create">
+						<QuestionCreationPage />
+					</ProtectedRoute>
+					<ProtectedRoute path="/courses/:course/summary/create">
+						<SummaryCreationPage />
+					</ProtectedRoute>
+					<ProtectedRoute path="/courses/:course/resource/create">
+						<ResourceCreationPage />
+					</ProtectedRoute>
+
 					<Route path="/courses/:course/question/">
 						<QnAListingPage />
-					</Route>
-					<Route path="/courses/:course/summary/create">
-						<div
-							className="flex flex-col"
-						>
-							<SummaryCreationPage />
-						</div>
 					</Route>
 					<Route path="/courses/:course/summary/">
 						<SummaryListingPage />
 					</Route>
 					<Route path="/courses/:course/quiz/">
 						<h1>{"<Quizzes />"}</h1>
-					</Route>
-					<Route path="/courses/:course/resource/create">
-						<div
-							className="flex flex-col"
-						>
-							<ResourceCreationPage />
-						</div>
 					</Route>
 					<Route path="/courses/:course/resource/">
 						<ResourceListingPage />

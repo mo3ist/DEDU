@@ -53,6 +53,6 @@ export interface MutateSummary {
 export interface MutateSummaryVariables {
   title: string;
   body: string;
-  course: string;
+  courseCode: string;
   tags?: (string | null)[] | null;
 }
