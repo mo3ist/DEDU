@@ -58,7 +58,7 @@ const apolloClient = new ApolloClient({
 					// 	}
 					// },
 					questions: {
-						keyArgs: ['tag_Title', 'course_Code'],
+						keyArgs: ['id', 'tag_Title', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {
@@ -71,7 +71,7 @@ const apolloClient = new ApolloClient({
 						}
 					},
 					resources: {
-						keyArgs: ['tag_Title', 'course_Code'],
+						keyArgs: ['id', 'tag_Title', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {
@@ -84,7 +84,7 @@ const apolloClient = new ApolloClient({
 						}
 					}, 
 					summaries: {
-						keyArgs: ['tag_Title'],
+						keyArgs: ['id', 'tag_Title'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {
@@ -97,7 +97,7 @@ const apolloClient = new ApolloClient({
 						}
 					}, 
 					tags: {
-						keyArgs: ['title', 'tagType', 'course_Code'],
+						keyArgs: ['id', 'title', 'tagType', 'course_Code'],
 						merge(existing = {edges: [], pageInfo: {}}, incoming){
 							// clean this shit please
 							return {
