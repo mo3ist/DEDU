@@ -54,6 +54,14 @@ export enum TeacherTeacherType {
   TA = "TA",
 }
 
+/**
+ * An enumeration.
+ */
+export enum VoteValue {
+  DOWNVOTE = "DOWNVOTE",
+  UPVOTE = "UPVOTE",
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

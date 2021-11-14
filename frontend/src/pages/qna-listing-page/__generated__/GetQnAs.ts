@@ -31,6 +31,12 @@ export interface GetQnAs_questions_edges_node_tagSet {
   edges: (GetQnAs_questions_edges_node_tagSet_edges | null)[];
 }
 
+export interface GetQnAs_questions_edges_node_user {
+  __typename: "UserType";
+  name: string | null;
+  profilePicture: string | null;
+}
+
 export interface GetQnAs_questions_edges_node {
   __typename: "QuestionType";
   /**
@@ -39,9 +45,11 @@ export interface GetQnAs_questions_edges_node {
   id: string;
   title: string;
   voteCount: number | null;
+  userVote: string | null;
   answerCount: number | null;
   created: any;
   tagSet: GetQnAs_questions_edges_node_tagSet | null;
+  user: GetQnAs_questions_edges_node_user;
 }
 
 export interface GetQnAs_questions_edges {

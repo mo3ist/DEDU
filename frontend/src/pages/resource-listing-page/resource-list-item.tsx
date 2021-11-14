@@ -27,6 +27,7 @@ const ResourceListItem: React.FC<Props> = ({ resource }) => {
 				<Vote 
 					contentId={resource?.node?.id!}
 					voteCount={resource?.node?.voteCount!}
+					userVote={resource?.node?.userVote!}
 				/>
 				{/* title + user data */}
 				<div

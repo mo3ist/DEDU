@@ -24,8 +24,9 @@ const QnAListItem: React.FC<Props> = ({ question }) => {
 			>
 				{/* votes */}
 				<Vote 
-					contentId={question?.node?.id!}
+					contentId={question.node?.id!}
 					voteCount={question.node?.voteCount!}
+					userVote={question.node?.userVote!}
 				/>
 				{/* title + user data */}
 				<div
@@ -44,12 +45,12 @@ const QnAListItem: React.FC<Props> = ({ question }) => {
 						<div
 							className="w-14 h-14 bg-primary rounded-full"
 						>
-							
+							<img src={question.node?.user.profilePicture!} alt="" />
 						</div>
 						<p
 							className="font-semibold"
 						>
-							hehe
+							{question.node?.user.name}
 						</p>
 					</div>
 				</div>

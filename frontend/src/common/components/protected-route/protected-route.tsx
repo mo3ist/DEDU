@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client"
 import { GetIsLoggedInProtected } from "./__generated__/GetIsLoggedInProtected"
 
 import { Redirect, Route, RouteProps } from 'react-router';
+import Loading from "../loading/loading";
 
 type Props = {
 
@@ -17,12 +18,22 @@ const GET_ISLOGGEDIN = gql`
 
 const ProtectedRoute = ({ ...props } : Props) => {
 
-	const { data } = useQuery<GetIsLoggedInProtected>(GET_ISLOGGEDIN)
+	const { loading, error, data } = useQuery<GetIsLoggedInProtected>(GET_ISLOGGEDIN)
 
-	if (data?.users?.isLoggedIn) {
-		return <Route {...props} />
+	if (loading) {
+		return(
+			<div
+				className="h-screen"
+			>
+				<Loading />
+			</div>
+		) 
 	} else {
-		return <Redirect to={"/auth"} />
+		if (data?.users?.isLoggedIn) {
+			return <Route {...props} />
+		} else {
+			return <Redirect to={"/auth"} />
+		}
 	}
 }
 

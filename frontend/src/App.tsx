@@ -23,72 +23,73 @@ import ProtectedRoute from './common/components/protected-route/protected-route'
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
 
-function App() {
-  return (
-	  <div
-	  	className="flex-1 font-cairo w-full"
-	  >
-		<ApolloProvider client={ apolloClient }>
-			<Router>
-				<Switch>
-					<Route path="/auth/">
-						<Authenticate />
-					</Route>
+const App: React.FC = () => {
 
-					<Route path="/courses/:course/resource/detail/:id/">
-						<ResourceDetail />
-					</Route>
-					<Route path="/courses/:course/summary/detail/:id/">
-						<SummaryDetail /> 
-					</Route>
-					<Route path="/courses/:course/question/detail/:id/">
-						<QuestionDetail />
-					</Route>
+	return (
+		<div
+			className="flex-1 font-cairo w-full"
+		>
+			<ApolloProvider client={ apolloClient }>
+				<Router>
+					<Switch>
+						<Route path="/auth/">
+							<Authenticate />
+						</Route>
 
-					<ProtectedRoute path="/courses/:course/question/edit/:id/">
-						<QuestionEdit />
-					</ProtectedRoute>
-					<ProtectedRoute path="/courses/:course/resource/edit/:id/">
-						<ResourceEdit />
-					</ProtectedRoute>
-					<ProtectedRoute path="/courses/:course/summary/edit/:id/">
-						<SummaryEdit />
-					</ProtectedRoute>
+						<Route path="/courses/:course/resource/detail/:id/">
+							<ResourceDetail />
+						</Route>
+						<Route path="/courses/:course/summary/detail/:id/">
+							<SummaryDetail /> 
+						</Route>
+						<Route path="/courses/:course/question/detail/:id/">
+							<QuestionDetail />
+						</Route>
 
-					<Route path="/courses/:course/lecture/">
-						<LectureListingPage />
-					</Route>
-					
-					<ProtectedRoute path="/courses/:course/question/create">
-						<QuestionCreationPage />
-					</ProtectedRoute>
-					<ProtectedRoute path="/courses/:course/summary/create">
-						<SummaryCreationPage />
-					</ProtectedRoute>
-					<ProtectedRoute path="/courses/:course/resource/create">
-						<ResourceCreationPage />
-					</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/question/edit/:id/">
+							<QuestionEdit />
+						</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/resource/edit/:id/">
+							<ResourceEdit />
+						</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/summary/edit/:id/">
+							<SummaryEdit />
+						</ProtectedRoute>
 
-					<Route path="/courses/:course/question/">
-						<QnAListingPage />
-					</Route>
-					<Route path="/courses/:course/summary/">
-						<SummaryListingPage />
-					</Route>
-					<Route path="/courses/:course/quiz/">
-						<h1>{"<Quizzes />"}</h1>
-					</Route>
-					<Route path="/courses/:course/resource/">
-						<ResourceListingPage />
-					</Route>
-					<Route path="/courses/">
-						<CoursePage />
-					</Route>
-				</Switch>
-			</Router>
-		</ApolloProvider>
-	  </div>
-  );
+						<Route path="/courses/:course/lecture/">
+							<LectureListingPage />
+						</Route>
+						
+						<ProtectedRoute path="/courses/:course/question/create">
+							<QuestionCreationPage />
+						</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/summary/create">
+							<SummaryCreationPage />
+						</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/resource/create">
+							<ResourceCreationPage />
+						</ProtectedRoute>
+
+						<Route path="/courses/:course/question/">
+							<QnAListingPage />
+						</Route>
+						<Route path="/courses/:course/summary/">
+							<SummaryListingPage />
+						</Route>
+						<Route path="/courses/:course/quiz/">
+							<h1>{"<Quizzes />"}</h1>
+						</Route>
+						<Route path="/courses/:course/resource/">
+							<ResourceListingPage />
+						</Route>
+						<Route path="/courses/">
+							<CoursePage />
+						</Route>
+					</Switch>
+				</Router>
+			</ApolloProvider>
+		</div>
+	);
 }
 
 export default App;

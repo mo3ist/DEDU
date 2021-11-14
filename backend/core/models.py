@@ -110,13 +110,20 @@ class Vote(models.Model):
 			# dynamically get the query {model type: value}
 			# NOTE: I named the reverse query the same as the model name but in nowercase 
 			model_query = { str(self.content_object.__class__.__name__.lower()): self.content_object } 
-			other = Vote.objects.filter(
+			vote_query = Vote.objects.filter(
 				Q(**model_query),
-				user=self.user, 
+				user=self.user,
 			)
-			# save if other votes don't exist
-			if not other:
+			# save if vote_query votes don't exist
+			if not vote_query:
 				super().save(*args, **kwargs)
+			
+			# change if it exist | delete it
+			else:
+				if vote_query[0].value == self.value:
+					vote_query[0].delete()
+				else:
+					vote_query.update(value=self.value)
 
 class Attachment(models.Model):
 

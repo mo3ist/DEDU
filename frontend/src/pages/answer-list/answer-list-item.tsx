@@ -31,6 +31,7 @@ const AnswerListItem: React.FC<Props> = ({ answer }) => {
 					<Vote
 						contentId={answer?.id}
 						voteCount={answer?.voteCount!}	
+						userVote={answer?.userVote!}
 					/>
 					<div
 						className="flex flex-col items-start justify-center gap-1"

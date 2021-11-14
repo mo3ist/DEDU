@@ -19,6 +19,7 @@ const GET_QUESTION_ANSWERS = gql `
 					id
 					body
 					voteCount
+					userVote
 					created
 				}
 			}

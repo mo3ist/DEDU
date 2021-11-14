@@ -21,6 +21,7 @@ const GET_DETAILED_RESOURCE = gql`
 					body
 					created
 					voteCount
+					userVote
 					tagSet {
 						edges {
 							node {
@@ -28,6 +29,10 @@ const GET_DETAILED_RESOURCE = gql`
 								tagType
 							}
 						}
+					}
+					user {
+						name
+						profilePicture
 					}
 				}
 			}

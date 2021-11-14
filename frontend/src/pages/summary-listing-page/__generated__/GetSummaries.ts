@@ -31,6 +31,12 @@ export interface GetSummaries_summaries_edges_node_tagSet {
   edges: (GetSummaries_summaries_edges_node_tagSet_edges | null)[];
 }
 
+export interface GetSummaries_summaries_edges_node_user {
+  __typename: "UserType";
+  name: string | null;
+  profilePicture: string | null;
+}
+
 export interface GetSummaries_summaries_edges_node {
   __typename: "SummaryType";
   /**
@@ -39,8 +45,10 @@ export interface GetSummaries_summaries_edges_node {
   id: string;
   title: string;
   voteCount: number | null;
+  userVote: string | null;
   created: any;
   tagSet: GetSummaries_summaries_edges_node_tagSet | null;
+  user: GetSummaries_summaries_edges_node_user;
 }
 
 export interface GetSummaries_summaries_edges {

@@ -15,6 +15,7 @@ export interface GetQuestionAnswers_answers_edges_node {
   id: string;
   body: string;
   voteCount: number | null;
+  userVote: string | null;
   created: any;
 }
 

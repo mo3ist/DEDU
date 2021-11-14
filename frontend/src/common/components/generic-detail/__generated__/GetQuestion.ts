@@ -37,6 +37,7 @@ export interface GetQuestion_questions_edges_node {
   body: string;
   created: any;
   voteCount: number | null;
+  userVote: string | null;
   tagSet: GetQuestion_questions_edges_node_tagSet | null;
 }
 

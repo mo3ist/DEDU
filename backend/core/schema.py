@@ -350,6 +350,14 @@ class QuestionType(DjangoObjectType):
 
 	vote_count = graphene.Int()
 	answer_count = graphene.Int()
+	user_vote = graphene.String()
+
+	def resolve_user_vote(obj, info, **kwargs):
+		user_vote_query = obj.votes.filter(user=info.context.user)
+		if user_vote_query:
+			return user_vote_query[0].value
+		else:
+			return None
 
 	def resolve_vote_count(obj, info, **kwargs):
 		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
@@ -395,7 +403,14 @@ class AnswerType(DjangoObjectType):
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 	vote_count = graphene.Int()
+	user_vote = graphene.String()
 
+	def resolve_user_vote(obj, info, **kwargs):
+		user_vote_query = obj.votes.filter(user=info.context.user)
+		if user_vote_query:
+			return user_vote_query[0].value
+		else:
+			return None
 	def resolve_vote_count(obj, info, **kwargs):
 		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
 
@@ -436,7 +451,14 @@ class QuizType(DjangoObjectType):
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
+	user_vote = graphene.String()
 
+	def resolve_user_vote(obj, info, **kwargs):
+		user_vote_query = obj.votes.filter(user=info.context.user)
+		if user_vote_query:
+			return user_vote_query[0].value
+		else:
+			return None
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
 
@@ -479,7 +501,14 @@ class ResourceType(DjangoObjectType):
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 	vote_count = graphene.Int()
+	user_vote = graphene.String()
 
+	def resolve_user_vote(obj, info, **kwargs):
+		user_vote_query = obj.votes.filter(user=info.context.user)
+		if user_vote_query:
+			return user_vote_query[0].value
+		else:
+			return None
 	def resolve_vote_count(obj, info, **kwargs):
 		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
 
@@ -521,7 +550,14 @@ class SummaryType(DjangoObjectType):
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
 	vote_count = graphene.Int()
+	user_vote = graphene.String()
 
+	def resolve_user_vote(obj, info, **kwargs):
+		user_vote_query = obj.votes.filter(user=info.context.user)
+		if user_vote_query:
+			return user_vote_query[0].value
+		else:
+			return None
 	def resolve_vote_count(obj, info, **kwargs):
 		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
 
@@ -641,8 +677,7 @@ class CreateVote(AuthMutation, graphene.relay.ClientIDMutation):
 
 	class Input:
 		value = graphene.String(required=True)
-		content_type = ContentObjectEnum()
-		content_object = graphene.String()
+		content_id = graphene.ID(required=True)
 		
 	@classmethod
 	def mutate_and_get_payload(cls, root, info, **input_data):

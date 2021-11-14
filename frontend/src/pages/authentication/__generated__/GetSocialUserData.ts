@@ -24,15 +24,12 @@ export interface GetSocialUserData_socialAuth_social {
 }
 
 export interface GetSocialUserData_socialAuth {
-  __typename: "SocialAuthJWTPayload";
+  __typename: "ExtendedSocialAuthJWTPayload";
   token: string | null;
   social: GetSocialUserData_socialAuth_social | null;
 }
 
 export interface GetSocialUserData {
-  /**
-   * Social Auth for JSON Web Token (JWT)
-   */
   socialAuth: GetSocialUserData_socialAuth | null;
 }
 

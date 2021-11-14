@@ -4,6 +4,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import ResourceListingItem from "./resource-list-item";
 import { GetResources as GetResources } from "./__generated__/GetResources";
 import { useParams } from "react-router";
+import GenericListItem from "../../common/components/generic-list/generic-list-item";
 
 interface Props {
 	tags: Array<String> | null
@@ -17,6 +18,7 @@ const GET_RESOURCES = gql `
 					id
 					title 
 					voteCount
+					userVote
 					created
 					tagSet(course_Code: $course_Code) {
 						edges {
@@ -25,6 +27,10 @@ const GET_RESOURCES = gql `
 								tagType
 							}
 						}
+					}
+					user {
+						name
+						profilePicture
 					}
 				}
 			}
@@ -70,7 +76,7 @@ const ResourceList: React.FC<Props> = ({ tags }) => {
 						edge && <div
 							// className="bg-secondary-100"
 						>
-							<ResourceListingItem resource={edge} />
+							<GenericListItem content={edge.node} />
 						</div> 
 
 					)

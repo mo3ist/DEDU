@@ -13,29 +13,6 @@ interface Props {
 	content: GetDetailedSummary_summaries_edges_node | GetDetailedResource_resources_edges_node | GetDetailedQuestion_questions_edges_node | null
 }
 
-const GET_QUESTION = gql`
-	query GetQuestion($id: ID) {
-		questions(id: $id) {
-			edges {
-				node {
-					title
-					body
-					created
-					voteCount
-					tagSet {
-						edges {
-							node {
-								title
-								tagType
-							}
-						}
-					}		
-				}
-			}
-		}
-	}
-`
-
 const GenericDetail: React.FC<Props> = ({ content }) => {
 
 	return (
@@ -44,33 +21,34 @@ const GenericDetail: React.FC<Props> = ({ content }) => {
 		>
 			{/* Votes & user */}
 			<div
-				className="flex-initial flex flex-col items-center justify-center"
+				className="flex-initial flex flex-col items-center justify-center gap-4"
 			>
 				<div>
 					<Vote 
 						contentId={content?.id!}
 						voteCount={content?.voteCount!}
+						userVote={content?.userVote!}
 					/>
 				</div>
 				<div
 					className="flex flex-col items-center justify-start gap-1"
 				>
 					<div
-						className="w-14 h-14 bg-primary rounded-full"
+						className="w-10 h-10 bg-primary rounded-full overflow-hidden"
 					>
-						
+						<img src={content?.user.profilePicture!} alt="" />
 					</div>
 					<p
-						className="font-semibold"
+						className=""
 					>
-						hehe
+						{content?.user.name}
 					</p>
 				</div>
-				<div>
-					{arTimeAgo({
-						date: new Date(content?.created)
-					})}
-				</div>
+				<p
+					className="flex items-center gap-1"
+				>
+					منذ {content?.created && <span className="text-primary font-semibold">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>}
+				</p>
 			</div>
 
 			{/* Content */}
@@ -91,15 +69,15 @@ const GenericDetail: React.FC<Props> = ({ content }) => {
 				<div
 					className="flex flex-row gap-2 flex-wrap"
 				>
-					{content?.tagSet?.edges?.map(tag => {
+					{content?.tagSet?.edges?.map(edge => {
 						return (
 							<div
-								className="flex flex-row h-8 items-center justify-center gap-2 text-secondary bg-primary px-2 py-1 rounded-full w-20"
+								className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary-100 px-2 py-1 rounded-full border-2 border-primary"
 							>
 								<p
-									className="inline-block font-semibold"
+									className="inline-block font-semibold text-secondary"
 								>
-									{tag?.node?.title}
+									{edge?.node?.title}
 								</p>
 							</div>
 						)

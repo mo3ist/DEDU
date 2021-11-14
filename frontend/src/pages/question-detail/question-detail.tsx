@@ -22,6 +22,7 @@ const GET_DETAILED_QUESTION = gql`
 					body
 					created
 					voteCount
+					userVote
 					tagSet {
 						edges {
 							node {
@@ -29,6 +30,10 @@ const GET_DETAILED_QUESTION = gql`
 								tagType
 							}
 						}
+					}
+					user {
+						name
+						profilePicture
 					}
 				}
 			}

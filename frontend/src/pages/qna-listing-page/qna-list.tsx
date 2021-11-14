@@ -4,6 +4,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import QnAListItem from "./qna-list-item";
 import { GetQnAs } from "./__generated__/GetQnAs";
 import { useParams } from "react-router";
+import GenericListItem from "../../common/components/generic-list/generic-list-item";
 
 interface Props {
 	tags: Array<String> | null
@@ -17,6 +18,7 @@ const GET_QNAS = gql `
 					id
 					title 
 					voteCount
+					userVote
 					answerCount
 					created
 					tagSet(course_Code: $course_Code) {
@@ -26,6 +28,10 @@ const GET_QNAS = gql `
 								tagType
 							}
 						}
+					}
+					user {
+						name
+						profilePicture
 					}
 				}
 			}
@@ -62,9 +68,6 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 	return (
 		<div
 			className="h-full w-full text-secondary"
-			onScroll={() => {
-				console.log("SCROLLING")
-			}}
 		>		
 			<div
 				className="grid grid-cols-1 gap-8"
@@ -74,7 +77,7 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 						edge && <div
 							// className="bg-secondary-100"
 						>
-							<QnAListItem question={edge} />
+							<GenericListItem content={edge.node} />
 						</div> 
 
 					)

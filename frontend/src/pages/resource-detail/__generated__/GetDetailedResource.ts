@@ -31,6 +31,12 @@ export interface GetDetailedResource_resources_edges_node_tagSet {
   edges: (GetDetailedResource_resources_edges_node_tagSet_edges | null)[];
 }
 
+export interface GetDetailedResource_resources_edges_node_user {
+  __typename: "UserType";
+  name: string | null;
+  profilePicture: string | null;
+}
+
 export interface GetDetailedResource_resources_edges_node {
   __typename: "ResourceType";
   /**
@@ -41,7 +47,9 @@ export interface GetDetailedResource_resources_edges_node {
   body: string;
   created: any;
   voteCount: number | null;
+  userVote: string | null;
   tagSet: GetDetailedResource_resources_edges_node_tagSet | null;
+  user: GetDetailedResource_resources_edges_node_user;
 }
 
 export interface GetDetailedResource_resources_edges {

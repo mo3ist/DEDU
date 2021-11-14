@@ -312,28 +312,34 @@ class SummarySerializer(serializers.ModelSerializer):
 class VoteSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Vote
-		fields = ("id", "value", "content_type", "content_object", "user")
+		fields = ("id", "value", "content_id", "user")
 
 	id = serializers.CharField(required=False) 
-	content_type = serializers.CharField()
-	content_object = serializers.CharField()
+	content_id = serializers.CharField(required=True)
+
+	def validate_content_id(self, value):
+		model_mapping = {
+			"LectureType": models.Lecture,
+			"SummaryType": models.Summary,
+			"ResourceType": models.Resource,
+			"QuestionType": models.Question,
+			"AnswerType": models.Answer,
+			"QuizType": models.Quiz
+		}
+		
+		content_type, content_id = from_global_id(value)
+		content_model = model_mapping[content_type] if model_mapping.get(content_type) else None
+		if content_model:
+			content = content_model.objects.get(id=content_id)
+			return content
+		
+		return None
 
 	def create(self, validated_data):
-		contents = {
-			"lecture": models.Lecture,
-			"question": models.Question,
-			"answer": models.Answer,
-			"quiz": models.Quiz,
-			"resource": models.Resource,
-			"summary": models.Summary 
-		}
-		content = contents[validated_data["content_type"]].objects.get(
-			id=validated_data["content_object"]
-		)
 		vote = models.Vote.objects.create(
 			value=validated_data["value"],
 			user=validated_data["user"],
-			content_object=content
+			content_object=validated_data["content_id"]
 		)
 		return vote
 

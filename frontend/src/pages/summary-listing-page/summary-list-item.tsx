@@ -26,13 +26,14 @@ const SummaryListItem: React.FC<Props> = ({ summary }) => {
 				<Vote 
 					contentId={summary?.node?.id!}
 					voteCount={summary?.node?.voteCount!}
+					userVote={summary?.node?.userVote!}
 				/>
 				{/* title + user data */}
 				<div
-					className="flex-grow flex flex-col items-start justify-center gap-1 w-4/6"
+					className="flex-grow flex flex-col items-start justify-start gap-1 w-4/6"
 				>
 					<p
-						className="flex-grow text-xl bg-secondary-200 border-r-4 border-secondary pr-4 flex items-center w-full"
+						className="text-xl bg-secondary-200 border-r-4 border-secondary py-2 pr-4 flex items-center w-full"
 					>
 						<Link to={`${location.pathname}detail/${summary?.node?.id!}`}>
 							{summary.node?.title}
@@ -42,14 +43,14 @@ const SummaryListItem: React.FC<Props> = ({ summary }) => {
 						className="flex flex-row items-center justify-start gap-1"
 					>
 						<div
-							className="w-14 h-14 bg-primary rounded-full"
+							className="w-10 h-10 bg-primary rounded-full overflow-hidden"
 						>
-							
+							<img src={summary.node?.user.profilePicture!} alt="" />
 						</div>
 						<p
 							className="font-semibold"
 						>
-							hehe
+							{summary.node?.user.name}
 						</p>
 					</div>
 				</div>
