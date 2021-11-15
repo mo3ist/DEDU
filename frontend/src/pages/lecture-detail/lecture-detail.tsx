@@ -5,6 +5,7 @@ import MiniLectureListing from "./mini-lecture-listing"
 import { GetDetailedLecture } from "./__generated__/GetDetailedLecture"
 import LectureDetailMain from "./lecture-detail-main"
 import Concepts from "./concepts"
+import QnAList from "../qna-listing-page/qna-list"
 
 interface Props {
 
@@ -86,10 +87,32 @@ const LectureDetail: React.FC<Props> = () => {
 					/>
 				</div>
 				<div
-					className="w-4/6 h-full"
+					className="w-4/6 h-full flex flex-col items-center justify-center gap-8"
 				>
 					
 					<LectureDetailMain lecture={data?.lectures?.edges[0]?.node!}/>
+
+					{data?.lectures?.edges[0]?.node?.tagSet?.edges?.length! > 0 && <div
+						className="h-full w-full"
+					>
+						<div
+							className="rtl border-b border-primary mb-1"
+						>
+							<p
+								className="text-xl text-primary mb-1"
+							>
+								اسئلة على المحاضرة
+							</p>
+						</div>
+
+						{/* rounded hack */}
+						<div
+						>
+							<QnAList 
+								tags={data?.lectures?.edges[0]?.node?.tagSet?.edges.map(edge => edge?.node?.title!) || []}
+							/>
+						</div>
+					</div>}	
 				</div>
 				<div
 					className="w-1/6 h-full"

@@ -76,7 +76,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 
 			{/* lower part (tags) */}
 			<div
-				className="flex-grow flex flex-row justify-start gap-4 p-1"
+				className="flex-grow flex flex-row justify-start gap-2 p-1 flex-wrap"
 			>
 						{content?.tagSet?.edges?.map(edge => {
 							return (

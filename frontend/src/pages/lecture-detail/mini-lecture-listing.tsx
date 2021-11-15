@@ -50,7 +50,7 @@ const MiniLectureListing: React.FC<Props> = ({ id, setId }) => {
 	
 	return (
 		<div
-			className="h-96 w-full rounded-lg overflow-hidden"
+			className="h-96 w-full rounded-b-lg overflow-hidden"
 		>
 			<div
 				className="h-full overflow-y-scroll flex flex-col items-center justify-start bg-secondary-100 gap-2 py-2"

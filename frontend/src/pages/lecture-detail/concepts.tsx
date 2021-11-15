@@ -8,10 +8,10 @@ interface Props {
 const Concepts: React.FC<Props> = ({ tags }) => {
 	return (
 		<div
-			className="h-96 bg-secondary-100 rounded-lg flex flex-col"
+			className="h-96 bg-secondary-100 rounded-b-lg flex flex-col"
 		>
 			<div
-				className="flex-grow overflow-hidden rounded-t-lg border-b border-secondary"
+				className="flex-grow overflow-hidden border-b border-secondary"
 			>
 				<div
 					className="overflow-y-scroll h-full w-full p-2"
