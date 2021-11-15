@@ -101,7 +101,7 @@ const LectureDetail: React.FC<Props> = () => {
 							<p
 								className="text-xl text-primary mb-1"
 							>
-								اسئلة على المحاضرة
+								أسئلة على المحاضرة
 							</p>
 						</div>
 

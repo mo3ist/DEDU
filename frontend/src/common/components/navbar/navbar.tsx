@@ -87,6 +87,13 @@ const Navbar: React.FC<Props> = () => {
 					onClick={navItemClicked}
 				/>
 				<NavItem 
+					to={`${baseUrl}question/`}
+					title="أسئلة"
+					isActive={match?.content === "question"}
+					isDisabled={currentCourse === null}
+					onClick={navItemClicked}
+				/>
+				<NavItem 
 					to={`${baseUrl}resource/`}
 					title="مصادر"
 					isActive={match?.content === "resource"}

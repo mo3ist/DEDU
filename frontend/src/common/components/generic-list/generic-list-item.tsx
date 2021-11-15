@@ -1,8 +1,10 @@
-import React from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useReactiveVar } from "@apollo/client"
+import React, { useState } from "react"
+import { Link, useLocation, useRouteMatch } from "react-router-dom"
 import { GetQnAs_questions_edges_node } from "../../../pages/qna-listing-page/__generated__/GetQnAs"
 import { GetResources_resources_edges_node } from "../../../pages/resource-listing-page/__generated__/GetResources"
 import { GetSummaries_summaries_edges_node } from "../../../pages/summary-listing-page/__generated__/GetSummaries"
+import { currentCourseVar } from "../../apollo-client/apollo-client"
 import Vote from "../vote/vote"
 
 const arTimeAgo = require('artimeago')
@@ -14,6 +16,25 @@ interface Props {
 const GenericListItem: React.FC<Props> = ({ content }) => {
 
 	const location = useLocation()
+	const [matchParams, setMatchParams] = useState()
+	const currentCourse = useReactiveVar(currentCourseVar)
+
+	const buildPath = (id: string): string => {
+		const courseCode = currentCourse?.code
+		var contentType = ""
+		switch (content?.__typename) {
+			case "QuestionType":
+				contentType = "question"
+				break
+			case "SummaryType":
+				contentType = "summary"
+				break
+			case "ResourceType":
+				contentType = "resource"
+				break
+		}
+		return `/courses/${courseCode}/${contentType}/detail/${id}`
+	}
 
 	return (
 		<div
@@ -36,7 +57,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 					<p
 						className="text-xl font-semibold bg-secondary-200 border-r-4 border-secondary py-2 pr-1 flex items-center w-full"
 					>
-						<Link to={`${location.pathname}detail/${content?.id!}`}>
+						<Link to={buildPath(content?.id!)}>
 							{content?.title}
 						</Link>
 					</p>
