@@ -1,4 +1,5 @@
 import React from "react"
+import { Link, useLocation } from "react-router-dom"
 
 import { GetLectures_lectures_edges } from './__generated__/GetLectures'
 
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const LectureListItem: React.FC<Props> = ({ lecture }) => {
+
+	const location = useLocation()
 
 	return (
 		<div
@@ -25,7 +28,9 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 					<p
 						className="flex-grow text-lg font-bold bg-secondary-200 border-r-4 border-secondary pr-4 py-2 flex items-center w-full"
 					>
-						{lecture.node?.title}
+						<Link to={`${location.pathname}detail/${lecture?.node?.id!}`}>
+							{lecture.node?.title}
+						</Link>
 					</p>
 					<div
 						className="flex-grow flex items-center justify-start gap-2"

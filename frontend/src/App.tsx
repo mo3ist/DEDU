@@ -20,6 +20,7 @@ import SummaryEdit from './pages/summary-edit/summary-edit';
 import Authenticate from './pages/authentication/authenticate';
 import ProtectedRoute from './common/components/protected-route/protected-route';
 import Navbar from './common/components/navbar/navbar';
+import LectureDetail from './pages/lecture-detail/lecture-detail';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -52,6 +53,9 @@ const App: React.FC = () => {
 						</Route>
 						<Route path="/courses/:course/question/detail/:id/">
 							<QuestionDetail />
+						</Route>
+						<Route path="/courses/:course/lecture/detail/:id/">
+							<LectureDetail />
 						</Route>
 
 						<ProtectedRoute path="/courses/:course/question/edit/:id/">

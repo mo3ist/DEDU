@@ -20,7 +20,7 @@
 	}
 
 	.nav-button {
-		@apply h-full text-secondary px-4 py-1 rounded-lg border-2 border-secondary font-semibold
+		@apply h-full text-secondary px-4 py-1 rounded-full bg-primary-100 font-semibold border border-primary
 	}
 
 	.active {

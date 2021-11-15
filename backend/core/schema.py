@@ -62,7 +62,7 @@ class TeacherFilter(django_filters.FilterSet):
 class LectureFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Lecture
-		fields = ("title", "body", "user", "course", "lecture_type", "tag__title", "tag__course__code", "course__code")  # YES! you can use reverse GM2M relations here!
+		fields = ("id", "title", "body", "user", "course", "lecture_type", "tag__title", "tag__course__code", "course__code")  # YES! you can use reverse GM2M relations here!
 
 	tag__title = django_filters.CharFilter(lookup_expr='icontains')
 	course__code = django_filters.CharFilter(lookup_expr='iexact')
