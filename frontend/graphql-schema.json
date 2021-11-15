@@ -189,7 +189,19 @@
                 "deprecationReason": null
               },
               {
-                "name": "year",
+                "name": "code",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "title",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
@@ -5454,15 +5466,31 @@
             "deprecationReason": null
           },
           {
-            "name": "year",
+            "name": "code",
             "description": "",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "ENUM",
-                "name": "ClassificationYear",
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -5572,36 +5600,6 @@
           }
         ],
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "ClassificationYear",
-        "description": "An enumeration.",
-        "specifiedByUrl": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "FIRST_YEAR_GENERAL",
-            "description": "First Year - General",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "FIRST_YEAR_AI",
-            "description": "First Year - Artificail Intelligence",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "FIRST_YEAR_SE",
-            "description": "First Year - Software Engineering",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {

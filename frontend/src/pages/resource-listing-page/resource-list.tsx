@@ -50,7 +50,6 @@ const ResourceList: React.FC<Props> = ({ tags }) => {
 	const [ after, setAfter ] = useState<String>(""); 
 
 	const course_Code = useParams<{ course: string }>().course
-	console.log(course_Code)
 	const [getResources, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetResources>(GET_RESOURCES, {
 		variables: {
 			first: FIRST,

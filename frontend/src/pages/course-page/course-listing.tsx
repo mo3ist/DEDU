@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import classname from 'classnames'
 
 import { GetClassifications } from './__generated__/GetClassifications'
 
 import './course-listing.css'
+import { currentClassificationVar, currentCourseVar } from '../../common/apollo-client/apollo-client';
 
 interface Props {
-	activeCourseId: String | null;
 	setActiveCourseId: (course: string | null) => void; 
-	activeClsfnId: string | null;
 	setActiveClsfnId: (clsfn: string | null) => void
 };
 
@@ -19,7 +18,8 @@ const GET_CLASSIFICATIONS = gql`
 			edges {
 				node {
 					id
-					year
+					code
+					title
 					courses {
 						edges {
 							node {
@@ -28,20 +28,36 @@ const GET_CLASSIFICATIONS = gql`
 								code
 							}
 						}
+						currentCourse @client {
+							id
+							code
+							title
+						}
 					}
 				}
+			}
+			currentClassification @client {
+				id
+				code
+				title
 			}
 		}
 	}
 `
 
-export const CourseListing: React.FC<Props> = ({ activeCourseId, setActiveCourseId, activeClsfnId, setActiveClsfnId }) => {
+export const CourseListing: React.FC<Props> = ({ setActiveClsfnId, setActiveCourseId }) => {
 	
 	const { loading, error, data } = useQuery<GetClassifications>(GET_CLASSIFICATIONS)
 	
+	const currentCourse = useReactiveVar(currentCourseVar)
+	const currentClassification = useReactiveVar(currentClassificationVar)
+
 	useEffect(() => {
-		console.log(activeCourseId, data)
-	})
+		setActiveClsfnId(currentClassification?.id!)
+		setActiveCourseId(currentCourse?.id!)
+		localStorage.setItem("currentCourse", JSON.stringify(currentCourse))
+		localStorage.setItem("currentClassification", JSON.stringify(currentClassification))
+	}, [currentCourse, currentClassification])
 
 	return (
 		<div
@@ -53,11 +69,17 @@ export const CourseListing: React.FC<Props> = ({ activeCourseId, setActiveCourse
 				{data?.classifications?.edges?.map(edge => {
 					return (
 						<button
-							className={classname({"clsfn-btn": activeClsfnId != edge?.node?.id, "clsfn-btn-selected": activeClsfnId === edge?.node?.id})}
+							className={classname({"clsfn-btn": currentClassification?.id != edge?.node?.id, "clsfn-btn-selected": currentClassification?.id === edge?.node?.id})}
 							key={edge?.node?.id}
-							onClick={() => setActiveClsfnId(edge?.node?.id.toString()!)}
+							onClick={() => {
+								currentClassificationVar({
+									id: edge?.node?.id.toString()!,
+									code: edge?.node?.code!,
+									title: edge?.node?.title!
+								})
+							}}
 						>
-							{edge?.node?.year}
+							{edge?.node?.title}
 						</button>
 					)
 				})}
@@ -65,13 +87,19 @@ export const CourseListing: React.FC<Props> = ({ activeCourseId, setActiveCourse
 			<div
 				className="border-r-4 border-secondary-100 w-3/6 clsfn-btn-container"
 			>
-				{data?.classifications?.edges?.filter(edge => edge?.node?.id === activeClsfnId).map(edge => {
+				{data?.classifications?.edges?.filter(edge => edge?.node?.id === currentClassification?.id).map(edge => {
 					return edge?.node?.courses?.edges?.map(edge => {
 						return (
 							<button
-							className={classname({"course-btn": activeCourseId != edge?.node?.id, "course-btn-selected": activeCourseId === edge?.node?.id})}
+							className={classname({"course-btn": currentCourse?.id != edge?.node?.id, "course-btn-selected": currentCourse?.id === edge?.node?.id})}
 								key={edge?.node?.id}	
-								onClick={() => setActiveCourseId(edge?.node?.id.toString()!) }
+								onClick={() => {
+									currentCourseVar({
+										id: edge?.node?.id.toString()!,
+										code: edge?.node?.code!,
+										title: edge?.node?.title!
+									})
+								}}
 							> 
 								{edge?.node?.title} 
 							</button>

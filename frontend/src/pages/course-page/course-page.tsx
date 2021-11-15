@@ -32,12 +32,7 @@ const GET_COURSE_ID = gql`
 
 export const CoursePage: React.FC<Props> = () => {
 
-	const { loading, error, data } = useQuery<GetCourseId>(GET_COURSE_ID, {
-		onCompleted: (data) => {
-			setActiveClsfnId(data.classifications?.edges[1]?.node?.id!)
-			setActiveCourseId(data.classifications?.edges[1]?.node?.courses?.edges[1]?.node?.id!)
-		}
-	});
+	const { loading, error, data } = useQuery<GetCourseId>(GET_COURSE_ID);
 
 	const [activeClsfnId, setActiveClsfnId] = useState<string | null>("");
 	const [activeCourseId, setActiveCourseId] = useState<string | null>("");
@@ -95,7 +90,7 @@ export const CoursePage: React.FC<Props> = () => {
 							الكورسات
 						</p>
 					</div>
-					<CourseListing activeCourseId={activeCourseId} setActiveCourseId={setActiveCourseId} activeClsfnId={activeClsfnId} setActiveClsfnId={setActiveClsfnId}/>
+					<CourseListing setActiveClsfnId={setActiveClsfnId} setActiveCourseId={setActiveCourseId}/>
 				</div>
 				
 				<div

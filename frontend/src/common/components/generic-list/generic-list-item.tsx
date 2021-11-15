@@ -21,7 +21,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 		>
 			{/* upper part */}
 			<div
-				className="flex-grow flex flex-row gap-1 p-1"
+				className="flex-grow flex flex-row gap-2 p-1"
 			>
 				{/* votes */}
 				<Vote 
@@ -57,13 +57,20 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 				</div>
 				{/* date */}
 				<div
-					className="bg-secondary-100 w-1/6 pr-4"
+					className=""
 				>
 					<p
-						className="text-lg flex items-center gap-2"
+						className="text-lg flex items-center gap-1"
 					>
 						منذ <span className="text-primary font-semibold">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>
 					</p>
+					{content && "answerCount" in content && 
+						<p
+							className="text-lg flex items-center gap-2"
+						>
+							<span className="text-primary font-bold">{content?.answerCount}</span> اجابة
+						</p>
+					}
 				</div>
 			</div>
 

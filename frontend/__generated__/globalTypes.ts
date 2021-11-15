@@ -20,15 +20,6 @@ export enum AttachmentAttmType {
 /**
  * An enumeration.
  */
-export enum ClassificationYear {
-  FIRST_YEAR_AI = "FIRST_YEAR_AI",
-  FIRST_YEAR_GENERAL = "FIRST_YEAR_GENERAL",
-  FIRST_YEAR_SE = "FIRST_YEAR_SE",
-}
-
-/**
- * An enumeration.
- */
 export enum LectureLectureType {
   LECTURE = "LECTURE",
   SECTION = "SECTION",

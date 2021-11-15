@@ -3,8 +3,6 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { ClassificationYear } from "./../../../../__generated__/globalTypes";
-
 // ====================================================
 // GraphQL query operation: GetClassifications
 // ====================================================
@@ -27,12 +25,20 @@ export interface GetClassifications_classifications_edges_node_courses_edges {
   node: GetClassifications_classifications_edges_node_courses_edges_node | null;
 }
 
+export interface GetClassifications_classifications_edges_node_courses_currentCourse {
+  __typename: "CurrentCourse";
+  id: string;
+  code: string;
+  title: string;
+}
+
 export interface GetClassifications_classifications_edges_node_courses {
   __typename: "CourseTypeConnection";
   /**
    * Contains the nodes in this connection.
    */
   edges: (GetClassifications_classifications_edges_node_courses_edges | null)[];
+  currentCourse: GetClassifications_classifications_edges_node_courses_currentCourse | null;
 }
 
 export interface GetClassifications_classifications_edges_node {
@@ -41,7 +47,8 @@ export interface GetClassifications_classifications_edges_node {
    * The ID of the object.
    */
   id: string;
-  year: ClassificationYear;
+  code: string;
+  title: string;
   courses: GetClassifications_classifications_edges_node_courses;
 }
 
@@ -53,12 +60,20 @@ export interface GetClassifications_classifications_edges {
   node: GetClassifications_classifications_edges_node | null;
 }
 
+export interface GetClassifications_classifications_currentClassification {
+  __typename: "CurrentClassification";
+  id: string;
+  code: string;
+  title: string;
+}
+
 export interface GetClassifications_classifications {
   __typename: "ClassificationTypeConnection";
   /**
    * Contains the nodes in this connection.
    */
   edges: (GetClassifications_classifications_edges | null)[];
+  currentClassification: GetClassifications_classifications_currentClassification | null;
 }
 
 export interface GetClassifications {

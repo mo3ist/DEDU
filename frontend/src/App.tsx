@@ -19,6 +19,7 @@ import ResourceEdit from './pages/resource-edit/resource-edit';
 import SummaryEdit from './pages/summary-edit/summary-edit';
 import Authenticate from './pages/authentication/authenticate';
 import ProtectedRoute from './common/components/protected-route/protected-route';
+import Navbar from './common/components/navbar/navbar';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -31,6 +32,13 @@ const App: React.FC = () => {
 		>
 			<ApolloProvider client={ apolloClient }>
 				<Router>
+
+					<div
+						className="pb-16"
+					>
+						<Navbar />
+					</div>
+
 					<Switch>
 						<Route path="/auth/">
 							<Authenticate />

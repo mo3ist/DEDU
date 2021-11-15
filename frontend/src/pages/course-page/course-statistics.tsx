@@ -11,6 +11,7 @@ const GET_COURSE_TRIVIA = gql`
 		courses(id: $id) {
 			edges {
 				node {
+					id
 					title 
 					description
 					attachmentSet {
@@ -25,6 +26,7 @@ const GET_COURSE_TRIVIA = gql`
 					teachers {
 						edges {
 							node {
+								id
 								title
 								teacherType
 							}

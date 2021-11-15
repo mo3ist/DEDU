@@ -1,6 +1,4 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, from, makeVar } from '@apollo/client'
-import { setContext } from '@apollo/client/link/context'
-import { getOperationDefinition } from '@apollo/client/utilities';
 
 const httpLink = new HttpLink({ uri: 'http://localhost:8000/graphql/' });
 
@@ -25,96 +23,158 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 })
 
+const cache = new InMemoryCache({
+	typePolicies: {
+		UserTypeConnection: {
+			fields: {
+				isLoggedIn: {
+					read(_, { variables }) {
+						return localStorage.getItem("accessToken") !== null;
+					}
+				}
+			}
+		},
+		CourseTypeConnection: {
+			fields: {
+				currentCourse: {
+					read(_, { variables }) {
+						return currentCourseVar();
+					}
+				}
+			}
+		},
+		ClassificationTypeConnection: {
+			fields: {
+				currentCourse: {
+					read(_, { variables }) {
+						return currentClassificationVar();
+					}
+				}
+			}
+		},
+		Query: {
+			fields: {
+				// lectures: {
+				// 	keyArgs: ['tag_Title', 'course_Code'],
+				// 	merge(existing = {edges: [], pageInfo: {}}, incoming){
+				// 		// clean this shit please
+				// 		return {
+				// 			...incoming, 
+				// 			edges: [
+				// 				...existing?.edges,
+				// 				...incoming?.edges
+				// 			]
+				// 		}
+				// 	}
+				// },
+				classifications: {
+					keyArgs: ['id'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				},
+				courses: {
+					keyArgs: ['id'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				},
+				questions: {
+					keyArgs: ['id', 'tag_Title', 'course_Code'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				},
+				resources: {
+					keyArgs: ['id', 'tag_Title', 'course_Code'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				}, 
+				summaries: {
+					keyArgs: ['id', 'tag_Title'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				}, 
+				tags: {
+					keyArgs: ['id', 'title', 'tagType', 'course_Code'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				},
+			}
+		}
+	}
+})
 
 const apolloClient = new ApolloClient({
+	cache,
 	link: from([
 		authMiddleware,
 		httpLink
 	]),
-	cache: new InMemoryCache({
-		typePolicies: {
-			UserTypeConnection: {
-				fields: {
-					isLoggedIn: {
-						read(_, { variables }) {
-							return localStorage.getItem("accessToken") !== null;
-						}
-					}
-				}
-			},
-			Query: {
-				fields: {
-					// lectures: {
-					// 	keyArgs: ['tag_Title', 'course_Code'],
-					// 	merge(existing = {edges: [], pageInfo: {}}, incoming){
-					// 		// clean this shit please
-					// 		return {
-					// 			...incoming, 
-					// 			edges: [
-					// 				...existing?.edges,
-					// 				...incoming?.edges
-					// 			]
-					// 		}
-					// 	}
-					// },
-					questions: {
-						keyArgs: ['id', 'tag_Title', 'course_Code'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					},
-					resources: {
-						keyArgs: ['id', 'tag_Title', 'course_Code'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					}, 
-					summaries: {
-						keyArgs: ['id', 'tag_Title'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					}, 
-					tags: {
-						keyArgs: ['id', 'title', 'tagType', 'course_Code'],
-						merge(existing = {edges: [], pageInfo: {}}, incoming){
-							// clean this shit please
-							return {
-								...incoming, 
-								edges: [
-									...existing?.edges,
-									...incoming?.edges
-								]
-							}
-						}
-					},
-				}
-			}
-		}
-	})
 });
 
-export const isLoggedIn = makeVar<boolean>(false);
+
+type isLoggedInType = boolean;
+export const isLoggedIn = makeVar<isLoggedInType>(false);
+
+export type CurrentCourse = {
+	id: string;
+	code: string;
+	title: string;
+}
+export const currentCourseVar = makeVar<CurrentCourse | null>(JSON.parse(localStorage.getItem("currentCourse")!));
+
+export type CurrentClassification = {
+	id: string
+	code: string
+	title: string
+}
+export const currentClassificationVar = makeVar<CurrentClassification | null>(JSON.parse(localStorage.getItem("currentClassification")!));
+
 
 export default apolloClient

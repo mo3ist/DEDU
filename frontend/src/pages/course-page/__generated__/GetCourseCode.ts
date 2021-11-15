@@ -9,6 +9,10 @@
 
 export interface GetCourseCode_courses_edges_node {
   __typename: "CourseType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   code: string;
 }
 

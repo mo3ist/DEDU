@@ -47,7 +47,7 @@ class ModFilter(django_filters.FilterSet):
 class ClassificationFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Classification
-		fields = ("year", "courses")
+		fields = ("code", "title", "courses")
 
 class CourseFilter(django_filters.FilterSet):
 	class Meta:

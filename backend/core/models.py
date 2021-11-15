@@ -158,25 +158,18 @@ class Course(models.Model):
 		return self.title
 
 class Classification(models.Model):
-	FIRST_YEAR_GENERAL = "FIRST_YEAR_GENERAL"
-	FIRST_YEAR_AI = "FIRST_YEAR_AI"
-	FIRST_YEAR_SE = "FIRST_YEAR_SE"
-	YEAR = [
-		(FIRST_YEAR_GENERAL, "First Year - General"),
-		(FIRST_YEAR_AI, "First Year - Artificail Intelligence"),
-		(FIRST_YEAR_SE, "First Year - Software Engineering"),
-	]
-	
-	year = models.CharField(
-		default=FIRST_YEAR_GENERAL,
-		choices=YEAR,
+	code = models.CharField(
+		max_length=20
+	)
+	title = models.CharField(
 		max_length=100
 	)
+
 	courses = models.ManyToManyField(Course, null=True, blank=True)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.year
+		return self.title
 
 class Lecture(models.Model):
 

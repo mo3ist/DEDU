@@ -9,6 +9,10 @@
 
 export interface GetCourseOutline_courses_edges_node {
   __typename: "CourseType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   outline: string;
 }
 

@@ -32,6 +32,10 @@ export interface GetCourseTrivia_courses_edges_node_attachmentSet {
 
 export interface GetCourseTrivia_courses_edges_node_teachers_edges_node {
   __typename: "TeacherType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   teacherType: TeacherTeacherType;
 }
@@ -54,6 +58,10 @@ export interface GetCourseTrivia_courses_edges_node_teachers {
 
 export interface GetCourseTrivia_courses_edges_node {
   __typename: "CourseType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   description: string;
   attachmentSet: GetCourseTrivia_courses_edges_node_attachmentSet | null;

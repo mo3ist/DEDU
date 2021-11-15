@@ -51,7 +51,6 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 	const [ after, setAfter ] = useState<String>(""); 
 
 	const course_Code = useParams<{ course: string }>().course
-	console.log(course_Code)
 	const [getQnAs, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQnAs>(GET_QNAS, {
 		variables: {
 			first: FIRST,

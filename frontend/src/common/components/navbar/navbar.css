@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.clsfn-btn {
+		@apply py-2 px-2 text-secondary-100
+	}
+
+	.nav-item {
+		@apply w-28 flex items-center justify-center
+	}
+
+	.nav-item-active {
+		@apply w-28 flex items-center justify-center underline text-primary font-bold
+	}
+
+	.nav-button-container {
+		@apply h-full flex items-center justify-center
+	}
+
+	.nav-button {
+		@apply h-full text-secondary px-4 py-1 rounded-lg border-2 border-secondary font-semibold
+	}
+
+	.active {
+		@apply underline text-primary font-bold border-primary 
+	}
+
+	.nav-container {
+		@apply h-full flex-grow flex flex-row items-center
+	}
+}

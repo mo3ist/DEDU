@@ -14,6 +14,7 @@ const GET_COURSE_OUTLINE = gql`
 		courses(id: $id) {
 			edges {
 				node {
+					id
 					outline
 				}
 			}

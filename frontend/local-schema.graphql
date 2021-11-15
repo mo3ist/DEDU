@@ -1,3 +1,23 @@
 extend type UserTypeConnection {
 	isLoggedIn: Boolean!
 }
+
+type CurrentCourse {
+	id: String!
+	code: String!
+	title: String!
+}
+
+extend type CourseTypeConnection {
+	currentCourse: CurrentCourse
+}
+
+type CurrentClassification {
+	id: String!
+	code: String!
+	title: String!
+}
+
+extend type ClassificationTypeConnection {
+	currentClassification: CurrentClassification
+}

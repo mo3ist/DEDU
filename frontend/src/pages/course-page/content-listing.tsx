@@ -22,6 +22,7 @@ const GET_COURSE_CODE = gql`
 		courses (id: $id) {
 			edges {
 				node {
+					id
 					code
 				}
 			}
