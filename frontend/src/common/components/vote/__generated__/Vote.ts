@@ -10,7 +10,7 @@ import { VoteValue } from "./../../../../../__generated__/globalTypes";
 // ====================================================
 
 export interface Vote_createVote_vote_contentObject_LectureType {
-  __typename: "LectureType" | "QuizType";
+  __typename: "LectureType";
 }
 
 export interface Vote_createVote_vote_contentObject_SummaryType {
@@ -53,7 +53,17 @@ export interface Vote_createVote_vote_contentObject_AnswerType {
   userVote: string | null;
 }
 
-export type Vote_createVote_vote_contentObject = Vote_createVote_vote_contentObject_LectureType | Vote_createVote_vote_contentObject_SummaryType | Vote_createVote_vote_contentObject_ResourceType | Vote_createVote_vote_contentObject_QuestionType | Vote_createVote_vote_contentObject_AnswerType;
+export interface Vote_createVote_vote_contentObject_QuizType {
+  __typename: "QuizType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  voteCount: number | null;
+  userVote: string | null;
+}
+
+export type Vote_createVote_vote_contentObject = Vote_createVote_vote_contentObject_LectureType | Vote_createVote_vote_contentObject_SummaryType | Vote_createVote_vote_contentObject_ResourceType | Vote_createVote_vote_contentObject_QuestionType | Vote_createVote_vote_contentObject_AnswerType | Vote_createVote_vote_contentObject_QuizType;
 
 export interface Vote_createVote_vote {
   __typename: "VoteType";

@@ -113,9 +113,21 @@ class AnswerFilter(django_filters.FilterSet):
 
 
 class QuizFilter(django_filters.FilterSet):
+	tag__title = django_filters.CharFilter(method='filter_tag__title')
+	course__code = django_filters.CharFilter(lookup_expr='iexact')
+	tag__course__code = django_filters.CharFilter(lookup_expr='iexact')	# The tag is unique together (title + course)
+
 	class Meta:
 		model = core_models.Quiz
-		fields = ("title", "user")
+		fields = ("id", "title", "user", "tag__title", "tag__course__code", "course__code")
+
+	def filter_tag__title(self, queryset, name, value):
+		"Support comma separated tags."
+		q = Q()
+		for title in value.split(','):
+			q |= Q(tag__title=title)
+
+		return queryset.filter(q).distinct()
 
 	@property
 	def qs(self):
@@ -411,6 +423,7 @@ class AnswerType(DjangoObjectType):
 			return user_vote_query[0].value
 		else:
 			return None
+
 	def resolve_vote_count(obj, info, **kwargs):
 		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
 
@@ -451,6 +464,7 @@ class QuizType(DjangoObjectType):
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
 	attachment_set = DjangoFilterConnectionField('core.schema.AttachmentType', filterset_class=AttachmentFilter)
+	vote_count = graphene.Int()
 	user_vote = graphene.String()
 
 	def resolve_user_vote(obj, info, **kwargs):
@@ -459,6 +473,10 @@ class QuizType(DjangoObjectType):
 			return user_vote_query[0].value
 		else:
 			return None
+
+	def resolve_vote_count(obj, info, **kwargs):
+		return obj.votes.filter(value=core_models.Vote.UPVOTE).count() - obj.votes.filter(value=core_models.Vote.DOWNVOTE).count()
+
 	def resolve_tag_set(obj, info, **kwargs):
 		return obj.tag_set.all()
 

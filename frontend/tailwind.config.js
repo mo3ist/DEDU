@@ -34,25 +34,25 @@ module.exports = {
 					
 				}
 			}
+		},
+		colors: {
+			primary: {
+				100: "#C89978",
+				DEFAULT: "#C26B3A"
+			},
+			secondary: {
+				100: "#C4C4C4",
+				200: "#858585",
+				DEFAULT: "#353535"
+			},
+			black: colors.black,
+			white: colors.white,
+			gray: colors.trueGray,
+			indigo: colors.indigo,
+			red: colors.rose,
+			yellow: colors.amber,
 		}
 	},
-	colors: {
-		primary: {
-			100: "#C89978",
-			DEFAULT: "#C26B3A"
-		},
-		secondary: {
-			100: "#C4C4C4",
-			200: "#858585",
-			DEFAULT: "#353535"
-		},
-		black: colors.black,
-		white: colors.white,
-		gray: colors.trueGray,
-		indigo: colors.indigo,
-		red: colors.rose,
-		yellow: colors.amber,
-	}
   },
   variants: {
     extend: {},

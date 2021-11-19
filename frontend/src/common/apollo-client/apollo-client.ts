@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, from, makeVar } from '@apollo/client'
+import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 const httpLink = new HttpLink({ uri: 'http://localhost:8000/graphql/' });
 
@@ -39,6 +40,15 @@ const cache = new InMemoryCache({
 				currentCourse: {
 					read(_, { variables }) {
 						return currentCourseVar();
+					}
+				}
+			}
+		},
+		QuizType: {
+			fields: {
+				userAnswer: {
+					read(value="", { variables }) {
+						return value
 					}
 				}
 			}
@@ -132,6 +142,19 @@ const cache = new InMemoryCache({
 						}
 					}
 				}, 
+				quizzes: {
+					keyArgs: ['id', 'tag_Title', 'course_Code'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges,
+								...incoming?.edges
+							]
+						}
+					}
+				},
 				tags: {
 					keyArgs: ['id', 'title', 'tagType', 'course_Code'],
 					merge(existing = {edges: [], pageInfo: {}}, incoming){
@@ -149,6 +172,13 @@ const cache = new InMemoryCache({
 		}
 	}
 })
+
+const waitForCache = async () => await persistCache({
+	cache,
+	storage: new LocalStorageWrapper(window.localStorage),
+  });  
+
+waitForCache()
 
 const apolloClient = new ApolloClient({
 	cache,

@@ -40,6 +40,11 @@ const VOTE = gql`
 						voteCount
 						userVote
 					}
+					... on QuizType {
+						id
+						voteCount
+						userVote
+					}
 				}
 			}
 		}

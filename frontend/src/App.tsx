@@ -21,6 +21,7 @@ import Authenticate from './pages/authentication/authenticate';
 import ProtectedRoute from './common/components/protected-route/protected-route';
 import Navbar from './common/components/navbar/navbar';
 import LectureDetail from './pages/lecture-detail/lecture-detail';
+import QuizListing from './pages/quiz-listing/quiz-listing';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -89,7 +90,7 @@ const App: React.FC = () => {
 							<SummaryListingPage />
 						</Route>
 						<Route path="/courses/:course/quiz/">
-							<h1>{"<Quizzes />"}</h1>
+							<QuizListing />
 						</Route>
 						<Route path="/courses/:course/resource/">
 							<ResourceListingPage />

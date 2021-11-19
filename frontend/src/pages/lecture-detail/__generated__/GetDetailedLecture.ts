@@ -109,4 +109,5 @@ export interface GetDetailedLecture {
 
 export interface GetDetailedLectureVariables {
   id: string;
+  courseCode: string;
 }

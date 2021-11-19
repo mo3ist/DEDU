@@ -21,3 +21,7 @@ type CurrentClassification {
 extend type ClassificationTypeConnection {
 	currentClassification: CurrentClassification
 }
+
+extend type QuizType {
+	userAnswer: String!
+}
