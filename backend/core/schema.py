@@ -491,10 +491,10 @@ class CreateQuiz(AuthMutation, graphene.relay.ClientIDMutation):
 
 	class Input:
 		title = graphene.String(required=True)
-		a = graphene.String(required=True)
-		b = graphene.String(required=True)
-		c = graphene.String(required=True)
-		d = graphene.String(required=True)
+		a = graphene.String()
+		b = graphene.String()
+		c = graphene.String()
+		d = graphene.String()
 		answer = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
@@ -508,6 +508,7 @@ class CreateQuiz(AuthMutation, graphene.relay.ClientIDMutation):
 			if quiz_serializer.is_valid():
 				quiz = quiz_serializer.save()
 				return CreateQuiz(quiz=quiz)
+			print(quiz_serializer.errors)
 			raise Exception("Not valid.")
 		return CreateQuiz(quiz=None)
 

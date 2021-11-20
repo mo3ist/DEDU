@@ -20,10 +20,10 @@ export interface GetQuizzes_quizzes_edges_node {
    */
   id: string;
   title: string | null;
-  a: string;
-  b: string;
-  c: string;
-  d: string;
+  a: string | null;
+  b: string | null;
+  c: string | null;
+  d: string | null;
   answer: string;
   voteCount: number | null;
   userVote: string | null;

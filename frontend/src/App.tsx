@@ -22,6 +22,8 @@ import ProtectedRoute from './common/components/protected-route/protected-route'
 import Navbar from './common/components/navbar/navbar';
 import LectureDetail from './pages/lecture-detail/lecture-detail';
 import QuizListing from './pages/quiz-listing/quiz-listing';
+import QuizCreationPage from './pages/quiz-creation-page/quiz-creation-page';
+import QuizEdit from './pages/quiz-edit/quiz-edit';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -68,6 +70,9 @@ const App: React.FC = () => {
 						<ProtectedRoute path="/courses/:course/summary/edit/:id/">
 							<SummaryEdit />
 						</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/quiz/edit/:id/">
+							<QuizEdit />
+						</ProtectedRoute>
 
 						<Route path="/courses/:course/lecture/">
 							<LectureListingPage />
@@ -81,6 +86,9 @@ const App: React.FC = () => {
 						</ProtectedRoute>
 						<ProtectedRoute path="/courses/:course/resource/create">
 							<ResourceCreationPage />
+						</ProtectedRoute>
+						<ProtectedRoute path="/courses/:course/quiz/create">
+							<QuizCreationPage />
 						</ProtectedRoute>
 
 						<Route path="/courses/:course/question/">

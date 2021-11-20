@@ -234,10 +234,10 @@ class Answer(models.Model):
 
 class Quiz(models.Model):
 	title = models.CharField(max_length=500, null=True, blank=True)
-	a = models.CharField(max_length=250)
-	b = models.CharField(max_length=250)
-	c = models.CharField(max_length=250)
-	d = models.CharField(max_length=250)
+	a = models.CharField(max_length=250, null=True, blank=True)
+	b = models.CharField(max_length=250, null=True, blank=True)
+	c = models.CharField(max_length=250, null=True, blank=True)
+	d = models.CharField(max_length=250, null=True, blank=True)
 	answer = models.CharField(max_length=250)
 	votes = GenericRelation(Vote, related_query_name="quiz")
 	attachments = GenericRelation(Attachment, related_query_name="quiz")

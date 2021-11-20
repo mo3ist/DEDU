@@ -4,13 +4,14 @@ import JoditEditor from "jodit-react";
 import "./text-editor.css"
 
 interface Props {
-	readonly: boolean;
+	readonly?: boolean;
+	formattingonly?: boolean;
 	value?: string | null;
 	ref?: React.RefObject<JoditEditor>;
 	onBlur?: ((value: string) => void) | undefined;
 }
 
-const TextEditor: React.FC<Props> = ({ readonly=false, value, ref, onBlur }) => {
+const TextEditor: React.FC<Props> = ({ readonly=false, formattingonly=false, value, ref, onBlur }) => {
 	
 	const readonlyConfig = {
 		readonly: true,
@@ -18,6 +19,11 @@ const TextEditor: React.FC<Props> = ({ readonly=false, value, ref, onBlur }) => 
 		showCharsCounter: false,
 		showWordsCounter: false,
 		showXPathInStatusbar: false,
+	}
+
+	const formattingonlyConfig = {
+		placeholder: "اكتب هنا...",
+		buttons: "bold,italic,underline,strikethrough,|,eraser,superscript,subscript",
 	}
 
 	const config = {
@@ -34,7 +40,7 @@ const TextEditor: React.FC<Props> = ({ readonly=false, value, ref, onBlur }) => 
 		>
 			<JoditEditor 
 				value={value!}
-				config={readonly ? readonlyConfig : config}
+				config={readonly ? readonlyConfig : (formattingonly ? formattingonlyConfig : config)}
 				onBlur={onBlur}
 				ref={ref}
 			/>
