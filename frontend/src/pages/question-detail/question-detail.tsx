@@ -53,14 +53,22 @@ const QuestionDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="relative"
+			className="grid grid-cols-1 gap-8 relative p-8"
 		>
 			{loading && <Loading />}
 
-			<GenericDetail
-				content={question!}
-			/>
-			<AnswerList questionId={question?.id!}/>
+			<div
+				className="rounded-lg overflow-hidden"
+			>
+				<GenericDetail
+					content={question!}
+				/>
+			</div>
+			<div
+				className="px-8"
+			>
+				<AnswerList questionId={question?.id!}/>
+			</div>
 		</div>
 	)
 }

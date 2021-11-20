@@ -1039,7 +1039,7 @@
                 "deprecationReason": null
               },
               {
-                "name": "question",
+                "name": "id",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
@@ -1051,11 +1051,11 @@
                 "deprecationReason": null
               },
               {
-                "name": "title",
+                "name": "question",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "String",
+                  "name": "ID",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -7020,18 +7020,6 @@
             "deprecationReason": null
           },
           {
-            "name": "title",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "body",
             "description": "",
             "args": [],
@@ -10911,18 +10899,6 @@
         "inputFields": [
           {
             "name": "question",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "title",
             "description": null,
             "type": {
               "kind": "NON_NULL",

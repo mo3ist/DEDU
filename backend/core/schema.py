@@ -103,7 +103,7 @@ class QuestionFilter(django_filters.FilterSet):
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:
 		model = core_models.Answer
-		fields = ("question", "title", "body", "user", "course")
+		fields = ("id", "question", "body", "user", "course")
 
 	@property
 	def qs(self):
@@ -439,8 +439,7 @@ class CreateAnswer(AuthMutation, graphene.relay.ClientIDMutation):
 	answer = graphene.Field(AnswerType)
 
 	class Input:
-		question = graphene.Field(graphene.String)
-		title = graphene.String(required=True)
+		question = graphene.Field(graphene.String, required=True)
 		body = graphene.String(required=True)
 		tag_set = graphene.List(graphene.String)
 		course = graphene.String(required=True)
@@ -454,6 +453,7 @@ class CreateAnswer(AuthMutation, graphene.relay.ClientIDMutation):
 			if answer_serializer.is_valid():
 				answer = answer_serializer.save()
 				return CreateAnswer(answer=answer)
+			print(answer_serializer.errors)
 			raise Exception("Not valid.")
 		return CreateAnswer(answer=None)
 

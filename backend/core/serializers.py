@@ -137,7 +137,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Answer
-		fields = ("id", "question", "title", "body", "user", "tag_set", "mod", "course")
+		fields = ("id", "question", "body", "user", "tag_set", "mod", "course")
 
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
@@ -145,6 +145,26 @@ class AnswerSerializer(serializers.ModelSerializer):
 		required=False
 	)
 	mod = serializers.CharField(required=False)
+	question = serializers.CharField(required=True)
+	course = serializers.CharField(required=True)
+
+	def validate_course(self, value):
+		try:
+			course = models.Course.objects.get(code=value)
+		except models.Course.DoesNotExist:
+			raise serializers.ValidationError("Course dosen't exist.")
+
+		return course
+
+	def validate_question(self, value):
+		"Get the Question instance from Relay GlobalID"
+		
+		django_id = from_global_id(value)[1]
+		try: 
+			question = models.Question.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Question' instance doesn't exist.")
+		return question
 
 	def validate_mod(self, value):
 		"Get the Mod instance from Relay GlobalID"

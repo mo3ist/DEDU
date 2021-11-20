@@ -36,10 +36,15 @@ const AnswerListItem: React.FC<Props> = ({ answer }) => {
 					<div
 						className="flex flex-col items-start justify-center gap-1"
 					>
+						<div
+							className="w-10 h-10 bg-primary rounded-full overflow-hidden"
+						>
+							<img src={answer?.user.profilePicture!} alt="" />
+						</div>
 						<p
 							className="font-semibold"
 						>
-							hehe
+							{answer?.user?.name}
 						</p>
 
 						<p

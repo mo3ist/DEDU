@@ -7,6 +7,12 @@
 // GraphQL query operation: GetQuestionAnswers
 // ====================================================
 
+export interface GetQuestionAnswers_answers_edges_node_user {
+  __typename: "UserType";
+  name: string | null;
+  profilePicture: string | null;
+}
+
 export interface GetQuestionAnswers_answers_edges_node {
   __typename: "AnswerType";
   /**
@@ -17,6 +23,7 @@ export interface GetQuestionAnswers_answers_edges_node {
   voteCount: number | null;
   userVote: string | null;
   created: any;
+  user: GetQuestionAnswers_answers_edges_node_user;
 }
 
 export interface GetQuestionAnswers_answers_edges {

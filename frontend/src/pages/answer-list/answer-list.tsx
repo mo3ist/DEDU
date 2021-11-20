@@ -6,6 +6,9 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { useParams } from "react-router";
 import AnswerListItem from "./answer-list-item";
 import { GetQuestionAnswers } from "./__generated__/GetQuestionAnswers";
+import classNames from "classnames";
+import AnswerCreationPage from "../answer-creation-page/answer-creation-page";
+import AnswerEdit from "../answer-edit/answer-edit";
 
 interface Props {
 	questionId: string
@@ -21,6 +24,10 @@ const GET_QUESTION_ANSWERS = gql `
 					voteCount
 					userVote
 					created
+					user {
+						name
+						profilePicture
+					}
 				}
 			}
 			pageInfo {
@@ -37,7 +44,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 
 	const FIRST = 10;
 	const [ after, setAfter ] = useState<String>(""); 
-
+	
 	const course_Code = useParams<{ course: string }>().course
 	
 	const [getQnAs, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQuestionAnswers>(GET_QUESTION_ANSWERS, {
@@ -45,8 +52,11 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 			first: FIRST,
 			after: after,
 			questionId: questionId
- 		}
+		}
 	});
+
+	const [ creation, setCreation ] = useState<boolean>(false); 
+	const [editableAnswerId, setEditableAnswerId] = useState("")
 
 	useEffect(() => {
 		getQnAs()
@@ -54,56 +64,76 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 
 	return (
 		<div
-			className="h-full w-full text-secondary bg-secondary-100"
+			className="h-full w-full text-secondary rtl"
 		>		
 			<div
-					className="rtl border-b border-primary mb-1"
+				className="rtl border-b border-primary mb-1"
+			>
+				<p
+					className="text-2xl font-semibold text-primary mb-1"
 				>
-					<p
-						className="text-2xl font-semibold text-primary mb-1"
-					>
-						الإجابات
-					</p>
-				</div>
+					الإجابات
+				</p>
+			</div>
 			<div
-				className="grid grid-cols-1"
+				className="h-20 bg-secondary-200 mb-8 rounded-b-lg flex flex-row items-center justify-start pr-4"
+			>
+				<button
+					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
+					onClick={() => {
+						setCreation(true)
+					}}
+				>
+					إضافة إجابة
+				</button>
+			</div>
+			<div
+				className="grid grid-cols-1 gap-8"
 			>
 				<div
-					className="grid grid-cols-1 gap-4"
+					className="grid grid-cols-1 gap-8"
 				>
+					{creation && 
+						<div
+
+						>
+							<AnswerCreationPage questionId={questionId}/>
+						</div>
+					}
 					{data?.answers?.edges.map(edge => {
 						return (
 							edge && <div
-								// className=""
+								className="rounded-lg overflow-hidden grid grid-cols-1"
 							>
-								<AnswerListItem answer={edge.node!} />
 								<div
-									className="w-full flex flex-col items-center"
+									className="w-full"
 								>
-									<div className="border-b border-secondary-200 w-1/2"></div>
+									<button
+										className="bg-primary-100 py-1 px-2 rounded-t-lg"
+										onClick={() => {
+											setEditableAnswerId(edge.node?.id!)	
+										}}
+									>
+										تعديل
+									</button>
 								</div>
+								{editableAnswerId !== edge.node?.id ? 
+									<AnswerListItem answer={edge.node!} /> :
+									<AnswerEdit answerId={edge.node.id}/>
+								} 
 							</div> 
 						)
 					})}
 				</div>
+				{data?.answers?.edges.length! > 0 && 
+					
+					<button
+						className={classNames("rounded-lg h-20 w-full bg-primary rounded-sm font-semid text-3xl", {"opacity-50 cursor-not-allowed": !data?.answers?.pageInfo.hasNextPage})}
+						disabled={!data?.answers?.pageInfo.hasNextPage}
+					>
+						المزيد
+					</button>
 
-				{data?.answers?.pageInfo.hasNextPage ? <button
-					className="h-20 w-full bg-primary rounded-sm font-semid text-3xl"
-					onClick={() => {
-						fetchMore!({
-							variables: {
-								after: data?.answers?.pageInfo.endCursor
-							}
-						})
-					}}
-				>
-					المزيد
-				</button> : 
-				<button
-					className="h-20 w-full bg-primary rounded-sm font-semid text-3xl opacity-50 cursor-not-allowed"
-				>
-					المزيد
-				</button>
 				}
 			</div>
 		</div>

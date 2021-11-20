@@ -220,7 +220,6 @@ class Question(models.Model):
 
 class Answer(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
-	title = models.CharField(max_length=500, null=True, blank=True)
 	body = models.CharField(max_length=5000)
 	votes = GenericRelation(Vote, related_query_name="answer")
 	attachments = GenericRelation(Attachment, related_query_name="answer")
@@ -230,7 +229,7 @@ class Answer(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return self.title
+		return str(self.id)
 
 class Quiz(models.Model):
 	title = models.CharField(max_length=500, null=True, blank=True)
