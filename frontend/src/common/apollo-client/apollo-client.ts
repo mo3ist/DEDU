@@ -173,12 +173,13 @@ const cache = new InMemoryCache({
 	}
 })
 
-const waitForCache = async () => await persistCache({
-	cache,
-	storage: new LocalStorageWrapper(window.localStorage),
-  });  
+// TODO: Solve the cache bugs first :') 
+// const waitForCache = async () => await persistCache({
+// 	cache,
+// 	storage: new LocalStorageWrapper(window.localStorage),
+//   });  
 
-waitForCache()
+// waitForCache()
 
 const apolloClient = new ApolloClient({
 	cache,

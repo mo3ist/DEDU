@@ -404,6 +404,7 @@ class CreateQuestion(AuthMutation, graphene.relay.ClientIDMutation):
 			if question_serializer.is_valid():
 				question = question_serializer.save()
 				return CreateQuestion(question=question)
+			print(question_serializer.errors)
 			raise Exception("Not valid.")
 		return CreateQuestion(question=None)
 

@@ -20,12 +20,13 @@ class Mod(MPTTModel):
 	]
 
 	state = models.CharField(choices=STATE, max_length=8, default=PENDING)
-	by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+	by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name="mod_by")
 	date = models.DateTimeField(auto_now=True)
 	reason = models.CharField(max_length=1000, null=True, blank=True)
 	parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 	group_id = models.PositiveIntegerField(blank=True, null=True)
 	history = models.BooleanField(default=False)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 	@staticmethod
 	def create_child_mod(parent_mod):
@@ -33,6 +34,7 @@ class Mod(MPTTModel):
 		if parent_mod:
 			mod_leafnodes = parent_mod.get_leafnodes()
 			if mod_leafnodes:
+				# for replacement
 				mod.parent = mod_leafnodes[0]
 			else:
 				mod.parent = parent_mod

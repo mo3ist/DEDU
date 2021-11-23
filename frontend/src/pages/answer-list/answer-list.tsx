@@ -81,7 +81,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				<button
 					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
 					onClick={() => {
-						setCreation(true)
+						setCreation(!creation)
 					}}
 				>
 					إضافة إجابة
@@ -111,7 +111,8 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 									<button
 										className="bg-primary-100 py-1 px-2 rounded-t-lg"
 										onClick={() => {
-											setEditableAnswerId(edge.node?.id!)	
+											// toggle
+											setEditableAnswerId(edge.node?.id! !== editableAnswerId ? edge.node?.id! : "") 
 										}}
 									>
 										تعديل

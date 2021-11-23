@@ -5,6 +5,44 @@ from graphql_relay.node.node import from_global_id
 
 from core import models 
 
+class ModSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = models.Mod
+		fields = ("id", "state", "date", "reason", "parent", "group_id", "history", "user")
+
+	id = serializers.CharField(required=False)
+
+	# CharField cause it'll be passed down from Relay as a GlobalID
+	parent = serializers.CharField(required=False)		
+
+	def validate_parent(self, value):
+		"Get the Mod.parent instance from Relay GlobalID"
+
+		django_id = from_global_id(value)[1]
+		try: 
+			mod = models.Mod.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Mod' instance doesn't exist.")
+		return mod
+
+	def create(self, validated_data):
+		
+		# Since the user field's validation depends upon another field that needs to
+		# be validated, the logic is preferred to be here.
+		parent = validated_data.get("parent", None)
+		user = validated_data["user"]
+		if parent:
+			if parent.user != user:
+				raise serializers.ValidationError("Not authorized!")
+
+		mod = models.Mod.objects.create(
+			**validated_data
+		)
+
+		return mod
+
+
+
 class AttachmentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Attachment
@@ -83,28 +121,6 @@ class QuestionSerializer(serializers.ModelSerializer):
 	)
 	mod = serializers.CharField(required=False)
 
-	def validate_mod(self, value):
-		"Get the Mod instance from Relay GlobalID"
-		
-		django_id = from_global_id(value)[1]
-		try: 
-			mod = models.Mod.objects.get(id=django_id)
-		except:
-			raise serializers.ValidationError("'Mod' instance doesn't exist.")
-		return mod
-
-	def create(self, validated_data):
-		tag_set = validated_data.pop("tag_set", [])
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
-		question = models.Question.objects.create(mod=mod, **validated_data)
-		for tag in tag_set:
-			try:
-				tag = models.Tag.objects.get(id=tag)
-			except:
-				raise Exception("error")
-			tag.contents.add(question)
-		return question
-
 	def validate_course(self, value):
 		try:
 			course = models.Course.objects.get(code=value)
@@ -115,23 +131,43 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
 		user = validated_data["user"]
-		question = models.Question.objects.create(mod=mod, **validated_data)
-		for tag in tag_set:
-			try:
-				tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
-			except models.Tag.DoesNotExist:
-				tag = models.Tag.objects.create(
-					title=tag,
-					body="",
-					course=validated_data["course"],
-					user=user,
-					mod=models.Mod.objects.create(),
-					tag_type=models.Tag.TAG_TYPE.CONCEPT
-				)
-			tag.contents.add(question)
-			
+		
+		# This extra step is for https://github.com/encode/django-rest-framework/issues/2203
+		# allow_blank=True didn't solve it.
+		mod_serializer_data = {
+			"user": user.id
+		} 
+		parent = validated_data.pop("mod", None)
+		if parent:
+			mod_serializer_data["parent"] = parent
+		mod_serializer = ModSerializer(data=mod_serializer_data)
+
+		if mod_serializer.is_valid():
+			mod = mod_serializer.save()
+			question = models.Question.objects.create(mod=mod, **validated_data)
+			for tag in tag_set:
+				try:
+					tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
+				except models.Tag.DoesNotExist:
+					tag_mod_serializer = ModSerializer(data={
+						"user": user.id
+					})
+					if tag_mod_serializer.is_valid():
+						tag_mod = tag_mod_serializer.save()
+						tag = models.Tag.objects.create(
+							title=tag,
+							body="",
+							course=validated_data["course"],
+							user=user,
+							mod=tag_mod,
+							tag_type=models.Tag.TAG_TYPE.CONCEPT
+						)
+					else:
+						raise Exception("'Tag' Not valid.")
+				tag.contents.add(question)
+		else:
+			raise Exception("'Mod' Not valid.")
 		return question
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -166,26 +202,45 @@ class AnswerSerializer(serializers.ModelSerializer):
 			raise serializers.ValidationError("'Question' instance doesn't exist.")
 		return question
 
-	def validate_mod(self, value):
-		"Get the Mod instance from Relay GlobalID"
-		
-		django_id = from_global_id(value)[1]
-		try: 
-			mod = models.Mod.objects.get(id=django_id)
-		except:
-			raise serializers.ValidationError("'Mod' instance doesn't exist.")
-		return mod
-
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
-		answer = models.Answer.objects.create(mod=mod, **validated_data)
-		for tag in tag_set:
-			try:
-				tag = models.Tag.objects.get(id=tag)
-			except:
-				raise Exception("error")
-			tag.contents.add(answer)
+		user = validated_data["user"]
+		
+		# This extra step is for https://github.com/encode/django-rest-framework/issues/2203
+		# allow_blank=True didn't solve it.
+		mod_serializer_data = {
+			"user": user.id
+		} 
+		parent = validated_data.pop("mod", None)
+		if parent:
+			mod_serializer_data["parent"] = parent
+		mod_serializer = ModSerializer(data=mod_serializer_data)
+
+		if mod_serializer.is_valid():
+			mod = mod_serializer.save()
+			answer = models.Answer.objects.create(mod=mod, **validated_data)
+			for tag in tag_set:
+				try:
+					tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
+				except models.Tag.DoesNotExist:
+					tag_mod_serializer = ModSerializer(data={
+						"user": user.id
+					})
+					if tag_mod_serializer.is_valid():
+						tag_mod = tag_mod_serializer.save()
+						tag = models.Tag.objects.create(
+							title=tag,
+							body="",
+							course=validated_data["course"],
+							user=user,
+							mod=tag_mod,
+							tag_type=models.Tag.TAG_TYPE.CONCEPT
+						)
+					else:
+						raise Exception("'Tag' Not valid.")
+				tag.contents.add(answer)
+		else:
+			raise Exception("'Mod' Not valid.")
 		return answer
 
 class QuizSerializer(serializers.ModelSerializer):
@@ -200,26 +255,46 @@ class QuizSerializer(serializers.ModelSerializer):
 	)
 	mod = serializers.CharField(required=False)
 
-	def validate_mod(self, value):
-		"Get the Mod instance from Relay GlobalID"
-		
-		django_id = from_global_id(value)[1]
-		try: 
-			mod = models.Mod.objects.get(id=django_id)
-		except:
-			raise serializers.ValidationError("'Mod' instance doesn't exist.")
-		return mod
-
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
-		quiz = models.Quiz.objects.create(mod=mod, **validated_data)
-		for tag in tag_set:
-			try:
-				tag = models.Tag.objects.get(id=tag)
-			except:
-				raise Exception("error")
-			tag.contents.add(quiz)
+		user = validated_data["user"]
+
+		# This extra step is for https://github.com/encode/django-rest-framework/issues/2203
+		# allow_blank=True didn't solve it.
+		mod_serializer_data = {
+			"user": user.id
+		} 
+		parent = validated_data.pop("mod", None)
+		if parent:
+			mod_serializer_data["parent"] = parent
+		mod_serializer = ModSerializer(data=mod_serializer_data)
+
+		if mod_serializer.is_valid():
+			mod = mod_serializer.save()
+			quiz = models.Quiz.objects.create(mod=mod, **validated_data)
+			for tag in tag_set:
+				try:
+					tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
+				except models.Tag.DoesNotExist:
+					tag_mod_serializer = ModSerializer(data={
+						"user": user.id
+					})
+					if tag_mod_serializer.is_valid():
+						tag_mod = tag_mod_serializer.save()
+						tag = models.Tag.objects.create(
+							title=tag,
+							body="",
+							course=validated_data["course"],
+							user=user,
+							mod=tag_mod,
+							tag_type=models.Tag.TAG_TYPE.CONCEPT
+						)
+					else:
+						raise Exception("'Tag' Not valid.")
+				tag.contents.add(quiz)
+		else:
+			raise Exception("'Mod' Not valid.")
+
 		return quiz
 
 class ResourceSerializer(serializers.ModelSerializer):
@@ -236,16 +311,6 @@ class ResourceSerializer(serializers.ModelSerializer):
 	attachment_set = NestedAttachmentSerializer(many=True, required=False)	# Used for nested attachment creation (just the needed fields)
 	mod = serializers.CharField(required=False)
 
-	def validate_mod(self, value):
-		"Get the Mod instance from Relay GlobalID"
-		
-		django_id = from_global_id(value)[1]
-		try: 
-			mod = models.Mod.objects.get(id=django_id)
-		except:
-			raise serializers.ValidationError("'Mod' instance doesn't exist.")
-		return mod
-
 	def validate_course(self, value):
 		try:
 			course = models.Course.objects.get(code=value)
@@ -257,24 +322,43 @@ class ResourceSerializer(serializers.ModelSerializer):
 	def create(self, validated_data):
 		# attachment_set = validated_data.pop("attachment_set", [])
 		tag_set = validated_data.pop("tag_set", [])
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
 		user = validated_data["user"]
-		resource = models.Resource.objects.create(mod=mod, **validated_data)
-		
-		for tag in tag_set:
-			try:
-				tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
-			except models.Tag.DoesNotExist:
-				tag = models.Tag.objects.create(
-					title=tag,
-					body="",
-					course=validated_data["course"],
-					user=user,
-					mod=models.Mod.objects.create(),
-					tag_type=models.Tag.TAG_TYPE.CONCEPT
-				)
-			tag.contents.add(resource)
-		
+
+		# This extra step is for https://github.com/encode/django-rest-framework/issues/2203
+		# allow_blank=True didn't solve it.
+		mod_serializer_data = {
+			"user": user.id
+		} 
+		parent = validated_data.pop("mod", None)
+		if parent:
+			mod_serializer_data["parent"] = parent
+		mod_serializer = ModSerializer(data=mod_serializer_data)
+		if mod_serializer.is_valid():
+			mod = mod_serializer.save()
+			resource = models.Resource.objects.create(mod=mod, **validated_data)
+
+			for tag in tag_set:
+				try:
+					tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
+				except models.Tag.DoesNotExist:
+					tag_mod_serializer = ModSerializer(data={
+						"user": user.id
+					})
+					if tag_mod_serializer.is_valid():
+						tag_mod = tag_mod_serializer.save()
+						tag = models.Tag.objects.create(
+							title=tag,
+							body="",
+							course=validated_data["course"],
+							user=user,
+							mod=tag_mod,
+							tag_type=models.Tag.TAG_TYPE.CONCEPT
+						)
+					else:
+						raise Exception("'Tag' Not valid.")
+				tag.contents.add(resource)
+		else:
+			raise Exception("'Mod' Not valid.")
 		return resource
 
 class SummarySerializer(serializers.ModelSerializer):
@@ -290,16 +374,6 @@ class SummarySerializer(serializers.ModelSerializer):
 	)
 	mod = serializers.CharField(required=False)
 
-	def validate_mod(self, value):
-		"Get the Mod instance from Relay GlobalID"
-
-		django_id = from_global_id(value)[1]
-		try: 
-			mod = models.Mod.objects.get(id=django_id)
-		except:
-			raise serializers.ValidationError("'Mod' instance doesn't exist.")
-		return mod
-
 	def validate_course(self, value):
 		try:
 			course = models.Course.objects.get(code=value)
@@ -310,23 +384,43 @@ class SummarySerializer(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])
-		mod = models.Mod.create_child_mod(validated_data.pop("mod", None))
 		user = validated_data["user"]
-		summary = models.Summary.objects.create(mod=mod, **validated_data)
-		for tag in tag_set:
-			try:
-				tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
-			except models.Tag.DoesNotExist:
-				tag = models.Tag.objects.create(
-					title=tag,
-					body="",
-					course=validated_data["course"],
-					user=user,
-					mod=models.Mod.objects.create(),
-					tag_type=models.Tag.TAG_TYPE.CONCEPT
-				)
-			tag.contents.add(summary)
-			
+		
+		# This extra step is for https://github.com/encode/django-rest-framework/issues/2203
+		# allow_blank=True didn't solve it.
+		mod_serializer_data = {
+			"user": user.id
+		} 
+		parent = validated_data.pop("mod", None)
+		if parent:
+			mod_serializer_data["parent"] = parent
+		mod_serializer = ModSerializer(data=mod_serializer_data)
+
+		if mod_serializer.is_valid():
+			mod = mod_serializer.save()
+			summary = models.Summary.objects.create(mod=mod, **validated_data)
+			for tag in tag_set:
+				try:
+					tag = models.Tag.objects.get(title=tag, course=validated_data["course"])
+				except models.Tag.DoesNotExist:
+					tag_mod_serializer = ModSerializer(data={
+						"user": user.id
+					})
+					if tag_mod_serializer.is_valid():
+						tag_mod = tag_mod_serializer.save()
+						tag = models.Tag.objects.create(
+							title=tag,
+							body="",
+							course=validated_data["course"],
+							user=user,
+							mod=tag_mod,
+							tag_type=models.Tag.TAG_TYPE.CONCEPT
+						)
+					else:
+						raise Exception("'Tag' Not valid.")
+				tag.contents.add(summary)
+		else:
+			raise Exception("'Mod' Not valid.")
 		return summary
 
 class VoteSerializer(serializers.ModelSerializer):
