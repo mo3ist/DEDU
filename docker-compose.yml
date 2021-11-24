@@ -1,0 +1,23 @@
+version: "3.8"
+services: 
+    backend:
+        build: 
+            context: .
+            dockerfile: ./Dockerfile-backend
+        container_name: django
+        command: python manage.py runserver 0.0.0.0:8000
+        ports:
+          - "8000:8000"
+        environment:
+          - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=${SOCIAL_AUTH_GOOGLE_OAUTH2_KEY}
+          - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=${SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET}
+    frontend:
+        build: 
+            context: .
+            dockerfile: ./Dockerfile-frontend
+        container_name: react
+        command: npm start
+        ports:
+          - "3000:3000"
+        environment:
+          - REACT_APP_IMGBB_API_KEY=${REACT_APP_IMGBB_API_KEY}

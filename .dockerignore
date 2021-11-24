@@ -1,0 +1,6 @@
+./backend/.ipynb_checkpoints
+./backend/*.ipynb
+./backend/venv
+
+./frontend/node_modules
+./frontend/.env
