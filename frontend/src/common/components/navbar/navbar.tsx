@@ -50,7 +50,7 @@ const Navbar: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="h-16 bg-secondary-100 w-full fixed z-10 flex flex-row items-center rtl p-1 text-secondary text-2xl gap-1 shadow-sm border-b-2 border-secondary"
+			className="h-16 bg-secondary-100 w-full fixed z-20 flex flex-row items-center rtl p-1 text-secondary text-2xl gap-1 shadow-sm border-b-2 border-secondary"
 		>
 			<div
 				className="nav-container justify-start"

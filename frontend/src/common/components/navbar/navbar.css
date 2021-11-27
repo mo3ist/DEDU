@@ -8,7 +8,7 @@
 	}
 
 	.nav-item {
-		@apply w-28 flex items-center justify-center
+		@apply flex items-center justify-center 
 	}
 
 	.nav-item-active {
@@ -28,6 +28,6 @@
 	}
 
 	.nav-container {
-		@apply h-full flex-grow flex flex-row items-center
+		@apply h-full flex-grow flex flex-row items-center gap-6
 	}
 }

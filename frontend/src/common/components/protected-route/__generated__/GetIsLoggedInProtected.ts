@@ -7,9 +7,14 @@
 // GraphQL query operation: GetIsLoggedInProtected
 // ====================================================
 
+export interface GetIsLoggedInProtected_users_currentUser {
+  __typename: "CurrentUser";
+  id: string;
+}
+
 export interface GetIsLoggedInProtected_users {
   __typename: "UserTypeConnection";
-  isLoggedIn: boolean;
+  currentUser: GetIsLoggedInProtected_users_currentUser | null;
 }
 
 export interface GetIsLoggedInProtected {

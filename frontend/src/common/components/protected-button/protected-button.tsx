@@ -13,7 +13,9 @@ interface Props{
 const GET_ISLOGGEDIN = gql`
 	query GetIsLoggedIn{
 		users {
-			isLoggedIn @client
+			currentUser @client {
+				id
+			} 
 		}
 	}
 `
@@ -30,7 +32,7 @@ const ProtectedButton: React.FC<Props> = ({ onClick, children, className }) => {
 				className={className}
 				onClick={(event) => {
 					// Check auth
-					data?.users?.isLoggedIn! ? onClick(event) : history.push("/auth")
+					data?.users?.currentUser?.id.length !== 0 ? onClick(event) : history.push("/auth")
 				}}
 			>
 				{children}

@@ -1,5 +1,11 @@
+type CurrentUser {
+	id: String!
+	name: String!
+	profilePicture: String!
+}
+
 extend type UserTypeConnection {
-	isLoggedIn: Boolean!
+	currentUser: CurrentUser
 }
 
 type CurrentCourse {

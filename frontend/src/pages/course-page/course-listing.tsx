@@ -61,7 +61,7 @@ export const CourseListing: React.FC<Props> = ({ setActiveClsfnId, setActiveCour
 
 	return (
 		<div
-			className="flex flex-row-reverse"
+			className="flex flex-row-reverse gap-2"
 		>
 			<div
 				className="clsfn-btn-container"
@@ -85,7 +85,7 @@ export const CourseListing: React.FC<Props> = ({ setActiveClsfnId, setActiveCour
 				})}
 			</div>	
 			<div
-				className="border-r-4 border-secondary-100 w-3/6 clsfn-btn-container"
+				className="w-3/6 clsfn-btn-container"
 			>
 				{data?.classifications?.edges?.filter(edge => edge?.node?.id === currentClassification?.id).map(edge => {
 					return edge?.node?.courses?.edges?.map(edge => {

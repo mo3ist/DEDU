@@ -4,6 +4,13 @@ import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 const httpLink = new HttpLink({ uri: 'http://localhost:8000/graphql/' });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
+	
+	// !IMPORTANT: 
+	// NOTE:
+	// This fucker right here cause a HUGE bug that would've taken my hours if not even days to find.
+	// You see, 'graphene_jwt' authenticates with HTTP authorization header, however, 'graphene social auth'
+	// authenticates with a mutation. So, if a new user is created without the authorization header getting removed, it will OVERWRITE
+	// the previous user with the newly loggen in one! because the authorization header comes first.  
 	const token = localStorage.getItem("accessToken");
 
 	// TODO: Stop the request from going forward
@@ -28,9 +35,9 @@ const cache = new InMemoryCache({
 	typePolicies: {
 		UserTypeConnection: {
 			fields: {
-				isLoggedIn: {
+				currentUser: {
 					read(_, { variables }) {
-						return localStorage.getItem("accessToken") !== null;
+						return currentUserVar();
 					}
 				}
 			}
@@ -189,9 +196,13 @@ const apolloClient = new ApolloClient({
 	]),
 });
 
+export type CurrentUser = {
+	id: string;
+	name: string;
+	profilePicture: string;
+}
 
-type isLoggedInType = boolean;
-export const isLoggedIn = makeVar<isLoggedInType>(false);
+export const currentUserVar = makeVar<CurrentUser | null>(JSON.parse(localStorage.getItem("currentUserVar")!)) 
 
 export type CurrentCourse = {
 	id: string;

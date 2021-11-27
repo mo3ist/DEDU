@@ -29,7 +29,7 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 	const [options, setOptions] = useState([content?.a! || "", content?.b! || "", content?.c! || "", content?.d! || ""])
 	const [answer, setAnswer] = useState(content?.answer! || "")
 
-	const [validForm, setValidForm] = useState<boolean>(false)
+	const [validForm, setValidForm] = useState<boolean>(true)
 
 	const editor = useRef<JoditEditor>(null)
 

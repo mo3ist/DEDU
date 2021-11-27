@@ -66,7 +66,7 @@ const QuizListing: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="text-secondary p-8 rtl"
+			className="text-secondary py-4 px-48 rtl grid grid-cols-1 gap-8"
 		>
 			{!started && <><TagSearch 
 				courseCode={currentCourse?.code!}
@@ -74,7 +74,7 @@ const QuizListing: React.FC<Props> = () => {
 				tags={tags}
 			/>
 			<button
-				className={classname("h-20 w-full bg-secondary-200 rounded-b-sm font-semid text-3xl", {"opacity-50 cursor-not-allowed": tags?.length === 0})}
+				className={classname("rounded-lg h-20 w-full bg-primary font-semid text-3xl", {"opacity-50 cursor-not-allowed": tags?.length === 0})}
 				onClick={() => {
 					if(data?.quizzes?.edges.length! > 0) {
 						setStarted(true)

@@ -60,7 +60,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 
 	return (
 		<div
-			className="flex flex-col h-36 w-full items-center justify-center text-secondary border-2 border-secondary-200"
+			className="flex flex-col h-36 w-full items-center justify-center text-secondary border-2 border-secondary-200 rounded-lg"
 		>
 			{/* Wrapper for design (bg-color) */}
 			<div
@@ -204,15 +204,17 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 					</div>
 				</div>
 				<div
-					className="h-2/3 w-full relative bg-secondary-100"
+					className="h-2/3 w-full relative bg-secondary-100 rounded-b-lg overflow-hidden"
 				>
 					<button
-						className="absolute bg-primary-100 w-10 h-10 shadow-md rounded-br-md"
+						className="absolute bg-primary w-10 h-10 shadow-md rounded-br-md flex items-center justify-center"
 						onClick={() => {
 							setTags([])
 						}}
 					>
-						x
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+							<path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+						</svg>
 					</button>
 					<div
 						className="flex-grow flex flex-row justify-end gap-4 p-4 flex-wrap overflow-y-scroll h-full"
@@ -234,12 +236,14 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 										{tag}
 									</p>
 									<button
-										className="text-secondary bg-primary-100 w-6 rounded-full"	
+										className="text-secondary bg-primary-100 w-6 p-1 rounded-full"	
 										onClick={() => {
 											setTags(tags?.filter(item => item !== tag))
 										}}
 									>
-										x
+										<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+											<path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+										</svg>
 									</button>
 								</div>
 							)

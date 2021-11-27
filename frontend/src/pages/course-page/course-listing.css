@@ -8,7 +8,7 @@
 	}
 
 	.clsfn-btn-selected {
-		@apply py-2 px-2 text-secondary bg-secondary-100
+		@apply py-2 px-2 text-secondary bg-secondary-100 rounded-lg
 	}
 
 	.course-btn {
@@ -16,7 +16,7 @@
 	}
 
 	.course-btn-selected {
-		@apply py-2 px-2 text-secondary bg-secondary-100 rounded-l-full
+		@apply py-2 px-2 text-secondary bg-secondary-100 rounded-lg
 	}
 
 	.clsfn-btn-container {

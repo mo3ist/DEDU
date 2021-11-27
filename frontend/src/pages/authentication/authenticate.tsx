@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import GoogleLogin from "react-google-login"
 import  { gql, useMutation } from "@apollo/client"
 import { GetSocialUserData } from "./__generated__/GetSocialUserData"
+import { currentUserVar } from "../../common/apollo-client/apollo-client"
 
 interface Props {
 
@@ -22,7 +23,7 @@ const GET_SOCIAL_USER_DATA = gql`
 				user {
 					id
 					name
-					email
+					# email
 					profilePicture
 				}
 			}
@@ -34,7 +35,18 @@ const Authenticate: React.FC<Props> = () => {
 
 	const [getAccessToken, { loading, error, data }] = useMutation<GetSocialUserData>(GET_SOCIAL_USER_DATA, {
 		onCompleted: (data) => {
+			// Save the access token
 			localStorage.setItem("accessToken", data.socialAuth?.token!);
+			
+			// Save the user data
+			const user = data.socialAuth?.social?.user
+			const currentUserData = {
+				id: user?.id!,
+				name: user?.name!,
+				profilePicture: user?.profilePicture!
+			} 
+			currentUserVar(currentUserData)
+			localStorage.setItem("currentUserVar", JSON.stringify(currentUserData));
 		}
 	}) 
 
@@ -72,6 +84,7 @@ const Authenticate: React.FC<Props> = () => {
 								profilePicture: profilePicture 
 							}
 						})
+						console.log(data)
 					}}
                     onFailure={(e) => {console.log(e)}} 
                     cookiePolicy={'single_host_origin'}

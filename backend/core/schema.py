@@ -96,6 +96,8 @@ class QuestionFilter(django_filters.FilterSet):
 
 	@property
 	def qs(self):
+		print(self.data)
+
 
 		# This is a hack to prevent unexpected duplications
 		return super().qs.distinct()

@@ -3,8 +3,9 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
 import QnAListItem from "./qna-list-item";
 import { GetQnAs } from "./__generated__/GetQnAs";
-import { useParams } from "react-router";
+import { Redirect, useHistory, useParams } from "react-router";
 import GenericListItem from "../../common/components/generic-list/generic-list-item";
+import classNames from "classnames";
 
 interface Props {
 	tags: Array<String> | null
@@ -50,13 +51,13 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 	const FIRST = 10;
 	const [ after, setAfter ] = useState<String>(""); 
 
-	const course_Code = useParams<{ course: string }>().course
+	const courseCode = useParams<{ course: string }>().course
 	const [getQnAs, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQnAs>(GET_QNAS, {
 		variables: {
 			first: FIRST,
 			after: after,
 			tag_Title: tags?.join(","),
-			course_Code: course_Code
+			course_Code: courseCode
 		}
 	});
 
@@ -64,10 +65,27 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 		getQnAs()
 	}, [])
 
+	const history = useHistory()
+
 	return (
 		<div
-			className="h-full w-full text-secondary"
-		>		
+			className="h-full w-full text-secondary rtl"
+		>	
+			<div
+				className="w-full h-20 bg-secondary-200 mb-8 rounded-b-lg flex flex-row items-center justify-start px-4"
+			>
+				<button
+					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
+					onClick={() => {
+						history.push(`/courses/${courseCode}/question/create/`)
+					}}
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
+						<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+					</svg>
+					إضافة سؤال
+				</button>
+			</div>
 			<div
 				className="grid grid-cols-1 gap-8"
 			>
@@ -82,23 +100,15 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 					)
 				})}
 
-				{data?.questions?.pageInfo.hasNextPage ? <button
-					className="h-20 w-full bg-primary rounded-sm font-semid text-3xl"
-					onClick={() => {
-						fetchMore!({
-							variables: {
-								after: data?.questions?.pageInfo.endCursor
-							}
-						})
-					}}
-				>
-					المزيد
-				</button> : 
-				<button
-					className="h-20 w-full bg-primary rounded-sm font-semid text-3xl opacity-50 cursor-not-allowed"
-				>
-					المزيد
-				</button>
+				{data?.questions?.edges.length! > FIRST && 
+					
+					<button
+						className={classNames("rounded-lg h-20 w-full bg-primary rounded-sm font-semid text-3xl", {"opacity-50 cursor-not-allowed": !data?.questions?.pageInfo.hasNextPage})}
+						disabled={!data?.questions?.pageInfo.hasNextPage}
+					>
+						المزيد
+					</button>
+
 				}
 			</div>
 		</div>

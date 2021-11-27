@@ -91,12 +91,12 @@ export const ContentListing: React.FC<Props> = ({ activeCourseId: activeCourseId
 
 	return (
 		<div
-			className="grid grid-cols-2 gap-8 rtl-grid h-full "
+			className="grid grid-cols-2 gap-8 h-full rtl"
 		>
 			{contents.map(content => {
 				return (
 					<div
-						className="h-full bg-primary p-4"
+						className="h-48 bg-primary p-4 rounded-lg"
 					>
 						<Link to={content.url}>
 						<div

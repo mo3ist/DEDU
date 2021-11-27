@@ -39,7 +39,7 @@ export const CoursePage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-row h-full gap-8 text-secondary"
+			className="flex flex-row h-full gap-8 text-secondary p-8"
 		>
 			<div
 				className="flex flex-col flex-grow w-2/3 gap-8"

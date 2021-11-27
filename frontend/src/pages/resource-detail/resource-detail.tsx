@@ -52,13 +52,17 @@ const ResourceDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="relative"
+			className="relative my-8 mx-48"
 		>
 			{loading && <Loading />}
 
-			<GenericDetail
-				content={resource!}
-			/>
+			<div
+				className="rounded-lg overflow-hidden"
+			>
+				<GenericDetail
+					content={resource!}
+				/>
+			</div>
 		</div>
 	)
 }

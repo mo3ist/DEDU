@@ -11,7 +11,9 @@ type Props = {
 const GET_ISLOGGEDIN = gql`
 	query GetIsLoggedInProtected{
 		users {
-			isLoggedIn @client
+			currentUser @client {
+				id
+			}
 		}
 	}
 `
@@ -29,7 +31,7 @@ const ProtectedRoute = ({ ...props } : Props) => {
 			</div>
 		) 
 	} else {
-		if (data?.users?.isLoggedIn) {
+		if (data?.users?.currentUser?.id.length !== 0) {
 			return <Route {...props} />
 		} else {
 			return <Redirect to={"/auth"} />

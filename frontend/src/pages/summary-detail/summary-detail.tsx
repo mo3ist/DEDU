@@ -52,13 +52,17 @@ const SummaryDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="relative"
+			className="relative my-8 mx-48"
 		>
 			{loading && <Loading />}
 
-			<GenericDetail
-				content={summary!}
-			/>
+			<div
+				className="rounded-lg overflow-hidden"
+			>
+				<GenericDetail
+					content={summary!}
+				/>
+			</div>
 		</div>
 	)
 }

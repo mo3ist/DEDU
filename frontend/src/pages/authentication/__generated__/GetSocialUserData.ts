@@ -14,7 +14,6 @@ export interface GetSocialUserData_socialAuth_social_user {
    */
   id: string;
   name: string | null;
-  email: string;
   profilePicture: string | null;
 }
 
