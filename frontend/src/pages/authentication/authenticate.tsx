@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import GoogleLogin from "react-google-login"
 import  { gql, useMutation } from "@apollo/client"
 import { GetSocialUserData } from "./__generated__/GetSocialUserData"
 import { currentUserVar } from "../../common/apollo-client/apollo-client"
+import { useHistory } from "react-router"
 
 interface Props {
 
@@ -47,14 +48,26 @@ const Authenticate: React.FC<Props> = () => {
 			} 
 			currentUserVar(currentUserData)
 			localStorage.setItem("currentUserVar", JSON.stringify(currentUserData));
+
+			// Redirect
+			history.push('/courses/')
 		}
 	}) 
 
+	const history = useHistory()
+
 	return (
 		<div
-			className="w-full h-full bg-secondary-100 text-secondary grid grid-cols-1 gap-4"
+			className="w-full h-full rtl"
 		>
-			<div>
+			<div 
+				className="mx-48 my-8 bg-secondary-100 text-secondary grid grid-cols-1 gap-4 rounded-lg p-8"
+			>
+				<p
+					className="font-semibold text-xl"
+				>
+					دخول باستخدام جوجل:
+				</p>
 				<GoogleLogin
                     clientId="73120554730-82s2uiknaofet84matprd588r7vabgua.apps.googleusercontent.com"
                     render={props => (

@@ -24,6 +24,7 @@ import LectureDetail from './pages/lecture-detail/lecture-detail';
 import QuizListing from './pages/quiz-listing/quiz-listing';
 import QuizCreationPage from './pages/quiz-creation-page/quiz-creation-page';
 import QuizEdit from './pages/quiz-edit/quiz-edit';
+import Logout from './pages/logout/logout';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -46,6 +47,9 @@ const App: React.FC = () => {
 					<Switch>
 						<Route path="/auth/">
 							<Authenticate />
+						</Route>
+						<Route path="/logout/">
+							<Logout />
 						</Route>
 
 						<Route path="/courses/:course/resource/detail/:id/">

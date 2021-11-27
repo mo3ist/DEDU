@@ -41,7 +41,9 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 
 	return (
 		<div
-			className="h-54 grid grid-cols-1"
+			className={classNames("h-54 grid grid-cols-1", {
+				"border-r border-primary pr-1": currentUser?.name === content?.user.name 
+			})}
 		>
 			{currentUser?.name === content?.user.name && 
 				<div

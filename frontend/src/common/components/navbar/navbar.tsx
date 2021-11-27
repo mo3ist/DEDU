@@ -1,9 +1,9 @@
 import { useReactiveVar } from "@apollo/client"
 import React, { useEffect, useState } from "react"
-import { Link, matchPath, useLocation } from "react-router-dom"
+import { Link, matchPath, useLocation, useHistory } from "react-router-dom"
 import classname from "classnames"
 
-import { currentCourseVar } from "../../apollo-client/apollo-client"
+import { currentCourseVar, currentUserVar } from "../../apollo-client/apollo-client"
 import NavItem from "./nav-item"
 
 import "./navbar.css"
@@ -32,6 +32,9 @@ const Navbar: React.FC<Props> = () => {
 	}
 
 	const location = useLocation()
+
+	const history = useHistory()
+	const currentUser = useReactiveVar(currentUserVar)
 
 	useEffect(() => {
 		if (currentCourse !== null) {
@@ -105,15 +108,40 @@ const Navbar: React.FC<Props> = () => {
 			<div
 				className="nav-container justify-end"
 			>
+				{!currentUser ? 
 				<button
 					className={classname("nav-button", {"active": location.pathname === "/auth"})} 
 				>
 					<Link
 						to="/auth"
 					>
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+						</svg>
 						تسجيل دخول
 					</Link>
-				</button>
+				</button> :
+				<div
+					className="w-full h-full flex items-center justify-end gap-2"
+				>
+					<img
+						className="rounded-full h-full"
+						src={currentUser.profilePicture}
+					/>
+					<button
+						className={classname("nav-button", {"active": location.pathname === "/logout"})} 
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+						</svg>
+						<Link
+							to="/logout"
+						>
+							تسجيل خروج
+						</Link>
+					</button>
+					
+				</div>}
 			</div>
 			
 		</div>

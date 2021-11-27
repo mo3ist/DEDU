@@ -88,7 +88,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						</button>
 
 						{toggleTypesMenu && <div
-							className="absolute bg-primary w-full grid grid-cols-1 gap-2 p-2 justify-center shadow-xl z-10"
+							className="absolute bg-primary w-full grid grid-cols-1 gap-2 p-2 justify-center shadow-xl z-10 rounded-b-lg overflow-hidden"
 						>
 							{types.map((entry, index) => {
 								return (
@@ -135,7 +135,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 							}} 
 						/>
 						{toggleSearch && <div
-							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 h-56"
+							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 h-56 rounded-b-lg overflow-hidden"
 							
 						>
 							{/* Wrapper for scroll */}
