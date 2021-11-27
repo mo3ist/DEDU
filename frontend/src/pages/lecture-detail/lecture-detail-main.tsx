@@ -7,41 +7,83 @@ interface Props {
 }
 
 const LectureDetailMain: React.FC<Props> = ({ lecture }) => {
-	console.log(lecture)
+	const videoAttachment = lecture?.attachmentSet?.edges.filter(edge => edge?.node?.attmType === "VIDEO")[0]?.node
 	return (
 		<div
-			className="bg-secondary-100 rounded-lg px-4 py-2 flex flex-col gap-1 h-full w-full"
+			className="bg-secondary-100 rounded-lg px-4 py-2 flex flex-col gap-4 h-full w-full rtl"
 		>
 			{/* meta */}
 			<div
 				className="w-full flex flex-col items-center justify-center"
 			>
-				<p className="text-2xl">{lecture?.title}</p>
+				<p className="text-2xl border-b border-secondary-200 pb-1">{lecture?.title}</p>
 				{lecture?.teachers?.edges?.map(edge => {
 					return <p>
 						{edge?.node?.title}
 					</p>
 				})}
 			</div>
-			{/* line */}
-			<div
-				className="flex justify-center"
-			>
-				<div className="border-b border-secondary w-5/6"></div>
-			</div>
 			{/* media */}
 			<div
-				className="h-96 bg-secondary-200 rounded-lg"
+				className="h-96 bg-secondary-200 rounded-lg overflow-hidden flex items-center justify-center"
 			>
+				{videoAttachment ? <iframe
+					className="h-full w-full"
+					src={videoAttachment?.url!}
+				>
+				</iframe> :
+				<p
+					className="text-secondary text-lg font-semibold"
+				>
+					لا يتوفر فيديو لهذه المحاضرة.
+				</p>
+				}
+			</div>
+			
+			
+			{/* Other attachments */}
+			<div
+				className="bg-secondary-200 rounded-lg flex flex-col gap-2 p-2"
+			>
+				<p
+					className="text-2xl"
+				>
+					المرفقات
+				</p>
+				{lecture?.attachmentSet?.edges.map(edge => {
+					return (
+						<div
+							className="flex flex-col items-start justify-center gap-2"
+						>
+							{edge?.node?.attmType === "DOCUMENT" && 
+								<a
+									className="w-28 h-28 flex flex-col items-center justify-center bg-secondary-100 p-1 rounded-lg"
+									href={edge.node.url!}
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+									</svg>
+									<p className="w-full truncate">{edge.node?.title}</p>
+								</a>
+							}
+						</div>
+					)
+				})}
+				{lecture?.attachmentSet?.edges.length === 0 && 
+				<p 
+					className="w-full h-full flex items-center justify-center text-secondary text-lg font-semibold 	p-5"
+				>
+					لا يتوفر مرفقات لهذه المحاضرة.
+				</p>}
 
 			</div>
+
 			{/* line */}
-			<div
+			{/* <div
 				className="flex justify-center"
 			>
 				<div className="border-b border-secondary w-5/6"></div>
-			</div>
-
+			</div> */}
 
 			{/* body */}
 			<div>

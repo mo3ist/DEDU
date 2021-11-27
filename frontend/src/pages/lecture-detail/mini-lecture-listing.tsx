@@ -53,19 +53,29 @@ const MiniLectureListing: React.FC<Props> = ({ id, setId }) => {
 			className="h-96 w-full rounded-b-lg overflow-hidden"
 		>
 			<div
-				className="h-full overflow-y-scroll flex flex-col items-center justify-start bg-secondary-100 gap-2 py-2"
+				className="h-full overflow-y-scroll flex flex-col items-center justify-start bg-secondary-100 gap-2 py-2 px-1"
 			>
 				{data?.lectures?.edges.map(edge => {
 					return (
-						<button
-							className={classname({"font-semibold underline text-primary": edge?.node?.id === id})}
-							key={edge?.node?.id}
-							onClick={() => {
-								setId(edge?.node?.id!)
-							}}
+						<div
+							className="w-full grid grid-cols-1 gap-2"
 						>
-							{edge?.node?.title}
-						</button>
+							<button
+								className={classname("w-full truncate", {"font-semibold text-primary": edge?.node?.id === id})}
+								key={edge?.node?.id}
+								onClick={() => {
+									setId(edge?.node?.id!)
+								}}
+							>
+								{edge?.node?.title}
+								
+							</button>
+							<div
+								className="flex justify-center"
+							>
+								<div className="border-b border-secondary-200 w-5/6"></div>
+							</div>
+						</div>
 					)
 				})}
 			</div>

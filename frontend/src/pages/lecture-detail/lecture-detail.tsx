@@ -24,6 +24,7 @@ const GET_DETAILED_LECTURE = gql`
 							node {
 								url
 								attmType
+								title
 							}
 						}
 					}

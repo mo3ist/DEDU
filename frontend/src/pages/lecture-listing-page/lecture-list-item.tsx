@@ -15,7 +15,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 
 	return (
 		<div
-			className="h-54 bg-secondary-100 flex flex-col gap-1 p-1 rtl rounded-sm text-secondary border-2 border-secondary-200"
+			className="h-54 bg-secondary-100 flex flex-col gap-1 p-1 rtl text-secondary border-2 border-secondary-200 rounded-lg"
 		>
 			{/* upper part */}
 			<div

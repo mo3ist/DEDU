@@ -13,6 +13,7 @@ export interface GetDetailedLecture_lectures_edges_node_attachmentSet_edges_node
   __typename: "AttachmentType";
   url: string | null;
   attmType: AttachmentAttmType;
+  title: string;
 }
 
 export interface GetDetailedLecture_lectures_edges_node_attachmentSet_edges {
