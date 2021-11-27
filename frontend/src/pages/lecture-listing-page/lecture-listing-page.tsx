@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useState } from "react"
 import { useParams } from 'react-router-dom'
 
@@ -24,7 +25,7 @@ const LectureListingPage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-col h-full p-4 gap-8 px-48 rtl"
+			className="flex flex-col h-full p-4 gap-8 px-48 rtl text-secondary"
 		>
 			<div
 				className="w-full"
@@ -39,10 +40,10 @@ const LectureListingPage: React.FC<Props> = () => {
 					</p>
 				</div>
 				<div
-					className="flex flex-row bg-secondary-100 p-4 gap-2"
+					className="h-20 flex flex-row items-center bg-secondary-100 p-4 gap-2 rounded-b-lg"
 				>
 					<div
-						className="flex flex-row flex-grow gap-2"
+						className="flex flex-row items-center flex-grow gap-2"
 					>
 						<p
 							className="text-xl font-bold"
@@ -61,13 +62,13 @@ const LectureListingPage: React.FC<Props> = () => {
 							}}
 						>
 							<button
-								className="h-full w-full text-lg bg-secondary-200 font-semibold p-1 rounded-sm"
+								className={classNames("p-4 w-full text-lg bg-secondary-200 font-semibold rounded-t-lg", {"rounded-lg": !toggleDisplayMenu!})}
 							>
 								{`حسب ال${displays[display][0]}`}
 							</button>
 
 							{toggleDisplayMenu && <div
-								className="absolute bg-primary w-full grid grid-cols-1 gap-2 p-2 justify-center shadow-xl z-10"
+								className="absolute bg-primary w-full grid grid-cols-1 gap-2 p-2 justify-center shadow-xl z-10 rounded-b-lg overflow-hidden"
 							>
 								{displays.map((entry, index) => {
 									return (
@@ -87,7 +88,7 @@ const LectureListingPage: React.FC<Props> = () => {
 						</div>
 					</div>
 					<div
-						className="flex flex-row gap-2"
+						className="flex flex-row items-center gap-2"
 					>
 						<p
 							className="text-xl font-bold"
@@ -95,10 +96,10 @@ const LectureListingPage: React.FC<Props> = () => {
 							عرض
 						</p>
 						<div
-							className="flex-initial flex items-center gap-1"
+							className="flex-initial flex items-center gap-1 bg-secondary-200 p-4 rounded-lg"
 						>
 							<button
-								className="bg-secondary-200 h-6 w-6"
+								className="bg-secondary-200 h-6 w-6 border-2 border-secondary flex items-center"
 								onClick={() => {
 									if(lectureType === 0) {
 										setLectureType(2)
@@ -117,7 +118,7 @@ const LectureListingPage: React.FC<Props> = () => {
 								محاضرات
 							</p>
 							<button
-								className="bg-secondary-200 h-6 w-6"
+								className="bg-secondary-200 h-6 w-6 border-2 border-secondary flex items-center"
 								onClick={() => {
 									if (lectureType === 0){
 										setLectureType(1);
