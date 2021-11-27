@@ -69,9 +69,8 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 			<div
 					className="h-1/3 w-full flex flex-row gap-1 bg-secondary-100"
 				>
-					
 					<div
-						className="w-1/6 h-full relative"
+						className="w-1/3 md:w-1/6 h-full relative"
 						onFocus={() => {
 							setToggleTypesMenu(true);
 						}}
@@ -82,7 +81,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						}}
 					>
 						<button
-							className="h-full w-full text-xl bg-secondary-200 font-semibold"
+							className="h-full w-full text-md md:text-xl bg-secondary-200 font-semibold"
 						>
 							{`حسب ال${types[selectedType][0]}`}
 						</button>
@@ -108,7 +107,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 
 					</div>
 					<div
-						className="w-5/6 h-full relative"
+						className="w-2/3 md:w-5/6 h-full relative"
 
 						onFocus={() => {
 							setToggleSearch(true);
@@ -121,7 +120,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						}}
 					>
 						<input 
-							className="h-full w-full rtl px-4 bg-secondary-200 text-lg"
+							className="h-full w-full rtl px-4 bg-secondary-200 text-md md:text-xl"
 							placeholder={`البحث حسب ال${types[selectedType][0]}`}
 							ref={inputTag}
 							value={tag}
@@ -135,7 +134,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 							}} 
 						/>
 						{toggleSearch && <div
-							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 h-56 rounded-b-lg overflow-hidden"
+							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 rounded-b-lg overflow-hidden"
 							
 						>
 							{/* Wrapper for scroll */}
@@ -200,6 +199,15 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 
 										)
 									})}
+									
+									{
+										data?.tags?.edges.length === 0 && <div className="w-full flex items-center justify-center h-10 md:text-lg font-semibold">
+											<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+											</svg>
+											لاتتوفر نتائج
+										</div>
+									}
 								</div>
 							</div>
 							
@@ -211,7 +219,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 					className="h-2/3 w-full relative bg-secondary-100 rounded-b-lg overflow-hidden"
 				>
 					<button
-						className="absolute left-0 bg-primary w-10 h-10 shadow-md rounded-br-md flex items-center justify-center"
+						className="absolute left-0 bg-primary md:w-10 md:h-10 w-7 h-7 shadow-md rounded-br-md flex items-center justify-center"
 						onClick={() => {
 							setTags([])
 						}}
@@ -221,10 +229,10 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						</svg>
 					</button>
 					<div
-						className="flex-grow flex flex-row justify-start gap-4 p-4 flex-wrap overflow-y-scroll h-full"
+						className="flex-grow flex flex-row items-center justify-center gap-4 p-4 flex-wrap overflow-y-scroll h-full"
 					>
 						{tags?.length === 0 && <p
-							className="text-lg opacity-50 h-full w-full text-center"
+							className="text-lg opacity-50 w-full text-center"
 						>
 							{!creatable && "قم بتحديد وسم أو أكثر لفلترة النتائج"}	
 							{creatable && "قم بتحديد أو إضافة وسوم الى المشاركة"}	

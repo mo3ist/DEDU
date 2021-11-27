@@ -7,3 +7,7 @@
 .rtl {
 	direction: rtl;
 }
+
+.main-margin {
+	@apply mx-8 my-2 md:m-48 md:my-8
+}

@@ -15,7 +15,7 @@ const SummaryListingPage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-col h-full p-4 gap-2 px-48"
+			className="flex flex-col h-full gap-2 main-margin"
 		>
 			<div
 				className="w-full"

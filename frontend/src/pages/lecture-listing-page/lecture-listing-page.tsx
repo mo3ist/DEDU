@@ -25,7 +25,7 @@ const LectureListingPage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-col h-full p-4 gap-8 px-48 rtl text-secondary"
+			className="flex flex-col h-full gap-8 main-margin rtl text-secondary"
 		>
 			<div
 				className="w-full"
