@@ -60,7 +60,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 
 	return (
 		<div
-			className="flex flex-col h-36 w-full items-center justify-center text-secondary border-2 border-secondary-200 rounded-lg"
+			className="flex flex-col h-36 w-full items-center justify-center text-secondary border-2 border-secondary-200 rounded-lg rtl"
 		>
 			{/* Wrapper for design (bg-color) */}
 			<div
@@ -69,6 +69,44 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 			<div
 					className="h-1/3 w-full flex flex-row gap-1 bg-secondary-100"
 				>
+					
+					<div
+						className="w-1/6 h-full relative"
+						onFocus={() => {
+							setToggleTypesMenu(true);
+						}}
+						onBlur={(e) => {
+							if (!e.currentTarget.contains(e.relatedTarget as Node)){
+								setToggleTypesMenu(false)
+							}
+						}}
+					>
+						<button
+							className="h-full w-full text-xl bg-secondary-200 font-semibold"
+						>
+							{`حسب ال${types[selectedType][0]}`}
+						</button>
+
+						{toggleTypesMenu && <div
+							className="absolute bg-primary w-full grid grid-cols-1 gap-2 p-2 justify-center shadow-xl z-10"
+						>
+							{types.map((entry, index) => {
+								return (
+									<button
+										className="h-10 w-full bg-primary-100 rounded-sm font-semibold"
+										onClick={() => {
+											setSelectedType(index)
+											setToggleTypesMenu(false)
+										}}
+									>
+										{entry[0]}
+									</button>
+								)
+							})}
+							
+						</div>}
+
+					</div>
 					<div
 						className="w-5/6 h-full relative"
 
@@ -132,6 +170,9 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 												inputTag.current?.focus()
 											}}
 										>
+											<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
+												<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+											</svg>
 											<span className="font-bold">{tag}</span>
 										</button>
 									}
@@ -165,49 +206,12 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						</div>}
 
 					</div>
-					<div
-						className="w-1/6 h-full relative"
-						onFocus={() => {
-							setToggleTypesMenu(true);
-						}}
-						onBlur={(e) => {
-							if (!e.currentTarget.contains(e.relatedTarget as Node)){
-								setToggleTypesMenu(false)
-							}
-						}}
-					>
-						<button
-							className="h-full w-full text-xl bg-secondary-200 font-semibold"
-						>
-							{`حسب ال${types[selectedType][0]}`}
-						</button>
-
-						{toggleTypesMenu && <div
-							className="absolute bg-primary w-full grid grid-cols-1 gap-2 p-2 justify-center shadow-xl z-10"
-						>
-							{types.map((entry, index) => {
-								return (
-									<button
-										className="h-10 w-full bg-primary-100 rounded-sm font-semibold"
-										onClick={() => {
-											setSelectedType(index)
-											setToggleTypesMenu(false)
-										}}
-									>
-										{entry[0]}
-									</button>
-								)
-							})}
-							
-						</div>}
-
-					</div>
 				</div>
 				<div
 					className="h-2/3 w-full relative bg-secondary-100 rounded-b-lg overflow-hidden"
 				>
 					<button
-						className="absolute bg-primary w-10 h-10 shadow-md rounded-br-md flex items-center justify-center"
+						className="absolute left-0 bg-primary w-10 h-10 shadow-md rounded-br-md flex items-center justify-center"
 						onClick={() => {
 							setTags([])
 						}}
@@ -217,7 +221,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						</svg>
 					</button>
 					<div
-						className="flex-grow flex flex-row justify-end gap-4 p-4 flex-wrap overflow-y-scroll h-full"
+						className="flex-grow flex flex-row justify-start gap-4 p-4 flex-wrap overflow-y-scroll h-full"
 					>
 						{tags?.length === 0 && <p
 							className="text-lg opacity-50 h-full w-full text-center"
