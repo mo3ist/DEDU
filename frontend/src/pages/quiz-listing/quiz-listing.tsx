@@ -67,7 +67,7 @@ const QuizListing: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="text-secondary main-margin rtl grid grid-cols-1 gap-2 md:gap-8"
+			className="text-secondary main-margin rtl grid grid-cols-1 gap-4 md:gap-8"
 		>
 			{!started && <><TagSearch 
 				courseCode={currentCourse?.code!}

@@ -40,13 +40,13 @@ const LectureListingPage: React.FC<Props> = () => {
 					</p>
 				</div>
 				<div
-					className="h-20 flex flex-row items-center bg-secondary-100 p-4 gap-2 rounded-b-lg"
+					className="h-20 flex flex-row items-center bg-secondary-100 p-1 md:p-4 gap-1 md:gap-2 rounded-b-lg"
 				>
 					<div
-						className="flex flex-row items-center flex-grow gap-2"
+						className="flex flex-row items-center flex-grow gap-1 md:gap-2"
 					>
 						<p
-							className="text-xl font-bold"
+							className="md:text-xl font-semibold"
 						>
 							فرز
 						</p>
@@ -62,7 +62,7 @@ const LectureListingPage: React.FC<Props> = () => {
 							}}
 						>
 							<button
-								className={classNames("p-4 w-full text-lg bg-secondary-200 font-semibold rounded-t-lg", {"rounded-lg": !toggleDisplayMenu!})}
+								className={classNames("p-1 md:p-4 w-full md:text-lg bg-secondary-200 font-semibold rounded-t-lg", {"rounded-lg": !toggleDisplayMenu!})}
 							>
 								{`حسب ال${displays[display][0]}`}
 							</button>
@@ -88,54 +88,62 @@ const LectureListingPage: React.FC<Props> = () => {
 						</div>
 					</div>
 					<div
-						className="flex flex-row items-center gap-2"
+						className="flex flex-row items-center gap-1 md:gap-2"
 					>
 						<p
-							className="text-xl font-bold"
+							className="md:text-xl font-semibold"
 						>
 							عرض
 						</p>
 						<div
-							className="flex-initial flex items-center gap-1 bg-secondary-200 p-4 rounded-lg"
+							className="flex-initial flex flex-wrap items-center gap-1 md:gap-4 bg-secondary-200 p-1 md:p-4 rounded-lg"
 						>
-							<button
-								className="bg-secondary-200 h-6 w-6 border-2 border-secondary flex items-center"
-								onClick={() => {
-									if(lectureType === 0) {
-										setLectureType(2)
-									} else if (lectureType === 2) {
-										setLectureType(0)
-									}
-								}}
+							<div
+								className="flex flex-row gap-1"
 							>
-								{lectureType !== 2 && <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-								</svg>}
-							</button>
-							<p
-								className="text-lg font-semibold"
+								<button
+									className="bg-secondary-200 h-5 w-5 md:h-6 md:w-6 border-2 rounded-lg border-secondary flex items-center"
+									onClick={() => {
+										if(lectureType === 0) {
+											setLectureType(2)
+										} else if (lectureType === 2) {
+											setLectureType(0)
+										}
+									}}
+								>
+									{lectureType !== 2 && <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+									</svg>}
+								</button>
+								<p
+									className="md:text-lg font-semibold"
+								>
+									محاضرات
+								</p>
+							</div>
+							<div
+								className="flex flex-row gap-1"
 							>
-								محاضرات
-							</p>
-							<button
-								className="bg-secondary-200 h-6 w-6 border-2 border-secondary flex items-center"
-								onClick={() => {
-									if (lectureType === 0){
-										setLectureType(1);
-									} else if (lectureType === 1) {
-										setLectureType(0);
-									}
-								}}
-							>
-								{lectureType !== 1 && <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-								</svg>}
-							</button>
-							<p
-								className="text-lg font-semibold"
-							>
-								سكاشن
-							</p>
+								<button
+									className="bg-secondary-200 h-5 w-5 md:h-6 md:w-6 border-2 rounded-lg border-secondary flex items-center"
+									onClick={() => {
+										if (lectureType === 0){
+											setLectureType(1);
+										} else if (lectureType === 1) {
+											setLectureType(0);
+										}
+									}}
+								>
+									{lectureType !== 1 && <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+									</svg>}
+								</button>
+								<p
+									className="md:text-lg font-semibold"
+								>
+									سكاشن
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -150,7 +158,7 @@ const LectureListingPage: React.FC<Props> = () => {
 				className="flex-grow"
 			>
 				<div
-					className="rtl border-b border-primary mb-1"
+					className="rtl border-b border-primary mb-2"
 				>
 					<p
 						className="text-xl text-primary mb-1"

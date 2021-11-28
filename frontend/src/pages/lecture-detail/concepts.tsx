@@ -8,13 +8,13 @@ interface Props {
 const Concepts: React.FC<Props> = ({ tags }) => {
 	return (
 		<div
-			className="h-96 bg-secondary-100 rounded-b-lg flex flex-col"
+			className="h-40 md:h-96 bg-secondary-100 rounded-b-lg flex flex-col"
 		>
 			<div
-				className="flex-grow overflow-hidden border-b border-secondary"
+				className="flex-grow overflow-hidden border-b border-secondary-200"
 			>
 				<div
-					className="overflow-y-scroll h-full w-full p-2"
+					className="overflow-y-scroll h-full w-full p-2 flex flex-col gap-1 md:gap-2"
 				>
 					{tags?.edges?.map(edge => {
 						return (
@@ -23,7 +23,7 @@ const Concepts: React.FC<Props> = ({ tags }) => {
 								key={edge?.node?.title}
 							>
 								<p
-									className="inline-block font-semibold text-secondary"
+									className="text-sm md:text-base inline-block font-semibold text-secondary"
 								>
 									{edge?.node?.title}
 								</p>
@@ -33,7 +33,7 @@ const Concepts: React.FC<Props> = ({ tags }) => {
 				</div>
 			</div>
 			<button
-				className="flex-initial rounded-lg bg-secondary-200 border border-secondary py-2 m-1 font-semibold text-lg"
+				className="flex-initial rounded-lg bg-secondary-200 py-2 px-1 m-1 font-semibold md:text-lg"
 			>
 				كويز على المفاهيم
 			</button>

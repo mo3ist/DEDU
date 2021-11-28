@@ -53,7 +53,7 @@ const QuestionDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="grid grid-cols-1 gap-8 relative main-margin"
+			className="grid grid-cols-1 gap-4 md:gap-8 relative main-margin"
 		>
 			{loading && <Loading />}
 

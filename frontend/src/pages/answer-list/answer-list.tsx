@@ -80,7 +80,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				</p>
 			</div>
 			<div
-				className="h-20 bg-secondary-200 mb-8 rounded-b-lg flex flex-row items-center justify-start pr-4"
+				className="h-20 bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start pr-4"
 			>
 				<button
 					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
@@ -95,10 +95,10 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				</button>
 			</div>
 			<div
-				className="grid grid-cols-1 gap-8"
+				className="grid grid-cols-1 gap-4 md:gap-8"
 			>
 				<div
-					className="grid grid-cols-1 gap-8"
+					className="grid grid-cols-1 gap-4 md:gap-8"
 				>
 					{creation && 
 						<div

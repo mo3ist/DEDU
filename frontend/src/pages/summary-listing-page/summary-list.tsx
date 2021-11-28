@@ -71,7 +71,7 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 			className="h-full w-full text-secondary rtl"
 		>		
 			<div
-				className="w-full h-20 bg-secondary-200 mb-8 rounded-b-lg flex flex-row items-center justify-start px-4"
+				className="w-full h-20 bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start px-4"
 			>
 				<button
 					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
@@ -86,7 +86,7 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 				</button>
 			</div>
 			<div
-				className="grid grid-cols-1 gap-8"
+				className="grid grid-cols-1 gap-4 md:gap-8"
 			>
 				{data?.summaries?.edges.map(edge => {
 					return (
@@ -102,7 +102,7 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 				{data?.summaries?.edges.length! > FIRST && 
 					
 					<button
-						className={classNames("rounded-lg h-20 w-full bg-primary rounded-sm font-semid text-3xl", {"opacity-50 cursor-not-allowed": !data?.summaries?.pageInfo.hasNextPage})}
+						className={classNames("rounded-lg h-20 w-full bg-primary font-semid text-3xl", {"opacity-50 cursor-not-allowed": !data?.summaries?.pageInfo.hasNextPage})}
 						disabled={!data?.summaries?.pageInfo.hasNextPage}
 					>
 						المزيد

@@ -136,7 +136,7 @@ const LectureList: React.FC<Props> = ({ display, lectureType }) => {
 							className="grid grid-cols-1 gap-2"
 						>
 							<p
-								className="font-bold text-primary text-2xl"
+								className="font-bold text-primary text-xl md:text-2xl"
 							>
 								{tagEdge?.node?.title}
 							</p>
@@ -154,25 +154,6 @@ const LectureList: React.FC<Props> = ({ display, lectureType }) => {
 									)
 								})}
 							</div>
-
-							{/* {data?.summaries?.pageInfo.hasNextPage ? <button
-								className="h-20 w-full bg-primary rounded-sm font-semid text-3xl"
-								onClick={() => {
-									fetchMore!({
-										variables: {
-											after: data?.summaries?.pageInfo.endCursor
-										}
-									})
-								}}
-							>
-								المزيد
-							</button> : 
-							<button
-								className="h-20 w-full bg-primary rounded-sm font-semid text-3xl opacity-50 cursor-not-allowed"
-							>
-								المزيد
-							</button>
-							} */}
 						</div>
 					</div>
 				)

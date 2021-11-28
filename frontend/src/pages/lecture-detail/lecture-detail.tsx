@@ -68,10 +68,10 @@ const LectureDetail: React.FC<Props> = () => {
 		>
 			{/* 3 Sections: MiniLectureList, Lecture media, concepts */}
 			<div
-				className="w-full flex-grow flex flex-row items-start justify-center gap-8"
+				className="w-full flex-grow flex flex-row flex-wrap md:flex-nowrap items-start justify-center gap-2 md:gap-8"
 			>
 				<div
-					className="w-1/6 h-full"
+					className="w-1/2 md:w-1/6 order-1 md:order-1 h-full"
 				>
 					<div
 						className="rtl border-b border-primary mb-1"
@@ -88,7 +88,7 @@ const LectureDetail: React.FC<Props> = () => {
 					/>
 				</div>
 				<div
-					className="w-4/6 h-full flex flex-col items-center justify-center gap-8"
+					className="flex-grow order-3 md:order-2 md:w-4/6 h-full flex flex-col items-center justify-center gap-8"
 				>
 					
 					<LectureDetailMain lecture={data?.lectures?.edges[0]?.node!}/>
@@ -116,7 +116,7 @@ const LectureDetail: React.FC<Props> = () => {
 					</div>}	
 				</div>
 				<div
-					className="w-1/6 h-full"
+					className="flex-grow md:w-1/6 order-2 md:order-3 h-full"
 				>
 					<div
 						className="rtl border-b border-primary mb-1"

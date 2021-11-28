@@ -305,4 +305,4 @@ class Tag(models.Model):
 			other = Tag.objects.filter(title=self.title, course=self.course)
 			if other:
 				raise Exception("A tag with the same name already exists.")
-			super().save(*args, **kwargs)
+		super().save(*args, **kwargs)

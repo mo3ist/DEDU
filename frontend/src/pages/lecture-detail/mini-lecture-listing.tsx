@@ -50,10 +50,10 @@ const MiniLectureListing: React.FC<Props> = ({ id, setId }) => {
 	
 	return (
 		<div
-			className="h-96 w-full rounded-b-lg overflow-hidden"
+			className="h-40 md:h-96 w-full rounded-b-lg overflow-hidden"
 		>
 			<div
-				className="h-full overflow-y-scroll flex flex-col items-center justify-start bg-secondary-100 gap-2 py-2 px-1"
+				className="h-full overflow-y-scroll flex flex-col items-center justify-start bg-secondary-100 gap-1 md:gap-2 py-2 px-1"
 			>
 				{data?.lectures?.edges.map(edge => {
 					return (
