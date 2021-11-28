@@ -120,7 +120,7 @@ const LectureList: React.FC<Props> = ({ display, lectureType }) => {
 
 	return (
 		<div
-			className="grid grid-cols-1 gap-4 text-secondary"
+			className="grid grid-cols-1 gap-4"
 		>
 			{tagsData?.tags?.edges.map(tagEdge => {
 				const filtered_lectures = data?.lectures?.edges.filter(lectureEdge => 

@@ -26,7 +26,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 					className="flex-grow flex flex-col items-start justify-center gap-1 w-4/6"
 				>
 					<p
-						className="flex-grow text-lg font-bold bg-secondary-200 border-r-4 border-secondary pr-4 py-2 flex items-center w-full"
+						className="flex-grow overflow-ellipsis text-md md:text-xl font-bold bg-secondary-200 border-r-4 border-secondary pr-4 py-2 flex items-center w-full"
 					>
 						<Link to={`${location.pathname}detail/${lecture?.node?.id!}`}>
 							{lecture.node?.title}
@@ -46,12 +46,12 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 						})}
 					</div>
 					<div
-						className="flex-grow flex items-center justify-start gap-1 p-4"
+						className="flex-grow flex items-center justify-start md:p-4"
 					>
 						<p
-							className="text-md"
+							className="text-sm md:text-base"
 						>
-							العشوائية أو العشاوة (بالإنجليزية: Randomness)‏ كلمة مشتقة من فعل عَشُوَ وعَشَا عَشْوًا; وتعني من ساء بصره بالليل والنهار أو من أبصر بالنهار ولم يبصر في الليل. فالعشاوة هي سوء البصر ليلا ونهارا أو ليلا فقط. تستعمل هذه الكلمة في العلوم للتعبير عن انعدام الغرض والغاية
+							{lecture.node?.body}
 						</p>
 					</div>
 				</div>
@@ -60,7 +60,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 					className="bg-secondary-100 w-1/6 pr-4"
 				>
 					<p
-						className="text-xl flex items-center gap-2"
+						className="text-sm md:text-lg flex flex-wrap items-center gap-2"
 					>
 						منذ <span className="text-primary font-bold">{arTimeAgo({date: new Date(lecture.node?.created).getTime()}).split('منذ')[1]}</span>
 					</p>
@@ -84,7 +84,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 
 			{/* lower part (tags) */}
 			<div
-				className="flex-grow flex flex-row justify-start gap-4 p-1"
+				className="flex-grow flex flex-row flex-wrap justify-start gap-2 md:gap-4 p-1"
 			>
 						{lecture.node?.tagSet?.edges?.filter(edge => edge?.node?.tagType === "CHAPTER").map(edge => {
 							return (
@@ -92,7 +92,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 									className="flex flex-row items-center justify-center gap-2 text-secondary bg-secondary-200 border-2 border-secondary px-2 py-1 rounded-full"
 								>
 									<p
-										className="inline-block font-semibold text-secondary"
+										className="text-sm md:text-base inline-block font-semibold text-secondary"
 									>
 										{edge?.node?.title}
 									</p>
@@ -116,7 +116,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 				المفاهيم:
 			</p>
 			<div
-				className="flex-grow flex flex-row justify-start gap-4 p-1"
+				className="flex-grow flex flex-row flex-wrap justify-start gap-2 md:gap-4 p-1"
 			>
 				{lecture.node?.tagSet?.edges?.filter(edge => edge?.node?.tagType === "CONCEPT").map(edge => {
 					return (
@@ -124,7 +124,7 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 							className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary-100 px-2 py-1 rounded-full border-2 border-primary"
 						>
 							<p
-								className="inline-block font-semibold"
+								className="text-sm md:text-base inline-block font-semibold"
 							>
 								{edge?.node?.title}
 							</p>

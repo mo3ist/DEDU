@@ -26,7 +26,7 @@ const AnswerListItem: React.FC<Props> = ({ answer }) => {
 				
 				{/* title + user data */}
 				<div
-					className="flex flex-col items-start justify-center gap-1"
+					className="flex flex-col items-start justify-center gap-1 w-14 md:w-36"
 				>
 					<Vote
 						contentId={answer?.id}
@@ -34,29 +34,28 @@ const AnswerListItem: React.FC<Props> = ({ answer }) => {
 						userVote={answer?.userVote!}
 					/>
 					<div
-						className="flex flex-col items-start justify-center gap-1"
+						className="w-full flex flex-col items-start justify-center gap-1"
 					>
 						<div
-							className="w-10 h-10 bg-primary rounded-full overflow-hidden"
+							className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-full overflow-hidden"
 						>
 							<img src={answer?.user.profilePicture!} alt="" />
 						</div>
 						<p
-							className="font-semibold"
+							className="font-semibold text-sm md:text-base w-full whitespace-pre-wrap truncate" 
 						>
 							{answer?.user?.name}
 						</p>
 
 						<p
-							className="flex items-center gap-2"
+							className="flex items-center gap-1 md:gap-2 flex-wrap"
 						>
-							منذ <span className="text-primary font-bold">{arTimeAgo({date: new Date(answer?.created).getTime()}).split('منذ')[1]}</span>
+							منذ <span className="text-primary text-sm md:text-base font-bold">{arTimeAgo({date: new Date(answer?.created).getTime()}).split('منذ')[1]}</span>
 						</p>
 					</div>
 				</div>
-				{/* no. answers + date */}
 				<div
-					className="flex-grow pr-4"
+					className="w-5/6 pr-4"
 				>
 					<TextEditor 
 						readonly={true}

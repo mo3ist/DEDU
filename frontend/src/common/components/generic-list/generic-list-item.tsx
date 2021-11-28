@@ -80,7 +80,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 						className="flex-grow flex flex-col items-start justify-start gap-1 w-4/6"
 					>
 						<p
-							className="text-xl font-semibold bg-secondary-200 border-r-4 border-secondary py-2 pr-1 flex items-center w-full"
+							className="w-full overflow-ellipsis text-md md:text-xl font-semibold bg-secondary-200 border-r-4 border-secondary py-2 px-1 flex items-center"
 						>
 							<Link to={buildPath(content?.id!)}>
 								{content?.title}
@@ -95,7 +95,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 								<img src={content?.user.profilePicture!} alt="" />
 							</div>
 							<p
-								className="text-lg"
+								className="text-sm md:text-lg"
 							>
 								{content?.user.name}
 							</p>
@@ -106,13 +106,13 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 						className=""
 					>
 						<p
-							className="text-lg flex items-center gap-1"
+							className="text-sm md:text-lg flex items-center gap-1 flex-wrap"
 						>
-							منذ <span className="text-primary font-semibold">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>
+							منذ <span className="text-primary font-semibold md:pr-1">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>
 						</p>
 						{content && "answerCount" in content && 
 							<p
-								className="text-lg flex items-center gap-2"
+								className="text-sm md:text-lg flex items-center gap-1 md:gap-2"
 							>
 								<span className="text-primary font-bold">{content?.answerCount}</span> اجابة
 							</p>
@@ -130,7 +130,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 										className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary-100 px-2 py-1 rounded-full border-2 border-primary"
 									>
 										<p
-											className="inline-block font-semibold text-secondary"
+											className="text-sm md:text-base inline-block font-semibold text-secondary"
 										>
 											{edge?.node?.title}
 										</p>

@@ -119,7 +119,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 									<button
 										className="bg-primary-100 py-1 px-2 rounded-t-lg"
 										onClick={() => {
-											setEditableAnswerId(edge.node?.id!)
+											setEditableAnswerId(editableAnswerId === edge.node?.id! ? "" : edge.node?.id!)
 										}}
 									>
 										تعديل
@@ -136,7 +136,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				{data?.answers?.edges.length! > FIRST && 
 					
 					<button
-						className={classNames("rounded-lg h-20 w-full bg-primary rounded-sm font-semid text-3xl", {"opacity-50 cursor-not-allowed": !data?.answers?.pageInfo.hasNextPage})}
+						className={classNames("rounded-lg h-20 w-full bg-primary font-semid text-3xl", {"opacity-50 cursor-not-allowed": !data?.answers?.pageInfo.hasNextPage})}
 						disabled={!data?.answers?.pageInfo.hasNextPage}
 					>
 						المزيد
