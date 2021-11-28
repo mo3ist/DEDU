@@ -39,10 +39,10 @@ export const CoursePage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-row h-full gap-8 text-secondary p-8"
+			className="mx-8 my-4 md:my-8 flex flex-row flex-wrap md:flex-nowrap h-full gap-4 md:gap-8 text-secondary"
 		>
 			<div
-				className="flex flex-col flex-grow w-2/3 gap-8"
+				className="order-2 flex flex-col flex-grow w-2/3 gap-4 md:gap-8"
 			>
 				<div
 					className="flex-initial"
@@ -76,7 +76,7 @@ export const CoursePage: React.FC<Props> = () => {
 			</div>
 
 			<div
-				className="flex flex-col flex-grow gap-8 w-1/3"
+				className="order-1 flex flex-col flex-grow gap-4 md:gap-8 w-1/3"
 			>
 				<div
 					className="flex-initial"

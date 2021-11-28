@@ -50,7 +50,7 @@ export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
 
 	return (
 		<div
-			className="bg-secondary-100 h-64 flex flex-row items-center justify-center gap-4 rtl p-4 rounded-lg"
+			className="bg-secondary-100 flex flex-row items-center justify-center gap-4 rtl p-4 rounded-lg"
 		>
 			{/* data */}
 			<div
@@ -58,15 +58,19 @@ export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
 			>
 				{/* logo, title, and teachers */}
 				<div
-					className="flex-grow w-full gap-4 flex flex-row gap-4 h-2/4"
+					className="flex-grow w-full flex flex-row gap-4 h-2/4"
 				>
 					<div
 						className="flex items-center justify-center"
 					>
 						<div
-							className="bg-primary rounded-full p-1"
+							className="bg-primary rounded-full p-1 h-14 w-14 md:h-24 md:w-24"
 						>
-							<img src={course?.attachmentSet?.edges[0]?.node?.file!} alt="" className="object-contain rounded-full w-20 h-20"/>
+							<svg xmlns="http://www.w3.org/2000/svg" className="h-full inline md:ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path d="M12 14l9-5-9-5-9 5 9 5z" />
+								<path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+							</svg>
 						</div>
 					</div>
 					
@@ -77,7 +81,7 @@ export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
 							className="flex-grow flex items-center"
 						>
 							<p
-								className="text-3xl font-bold"
+								className="text-2xl md:text-3xl font-bold"
 							>
 								{course?.title}
 							</p>
@@ -115,12 +119,12 @@ export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
 					className="flex-grow w-full flex flex-col justify-center"
 				>
 					<p
-						className="text-primary text-4xl font-bold"
+						className="text-primary text-2xl md:text-4xl font-bold"
 					>
 						{course?.contribs}
 					</p>
 					<p
-						className="text-secondary text-3xl"
+						className="text-secondary text-xl md:text-3xl"
 					>
 						مشاركة
 					</p>
@@ -130,13 +134,13 @@ export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
 					</p>
 
 					<p
-						className="text-primary text-4xl font-bold"
+						className="text-primary text-2xl md:text-4xl font-bold"
 					>
 						{course?.contribsUsers}
 					</p>
 					
 					<p
-						className="text-secondary text-3xl"
+						className="text-secondary text-xl md:text-3xl"
 					>
 						مساهم
 					</p>
