@@ -9,5 +9,5 @@
 }
 
 .main-margin {
-	@apply mx-8 my-2 md:m-48 md:my-8
+	@apply mx-8 my-4 md:m-48 md:my-8
 }

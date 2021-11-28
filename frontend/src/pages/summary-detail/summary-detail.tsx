@@ -52,7 +52,7 @@ const SummaryDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="relative my-8 mx-48"
+			className="relative main-margin"
 		>
 			{loading && <Loading />}
 

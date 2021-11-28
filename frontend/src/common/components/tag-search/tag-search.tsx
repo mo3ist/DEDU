@@ -229,7 +229,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						</svg>
 					</button>
 					<div
-						className="flex-grow flex flex-row items-center justify-center gap-4 p-4 flex-wrap overflow-y-scroll h-full"
+						className="flex-grow flex flex-row items-start justify-start gap-1 md:gap-4 p-1 md:p-4 flex-wrap overflow-y-scroll h-full"
 					>
 						{tags?.length === 0 && <p
 							className="text-lg opacity-50 w-full text-center"
@@ -240,10 +240,10 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						{tags?.map(tag => {
 							return (
 								<div
-									className="flex flex-row h-10 items-center justify-center gap-2 text-secondary bg-primary px-2 py-1 rounded-full"
+									className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary px-2 py-1 rounded-full"
 								>
 									<p
-										className="inline-block font-semibold"
+										className="inline-block font-semibold p-1 text-sm md:text-base"
 									>
 										{tag}
 									</p>

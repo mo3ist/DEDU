@@ -27,6 +27,7 @@ export interface GetQuizzes_quizzes_edges_node {
   answer: string;
   voteCount: number | null;
   userVote: string | null;
+  created: any;
   userAnswer: string;
   user: GetQuizzes_quizzes_edges_node_user;
 }

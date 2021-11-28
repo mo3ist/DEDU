@@ -21,7 +21,7 @@ const GenericDetail: React.FC<Props> = ({ content }) => {
 		>
 			{/* Votes & user */}
 			<div
-				className="flex-initial flex flex-col items-center justify-center gap-4"
+				className="flex-initial flex flex-col items-start justify-center gap-1 md:gap-2 w-14 md:w-36"
 			>
 				<div>
 					<Vote 
@@ -31,23 +31,23 @@ const GenericDetail: React.FC<Props> = ({ content }) => {
 					/>
 				</div>
 				<div
-					className="flex flex-col items-center justify-start gap-1"
+					className="w-full flex flex-col items-start justify-start gap-1"
 				>
 					<div
-						className="w-10 h-10 bg-primary rounded-full overflow-hidden"
+						className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-full overflow-hidden"
 					>
 						<img src={content?.user.profilePicture!} alt="" />
 					</div>
 					<p
-						className=""
+						className="font-semibold text-sm md:text-base w-full whitespace-pre-wrap truncate"
 					>
 						{content?.user.name}
 					</p>
 				</div>
 				<p
-					className="flex items-center gap-1"
+					className="flex items-center gap-1 md:gap-2 flex-wrap"
 				>
-					منذ {content?.created && <span className="text-primary font-semibold">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>}
+					منذ {content?.created && <span className="text-primary text-sm md:text-base font-bold">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>}
 				</p>
 			</div>
 
@@ -60,7 +60,7 @@ const GenericDetail: React.FC<Props> = ({ content }) => {
 					className="w-full pb-2"
 				>
 					<p
-						className="text-3xl font-bold"
+						className="text-xl md:text-3xl font-bold"
 					>
 						{content?.title}
 					</p>
@@ -75,7 +75,7 @@ const GenericDetail: React.FC<Props> = ({ content }) => {
 								className="flex flex-row items-center justify-center gap-2 text-secondary bg-primary-100 px-2 py-1 rounded-full border-2 border-primary"
 							>
 								<p
-									className="inline-block font-semibold text-secondary"
+									className="text-sm md:text-base inline-block font-semibold text-secondary"
 								>
 									{edge?.node?.title}
 								</p>
