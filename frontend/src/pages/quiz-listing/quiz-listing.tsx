@@ -75,7 +75,7 @@ const QuizListing: React.FC<Props> = () => {
 				tags={tags}
 			/>
 			<button
-				className={classname("rounded-lg h-20 w-full bg-primary font-semid text-3xl", {"opacity-50 cursor-not-allowed": tags?.length === 0})}
+				className={classname("relative rounded-lg h-20 w-full bg-primary font-semid text-xl md:text-3xl", {"opacity-50 cursor-not-allowed": tags?.length === 0})}
 				onClick={() => {
 					if(data?.quizzes?.edges.length! > 0) {
 						setStarted(true)
@@ -83,12 +83,14 @@ const QuizListing: React.FC<Props> = () => {
 				}}
 			>
 				بدأ
+				
+				<p
+					className="absolute text-base bottom-1 right-1"
+				>
+					<span className="font-semibold text-secondary-100">{data?.quizzes?.edges.length || 0}</span> سؤال  
+				</p>
 			</button>
-			<p
-				className="text-secondary-100"
-			>
-				مجموع الأسئلة: {data?.quizzes?.edges.length || 0}
-			</p></>}
+			</>}
 		
 			{started && data && <div
 				className="w-full h-full flex flex-col gap-2"

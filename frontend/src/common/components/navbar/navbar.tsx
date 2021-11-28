@@ -53,7 +53,7 @@ const Navbar: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="h-16 bg-secondary-100 w-full fixed z-20 flex flex-row items-center rtl p-1 text-secondary text-2xl gap-1 shadow-sm border-b-2 border-secondary"
+			className="h-16 bg-secondary-100 w-full fixed z-20 flex flex-row items-center rtl p-1 text-secondary text-sm md:text-2xl gap-1 shadow-sm border-b-2 border-secondary"
 		>
 			<div
 				className="nav-container justify-start"
@@ -122,22 +122,22 @@ const Navbar: React.FC<Props> = () => {
 					</Link>
 				</button> :
 				<div
-					className="w-full h-full flex items-center justify-end gap-2"
+					className="w-full h-full flex items-center justify-end gap-1 md:gap-2"
 				>
 					<img
-						className="rounded-full h-full"
+						className="rounded-full h-8 md:h-14 hidden md:block"
 						src={currentUser.profilePicture}
 					/>
 					<button
 						className={classname("nav-button", {"active": location.pathname === "/logout"})} 
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-full md:h-8 md:w-8 inline md:ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
 						</svg>
 						<Link
 							to="/logout"
 						>
-							تسجيل خروج
+							<span className="hidden md:inline">تسجيل خروج</span>
 						</Link>
 					</button>
 					

@@ -232,7 +232,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 						className="flex-grow flex flex-row items-start justify-start gap-1 md:gap-4 p-1 md:p-4 flex-wrap overflow-y-scroll h-full"
 					>
 						{tags?.length === 0 && <p
-							className="text-lg opacity-50 w-full text-center"
+							className="text-sm md:text-lg opacity-50 w-full flex items-center justify-center h-full"
 						>
 							{!creatable && "قم بتحديد وسم أو أكثر لفلترة النتائج"}	
 							{creatable && "قم بتحديد أو إضافة وسوم الى المشاركة"}	

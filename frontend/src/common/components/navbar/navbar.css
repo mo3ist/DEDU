@@ -8,7 +8,7 @@
 	}
 
 	.nav-item {
-		@apply flex items-center justify-center 
+		@apply flex items-center justify-center
 	}
 
 	.nav-item-active {
@@ -20,7 +20,7 @@
 	}
 
 	.nav-button {
-		@apply h-full text-secondary px-4 py-1 rounded-full bg-primary-100 font-semibold border border-primary
+		@apply text-secondary px-1 md:px-4 py-1 rounded-full bg-primary-100 font-semibold border border-primary h-10 md:h-14
 	}
 
 	.active {
@@ -28,6 +28,6 @@
 	}
 
 	.nav-container {
-		@apply h-full flex-grow flex flex-row items-center gap-6
+		@apply h-full flex-grow flex flex-row items-center gap-2 md:gap-6
 	}
 }

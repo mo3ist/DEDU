@@ -25,7 +25,7 @@ const LectureListingPage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-col h-full gap-8 main-margin rtl text-secondary"
+			className="flex flex-col h-full gap-4 md:gap-8 main-margin rtl text-secondary"
 		>
 			<div
 				className="w-full"
@@ -62,7 +62,7 @@ const LectureListingPage: React.FC<Props> = () => {
 							}}
 						>
 							<button
-								className={classNames("p-1 md:p-4 w-full md:text-lg bg-secondary-200 font-semibold rounded-t-lg", {"rounded-lg": !toggleDisplayMenu!})}
+								className={classNames("p-1 py-4 md:p-4 w-full md:text-lg bg-secondary-200 font-semibold rounded-t-lg", {"rounded-lg": !toggleDisplayMenu!})}
 							>
 								{`حسب ال${displays[display][0]}`}
 							</button>
@@ -96,7 +96,7 @@ const LectureListingPage: React.FC<Props> = () => {
 							عرض
 						</p>
 						<div
-							className="flex-initial flex flex-wrap items-center gap-1 md:gap-4 bg-secondary-200 p-1 md:p-4 rounded-lg"
+							className="flex-initial flex flex-wrap items-center gap-1 md:gap-4 bg-secondary-200 p-1 py-4 md:p-4 rounded-lg"
 						>
 							<div
 								className="flex flex-row gap-1"
