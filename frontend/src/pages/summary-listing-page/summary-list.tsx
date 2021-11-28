@@ -71,10 +71,10 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 			className="h-full w-full text-secondary rtl"
 		>		
 			<div
-				className="w-full h-20 bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start px-4"
+				className="w-full bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
 			>
 				<button
-					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
+					className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
 					onClick={() => {
 						history.push(`/courses/${courseCode}/summary/create/`)
 					}}

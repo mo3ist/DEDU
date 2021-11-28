@@ -80,10 +80,10 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				</p>
 			</div>
 			<div
-				className="h-20 bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start pr-4"
+				className="bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
 			>
 				<button
-					className="bg-secondary-100 p-4 rounded-lg text-lg font-semibold"
+					className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
 					onClick={() => {
 						setCreation(!creation)
 					}}

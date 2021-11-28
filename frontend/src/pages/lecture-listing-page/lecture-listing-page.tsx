@@ -40,7 +40,7 @@ const LectureListingPage: React.FC<Props> = () => {
 					</p>
 				</div>
 				<div
-					className="h-20 flex flex-row items-center bg-secondary-100 p-1 md:p-4 gap-1 md:gap-2 rounded-b-lg"
+					className="md:h-20 flex flex-row items-center bg-secondary-100 p-1 md:p-4 gap-1 md:gap-2 rounded-b-lg"
 				>
 					<div
 						className="flex flex-row items-center flex-grow gap-1 md:gap-2"
