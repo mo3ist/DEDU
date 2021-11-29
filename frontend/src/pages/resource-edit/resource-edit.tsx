@@ -80,7 +80,7 @@ const ResourceEdit: React.FC<Props> = () => {
 	})
 	
 	return (
-		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative h-full">
+		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative h-full rounded-lg main-margin">
 			{mutationData && <Success />}
 			
 			{(queryLoading || mutationLoading) && <Loading />}

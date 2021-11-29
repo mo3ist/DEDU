@@ -66,7 +66,7 @@ const Authenticate: React.FC<Props> = () => {
 				<p
 					className="font-semibold text-lg md:text-xl"
 				>
-					دخول باستخدام جوجل:
+					تسجيل الدخول باستخدام جوجل:
 				</p>
 				<GoogleLogin
                     clientId="73120554730-82s2uiknaofet84matprd588r7vabgua.apps.googleusercontent.com"

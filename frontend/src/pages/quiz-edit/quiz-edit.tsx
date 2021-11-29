@@ -79,7 +79,7 @@ const QuizEdit: React.FC<Props> = () => {
 	})
 
 	return (
-		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative">
+		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative rounded-lg main-margin">
 			{mutationData && <Success />}
 			
 			{(mutationLoading || queryLoading) && <Loading />}
