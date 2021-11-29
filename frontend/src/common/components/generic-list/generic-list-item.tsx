@@ -22,7 +22,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 	const currentCourse = useReactiveVar(currentCourseVar)
 	const currentUser = useReactiveVar(currentUserVar)
 
-	const buildPath = (id: string): string => {
+	const buildPath = (id: string, page: string): string => {
 		const courseCode = currentCourse?.code
 		var contentType = ""
 		switch (content?.__typename) {
@@ -36,7 +36,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 				contentType = "resource"
 				break
 		}
-		return `/courses/${courseCode}/${contentType}/detail/${id}`
+		return `/courses/${courseCode}/${contentType}/${page}/${id}`
 	}
 
 	return (
@@ -52,7 +52,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 					<button
 						className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base"
 						onClick={() => {
-							history.push(`/courses/${currentCourse?.code}/resource/edit/${content?.id}`)
+							history.push(buildPath(content?.id!, "edit"))
 						}}
 					>
 						تعديل
@@ -82,7 +82,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 						<p
 							className="w-full overflow-ellipsis text-md md:text-xl font-semibold bg-secondary-200 border-r-4 border-secondary py-2 px-1 flex items-center"
 						>
-							<Link to={buildPath(content?.id!)}>
+							<Link to={buildPath(content?.id!, "detail")}>
 								{content?.title}
 							</Link>
 						</p>
