@@ -33,7 +33,7 @@ const LectureDetailMain: React.FC<Props> = ({ lecture }) => {
 				>
 				</iframe> :
 				<p
-					className="text-secondary text-lg font-semibold"
+					className="text-secondary md:text-lg font-semibold"
 				>
 					لا يتوفر فيديو لهذه المحاضرة.
 				</p>
@@ -46,7 +46,7 @@ const LectureDetailMain: React.FC<Props> = ({ lecture }) => {
 				className="bg-secondary-200 rounded-lg flex flex-col gap-2 p-2"
 			>
 				<p
-					className="text-2xl"
+					className="text-xl md:text-2xl"
 				>
 					المرفقات
 				</p>
@@ -57,10 +57,10 @@ const LectureDetailMain: React.FC<Props> = ({ lecture }) => {
 						>
 							{edge?.node?.attmType === "DOCUMENT" && 
 								<a
-									className="w-28 h-28 flex flex-col items-center justify-center bg-secondary-100 p-1 rounded-lg"
+									className="h-20 w-20 md:w-28 md:h-28 flex flex-col items-center justify-center bg-secondary-100 p-1 rounded-lg"
 									href={edge.node.url!}
 								>
-									<svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 md:h-12 md:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
 									</svg>
 									<p className="w-full truncate">{edge.node?.title}</p>
@@ -71,7 +71,7 @@ const LectureDetailMain: React.FC<Props> = ({ lecture }) => {
 				})}
 				{lecture?.attachmentSet?.edges.length === 0 && 
 				<p 
-					className="w-full h-full flex items-center justify-center text-secondary text-lg font-semibold 	p-5"
+					className="w-full h-full flex text-center items-center justify-center text-secondary md:text-lg font-semibold 	p-5"
 				>
 					لا يتوفر مرفقات لهذه المحاضرة.
 				</p>}

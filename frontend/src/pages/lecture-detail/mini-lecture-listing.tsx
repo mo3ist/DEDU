@@ -61,7 +61,7 @@ const MiniLectureListing: React.FC<Props> = ({ id, setId }) => {
 							className="w-full grid grid-cols-1 gap-2"
 						>
 							<button
-								className={classname("w-full truncate", {"font-semibold text-primary": edge?.node?.id === id})}
+								className={classname("w-full truncate text-sm md:text-base", {"font-semibold text-primary": edge?.node?.id === id})}
 								key={edge?.node?.id}
 								onClick={() => {
 									setId(edge?.node?.id!)

@@ -66,12 +66,12 @@ const AnswerCreation: React.FC<Props> = ({ content, onSubmit }) => {
 	} 
 
 	return (
-		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative text-secondary">
+		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative text-secondary rounded-lg">
 			<div
 				className=""
 			>
 				<p
-					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+					className="font-bold text-primary text-xl border-b border-primary pb-1 mb-1"
 				>
 					الإجابة
 				</p>
@@ -81,7 +81,7 @@ const AnswerCreation: React.FC<Props> = ({ content, onSubmit }) => {
 					})}
 				>
 					<div
-						className="border-2 border-secondary-200"
+						className="border-2 border-secondary-200 rounded-lg overflow-hidden"
 					>
 						<TextEditor
 							ref={editor}
@@ -97,7 +97,7 @@ const AnswerCreation: React.FC<Props> = ({ content, onSubmit }) => {
 
 			<div>
 				<button 
-					className="bg-secondary-200 w-full h-20 text-3xl text-secondary"
+					className="bg-secondary-200 w-full p-2 md:p-4 text-2xl md:text-3xl text-secondary rounded-lg"
 					onClick={async () => {
 						if (
 							body !== ""

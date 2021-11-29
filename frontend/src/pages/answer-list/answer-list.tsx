@@ -110,23 +110,27 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 					{data?.answers?.edges.map(edge => {
 						return (
 							edge && <div
-								className="rounded-lg overflow-hidden grid grid-cols-1"
+								className="grid grid-cols-1"
 							>
-								{currentUser?.name === edge.node?.user.name && 
+								{/* {currentUser?.name === edge.node?.user.name && 
 								<div
 									className="w-full"
 								>
 									<button
-										className="bg-primary-100 py-1 px-2 rounded-t-lg"
+										className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base"
 										onClick={() => {
 											setEditableAnswerId(editableAnswerId === edge.node?.id! ? "" : edge.node?.id!)
 										}}
 									>
 										تعديل
 									</button>
-								</div>}
+								</div>} */}
 								{editableAnswerId !== edge.node?.id ? 
-									<AnswerListItem answer={edge.node!} /> :
+									<AnswerListItem
+										answer={edge.node!} 
+										editableAnswerId={editableAnswerId}
+										setEditableAnswerId={setEditableAnswerId}
+									/> :
 									<AnswerEdit answerId={edge.node.id}/>
 								} 
 							</div> 

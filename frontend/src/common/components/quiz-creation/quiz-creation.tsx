@@ -39,17 +39,17 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 				className=""
 			>
 				<p
-					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+					className="font-bold text-primary text-xl border-b-2 border-primary pb-1 mb-1"
 				>
 					السؤال
 				</p>
 				<div
 					className={classname({
-						"border-2 border-dashed border-primary-100": !validForm && title?.length === 0
+						"border-2 border-dashed border-primary-100 rounded-lg": !validForm && title?.length === 0
 					})}
 				>
 					<div
-						className="border-2 border-secondary-200"
+						className="border-2 border-secondary-200 rounded-lg overflow-hidden"
 					>
 						<TextEditor
 							ref={editor}
@@ -65,13 +65,13 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 			</div>
 			<div>
 				<p
-					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+					className="font-bold text-primary text-xl border-b-2 border-primary pb-1 mb-1"
 				>
 					الإختيارات
 				</p>
 				<div
 					className={classname({
-						"border-2 border-dashed border-primary-100": !validForm && options.filter(option => option.length !== 0)?.length < 2 
+						"border-2 border-dashed border-primary-100 rounded-lg": !validForm && options.filter(option => option.length !== 0)?.length < 2 
 					})}
 				>
 					<div className="grid grid-cols-1 gap-2">
@@ -85,19 +85,21 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 											type="text" 
 											value={value!}
 											onChange={(e) => {setOptions(options.map((itm, idx) => idx === index ? e.target.value : itm))}} 
-											className="flex-grow rounded-lg pr-2" />
+											className="flex-grow rounded-lg pr-2 h-8" />
 										<button 
-											className={classname("w-16 bg-primary rounded-lg h-full", {"opacity-50 cursor-not-allowed": options.length === 2})}
+											className={classname("p-2 bg-primary rounded-lg", {"opacity-50 cursor-not-allowed": options.length === 2})}
 											onClick={() => setOptions(options.filter((_, i) => i !== index))}
 											disabled={options.length === 2}	
 										>
-											x
+											<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+												<path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+											</svg>
 										</button>
 									</div>
 								)
 							})}
 						<button
-							className={classname("h-10 bg-primary rounded-lg", {"opacity-50 cursor-not-allowed": options.length === 4})}
+							className={classname("p-2 md:p-3 bg-primary rounded-lg text-xl md:text-2xl", {"opacity-50 cursor-not-allowed": options.length === 4})}
 							onClick={() => setOptions(options.concat(""))}
 							disabled={options.length === 4}
 						>
@@ -109,14 +111,14 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 
 			<div>
 				<p
-					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+					className="font-bold text-primary text-xl border-b-2 border-primary pb-1 mb-1"
 				>
 					الإجابة
 				</p>
 
 				<div
 					className={classname({
-						"border-2 border-dashed border-primary-100": !validForm && answer.length === 0
+						"border-2 border-dashed border-primary-100 rounded-lg": !validForm && answer.length === 0
 					})}
 				>
 					<div className="grid grid-cols-1 gap-2">
@@ -145,7 +147,7 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 
 			<div>
 				<p
-					className="font-bold text-primary text-xl border-b-2 border-primary mb-1"
+					className="font-bold text-primary text-xl border-b-2 border-primary pb-1 mb-1"
 				>
 					الوسوم
 					<span
@@ -156,7 +158,7 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 				</p>
 				<div
 					className={classname({
-						"border-2 border-dashed border-primary-100": tags?.length === 0
+						"border-2 border-dashed border-primary-100 rounded-lg": tags?.length === 0 && !validForm
 					})}
 				>
 					<TagSearch tags={tags!} setTags={setTags} courseCode="291V5" creatable={true}/>
@@ -164,13 +166,13 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 			</div>
 			<div>
 				<button 
-					className="bg-secondary-200 w-full h-20 text-3xl text-secondary"
+					className="bg-secondary-200 w-full p-2 md:p-4 text-2xl md:text-3xl rounded-lg text-secondary"
 					onClick={async () => {
 						if (
-							title !== null && 
-							tags !== null && 
-							options.filter(option => option !== null) !== null &&
-							answer !== null
+							title?.length !== 0 && 
+							tags?.length !== 0 && 
+							options.filter(option => option.length !== 0).length !== 0 &&
+							answer.length !== 0
 						) {
 							onSubmit({
 								title: title,

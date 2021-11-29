@@ -136,12 +136,12 @@ const LectureList: React.FC<Props> = ({ display, lectureType }) => {
 							className="grid grid-cols-1 gap-2"
 						>
 							<p
-								className="font-bold text-primary text-xl md:text-2xl"
+								className="font-semibold text-secondary-100 text-2xl md:text-3xl"
 							>
 								{tagEdge?.node?.title}
 							</p>
 							<div
-								className="border-r pr-2 border-primary grid grid-cols-1 gap-2"
+								className="border-r pr-1 border-primary grid grid-cols-1 gap-2"
 							>
 								{filtered_lectures?.map(edge => {
 									return (

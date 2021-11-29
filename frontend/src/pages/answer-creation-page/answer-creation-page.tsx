@@ -46,7 +46,7 @@ const AnswerCreationPage: React.FC<Props> = ({ questionId }) => {
 	const courseCode = useParams<{ course: string }>().course
 
 	return (
-		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative">
+		<div className="grid grid-cols-1 gap-4 bg-secondary-100 rounded-lg rtl relative">
 			{data && <Success />}
 			
 			{loading && <Loading />}

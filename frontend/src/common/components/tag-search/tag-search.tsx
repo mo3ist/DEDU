@@ -66,11 +66,11 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 			<div
 				className="h-full w-full flex flex-col"
 			>
-			<div
+				<div
 					className="h-1/3 w-full flex flex-row gap-1 bg-secondary-100"
 				>
 					<div
-						className="w-1/3 md:w-1/6 h-full relative"
+						className="w-32 md:w-40 h-full relative"
 						onFocus={() => {
 							setToggleTypesMenu(true);
 						}}

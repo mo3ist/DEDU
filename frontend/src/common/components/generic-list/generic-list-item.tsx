@@ -41,7 +41,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 
 	return (
 		<div
-			className={classNames("h-54 grid grid-cols-1", {
+			className={classNames("grid grid-cols-1", {
 				"border-r border-primary pr-1": currentUser?.name === content?.user.name 
 			})}
 		>
@@ -50,7 +50,7 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 					className="w-full"
 				>
 					<button
-						className="bg-primary-100 py-1 px-2 rounded-t-lg"
+						className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base"
 						onClick={() => {
 							history.push(`/courses/${currentCourse?.code}/resource/edit/${content?.id}`)
 						}}

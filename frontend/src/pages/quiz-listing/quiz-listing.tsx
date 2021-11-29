@@ -1,6 +1,6 @@
 import { gql, useLazyQuery, useReactiveVar } from "@apollo/client";
 import React, { useEffect, useState } from "react"
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import classname from "classnames"
 
 import { currentCourseVar } from "../../common/apollo-client/apollo-client";
@@ -54,6 +54,8 @@ const QuizListing: React.FC<Props> = () => {
 		}
 	})
 
+	const history = useHistory()
+
 	const quizzes = data?.quizzes?.edges
 
 	useEffect(() => {
@@ -69,13 +71,40 @@ const QuizListing: React.FC<Props> = () => {
 		<div
 			className="text-secondary main-margin rtl grid grid-cols-1 gap-4 md:gap-8"
 		>
-			{!started && <><TagSearch 
+			{!started && <>
+			<div>
+				<div
+					className="rtl border-b border-primary mb-1"
+				>
+					<p
+						className="text-xl text-primary mb-1"
+					>
+						اختيار الكويزات
+					</p>
+				</div>
+				<div
+					className="w-full bg-secondary-200 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
+				>
+					<button
+						className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
+						onClick={() => {
+							history.push(`/courses/${currentCourse?.code}/quiz/create/`)
+						}}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
+							<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+						</svg>
+						إضافة كويز
+					</button>
+				</div>
+			</div>
+			<TagSearch 
 				courseCode={currentCourse?.code!}
 				setTags={setTags}
 				tags={tags}
 			/>
 			<button
-				className={classname("relative rounded-lg h-20 w-full bg-primary font-semid text-xl md:text-3xl", {"opacity-50 cursor-not-allowed": tags?.length === 0})}
+				className={classname("relative rounded-lg p-4 w-full bg-primary font-semid text-2xl md:text-3xl", {"opacity-50 cursor-not-allowed": tags?.length === 0})}
 				onClick={() => {
 					if(data?.quizzes?.edges.length! > 0) {
 						setStarted(true)
@@ -87,7 +116,7 @@ const QuizListing: React.FC<Props> = () => {
 				<p
 					className="absolute text-base bottom-1 right-1"
 				>
-					<span className="font-semibold text-secondary-100">{data?.quizzes?.edges.length || 0}</span> سؤال  
+					تم اختيار <span className="font-semibold text-secondary-100 text-sm md:text-base">{data?.quizzes?.edges.length || 0}</span> سؤال  
 				</p>
 			</button>
 			</>}
