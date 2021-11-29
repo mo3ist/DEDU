@@ -1,42 +1,21 @@
-import { gql, useQuery } from "@apollo/client"
-import { GetIsLoggedInProtected } from "./__generated__/GetIsLoggedInProtected"
+import { useReactiveVar } from "@apollo/client"
 
 import { Redirect, Route, RouteProps } from 'react-router';
-import Loading from "../loading/loading";
+import { currentUserVar } from "../../apollo-client/apollo-client";
 
 type Props = {
 
 } & RouteProps
 
-const GET_ISLOGGEDIN = gql`
-	query GetIsLoggedInProtected{
-		users {
-			currentUser @client {
-				id
-			}
-		}
-	}
-`
-
 const ProtectedRoute = ({ ...props } : Props) => {
 
-	const { loading, error, data } = useQuery<GetIsLoggedInProtected>(GET_ISLOGGEDIN)
-
-	if (loading) {
-		return(
-			<div
-				className="h-screen"
-			>
-				<Loading />
-			</div>
-		) 
+	const currentUser = useReactiveVar(currentUserVar)
+	if (currentUser) {
+		return <Route {...props} />
 	} else {
-		if (data?.users?.currentUser?.id.length !== 0) {
-			return <Route {...props} />
-		} else {
-			return <Redirect to={"/auth"} />
-		}
+		return <Redirect to={"/auth"} />
 	}
+
 }
 
 export default ProtectedRoute;

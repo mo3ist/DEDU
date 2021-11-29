@@ -1,7 +1,7 @@
 import React from "react"
-import { gql, useQuery } from "@apollo/client"
-import { GetIsLoggedIn } from "./__generated__/GetIsLoggedIn"
+import { useReactiveVar } from "@apollo/client"
 import { useHistory } from "react-router-dom"
+import { currentUserVar } from "../../apollo-client/apollo-client"
 
 
 interface Props{
@@ -10,21 +10,10 @@ interface Props{
 	className?: string
 }
 
-const GET_ISLOGGEDIN = gql`
-	query GetIsLoggedIn{
-		users {
-			currentUser @client {
-				id
-			} 
-		}
-	}
-`
-
 const ProtectedButton: React.FC<Props> = ({ onClick, children, className }) => {
 
-	const { data } = useQuery<GetIsLoggedIn>(GET_ISLOGGEDIN)
+	const currentUser = useReactiveVar(currentUserVar)
 	const history = useHistory()
-
 
 	return (
 		<>
@@ -32,7 +21,7 @@ const ProtectedButton: React.FC<Props> = ({ onClick, children, className }) => {
 				className={className}
 				onClick={(event) => {
 					// Check auth
-					data?.users?.currentUser?.id.length !== 0 ? onClick(event) : history.push("/auth")
+					currentUser ? onClick(event) : history.push("/auth")
 				}}
 			>
 				{children}
