@@ -1,9 +1,10 @@
 import React from "react"
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { GetCourseTrivia } from "./__generated__/GetCourseTrivia";
+import { currentCourseVar } from "../../common/apollo-client/apollo-client";
 
 interface Props {
-	activeCourseId: String | null;
+
 }
 
 const GET_COURSE_TRIVIA = gql`
@@ -38,11 +39,13 @@ const GET_COURSE_TRIVIA = gql`
 	}
 `;
 
-export const CourseStatistics: React.FC<Props> = ({ activeCourseId }) => {
+export const CourseStatistics: React.FC<Props> = () => {
+
+	const currentCourse = useReactiveVar(currentCourseVar)
 
 	const { loading, error, data } = useQuery<GetCourseTrivia>(GET_COURSE_TRIVIA, {
 		variables: {
-			id: activeCourseId
+			id: currentCourse?.id
 		}
 	})
 

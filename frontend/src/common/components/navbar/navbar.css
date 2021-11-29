@@ -16,7 +16,7 @@
 	}
 
 	.nav-button-container {
-		@apply h-full flex items-center justify-center
+		@apply flex items-center justify-center
 	}
 
 	.nav-button {

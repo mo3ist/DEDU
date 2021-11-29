@@ -6,10 +6,10 @@ import { GetClassifications } from './__generated__/GetClassifications'
 
 import './course-listing.css'
 import { currentClassificationVar, currentCourseVar } from '../../common/apollo-client/apollo-client';
+import classNames from 'classnames';
 
 interface Props {
-	setActiveCourseId: (course: string | null) => void; 
-	setActiveClsfnId: (clsfn: string | null) => void
+
 };
 
 const GET_CLASSIFICATIONS = gql`
@@ -45,31 +45,36 @@ const GET_CLASSIFICATIONS = gql`
 	}
 `
 
-export const CourseListing: React.FC<Props> = ({ setActiveClsfnId, setActiveCourseId }) => {
-	
+export const CourseListing: React.FC<Props> = () => {
 	const { loading, error, data } = useQuery<GetClassifications>(GET_CLASSIFICATIONS)
 	
 	const currentCourse = useReactiveVar(currentCourseVar)
 	const currentClassification = useReactiveVar(currentClassificationVar)
 
 	useEffect(() => {
-		setActiveClsfnId(currentClassification?.id!)
-		setActiveCourseId(currentCourse?.id!)
 		localStorage.setItem("currentCourse", JSON.stringify(currentCourse))
 		localStorage.setItem("currentClassification", JSON.stringify(currentClassification))
 	}, [currentCourse, currentClassification])
 
 	return (
 		<div
-			className="flex flex-row-reverse gap-2"
+			className="flex flex-row rounded-lg md:p-2 rtl bg-primary-100 p-1"
 		>
 			<div
-				className="clsfn-btn-container"
+				className={classNames("clsfn-btn-container pl-1 flex flex-col gap-1", {"w-1/2": currentClassification, "w-full": !currentClassification})}
 			>
+				<p
+					className="flex items-center justify-start text-lg md:text-xl font-semibold mb-1 text-secondary"
+				>
+					اختر الفرقة
+				</p>
 				{data?.classifications?.edges?.map(edge => {
 					return (
 						<button
-							className={classname({"clsfn-btn": currentClassification?.id != edge?.node?.id, "clsfn-btn-selected": currentClassification?.id === edge?.node?.id})}
+							className={classname("truncate", {
+								"clsfn-btn text-secondary border-r-2 border-primary rounded-sm": currentClassification?.id != edge?.node?.id, 
+								"clsfn-btn-selected bg-primary": currentClassification?.id === edge?.node?.id
+							})}
 							key={edge?.node?.id}
 							onClick={() => {
 								currentClassificationVar({
@@ -83,15 +88,32 @@ export const CourseListing: React.FC<Props> = ({ setActiveClsfnId, setActiveCour
 						</button>
 					)
 				})}
-			</div>	
-			<div
-				className="w-3/6 clsfn-btn-container"
+			</div>
+			{/* {currentClassification && <div
+				className="flex items-center justify-center"
 			>
+				<div
+					className="border-l-2 border-primary w-full h-4/6"
+				>
+
+				</div>
+			</div>} */}
+			{currentClassification && <div
+				className="w-3/6 clsfn-btn-container pr-1 flex flex-col gap-1"
+			>
+				<p
+					className="flex items-center justify-start text-lg md:text-xl font-semibold mb-1 text-secondary"
+				>
+					اختر الكورس
+				</p>
 				{data?.classifications?.edges?.filter(edge => edge?.node?.id === currentClassification?.id).map(edge => {
 					return edge?.node?.courses?.edges?.map(edge => {
 						return (
 							<button
-							className={classname({"course-btn": currentCourse?.id != edge?.node?.id, "course-btn-selected": currentCourse?.id === edge?.node?.id})}
+								className={classname("truncate", {
+									"course-btn border-r-2 border-primary rounded-sm": currentCourse?.id != edge?.node?.id, 
+									"course-btn-selected bg-primary": currentCourse?.id === edge?.node?.id
+								})}
 								key={edge?.node?.id}	
 								onClick={() => {
 									currentCourseVar({
@@ -106,7 +128,7 @@ export const CourseListing: React.FC<Props> = ({ setActiveClsfnId, setActiveCour
 						)
 					})
 				})}
-			</div>
+			</div>}
 		</div>
 	);
 };

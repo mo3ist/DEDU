@@ -4,22 +4,22 @@
 
 @layer components {
 	.clsfn-btn {
-		@apply py-2 px-2 text-secondary-100
+		@apply py-2 px-2 
 	}
 
 	.clsfn-btn-selected {
-		@apply py-2 px-2 text-secondary bg-secondary-100 rounded-lg
+		@apply py-2 px-2 text-secondary rounded-lg
 	}
 
 	.course-btn {
-		@apply py-2 px-2 text-secondary-100 
+		@apply py-2 px-2
 	}
 
 	.course-btn-selected {
-		@apply py-2 px-2 text-secondary bg-secondary-100 rounded-lg
+		@apply py-2 px-2 rounded-lg
 	}
 
 	.clsfn-btn-container {
-		@apply flex flex-col w-3/6
+		@apply flex flex-col
 	}
 }

@@ -1,9 +1,10 @@
 import React from "react"
 import { Link } from 'react-router-dom'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useReactiveVar } from '@apollo/client'
 
 import { GetCourseCode } from "./__generated__/GetCourseCode";
 import { GetContentCount } from "./__generated__/GetContentCount";
+import { currentCourseVar } from "../../common/apollo-client/apollo-client";
 
 interface Content {
 	title: string;
@@ -14,7 +15,7 @@ interface Content {
 type Contents = Content[];
 
 interface Props {
-	activeCourseId: string;
+
 }
 
 const GET_COURSE_CODE = gql`
@@ -47,18 +48,20 @@ const GET_CONTENT_COUNT = gql`
 	}
 `;
 
-export const ContentListing: React.FC<Props> = ({ activeCourseId: activeCourseId }) => {
+export const ContentListing: React.FC<Props> = () => {
+
+	const currentCourse = useReactiveVar(currentCourseVar)
 
 	const { loading: codeLoading, error: codeError, data: codeData } = useQuery<GetCourseCode>(GET_COURSE_CODE, {
 		variables: {
-			id: activeCourseId
+			id: currentCourse?.id
 		},
 		// fetchPolicy: 'cache-only'	// from the cached course-listing query 
 	})
 
 	const { loading: countLoading, error: countError, data: countData } = useQuery<GetContentCount>(GET_CONTENT_COUNT, {
 		variables: {
-			id: activeCourseId
+			id: currentCourse?.id
 		},
 	})
 

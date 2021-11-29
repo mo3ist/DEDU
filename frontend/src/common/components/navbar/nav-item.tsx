@@ -20,11 +20,11 @@ const NavItem: React.FC<Props> = ({ children, title, to, isActive=false, onClick
 			key={title}
 			onClick={onClick}
 		>
-			{isDisabled === true ? title : <Link 
+			{!isDisabled ? <Link 
 				to={to}
 			>
 				{children}
-			</Link>}
+			</Link> : <div className="opacity-50 cursor-not-allowed">{children}</div>}
 			
 		</button>
 	)

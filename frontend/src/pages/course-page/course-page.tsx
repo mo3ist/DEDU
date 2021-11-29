@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useReactiveVar } from '@apollo/client'
 
 import { CourseListing } from './course-listing'
 import { ContentListing } from './content-listing'
 import { CourseOutline } from './course-outline'
 import { CourseStatistics } from './course-statistics'
 import { GetCourseId } from "./__generated__/GetCourseId"
+import { currentClassificationVar, currentCourseVar } from "../../common/apollo-client/apollo-client"
+import classNames from "classnames"
 
 interface Props {
 
@@ -32,19 +34,22 @@ const GET_COURSE_ID = gql`
 
 export const CoursePage: React.FC<Props> = () => {
 
-	const { loading, error, data } = useQuery<GetCourseId>(GET_COURSE_ID);
+	const currentClassification = useReactiveVar(currentClassificationVar)
+	const currentCourse = useReactiveVar(currentCourseVar)
 
-	const [activeClsfnId, setActiveClsfnId] = useState<string | null>("");
-	const [activeCourseId, setActiveCourseId] = useState<string | null>("");
+	const { loading, error, data } = useQuery<GetCourseId>(GET_COURSE_ID);
 
 	return (
 		<div
 			className="mx-8 my-4 md:my-8 flex flex-row flex-wrap md:flex-nowrap h-full gap-4 md:gap-8 text-secondary"
 		>
 			<div
-				className="order-2 flex flex-col flex-grow w-2/3 gap-4 md:gap-8"
+				className={classNames("order-2 flex flex-col flex-grow gap-4 md:gap-8", {
+						"w-2/3": currentCourse,
+						"w-0": !currentCourse
+					})}
 			>
-				<div
+				{currentCourse?.id && <div
 					className="flex-initial"
 				>
 					<div
@@ -56,10 +61,10 @@ export const CoursePage: React.FC<Props> = () => {
 							موجز
 						</p>
 					</div>
-					{activeCourseId && <CourseStatistics activeCourseId={activeCourseId}/>}
-				</div>
+					<CourseStatistics />
+				</div>}
 
-				<div
+				{currentCourse?.id && <div
 					className="flex-grow flex flex-col h-full"
 				>
 					<div
@@ -71,12 +76,15 @@ export const CoursePage: React.FC<Props> = () => {
 							المحتويات
 						</p>
 					</div>
-					{activeCourseId && <ContentListing activeCourseId={activeCourseId!} />}
-				</div>
+					<ContentListing />
+				</div>}
 			</div>
 
 			<div
-				className="order-1 flex flex-col flex-grow gap-4 md:gap-8 w-1/3"
+				className={classNames("order-1 flex flex-col flex-grow gap-4 md:gap-8", {
+					"w-1/3": currentCourse,
+					"w-full": !currentCourse
+				})}
 			>
 				<div
 					className="flex-initial"
@@ -90,10 +98,10 @@ export const CoursePage: React.FC<Props> = () => {
 							الكورسات
 						</p>
 					</div>
-					<CourseListing setActiveClsfnId={setActiveClsfnId} setActiveCourseId={setActiveCourseId}/>
+					<CourseListing />
 				</div>
 				
-				<div
+				{currentCourse?.id && <div
 					className="flex-grow"
 				>
 					<div
@@ -105,8 +113,8 @@ export const CoursePage: React.FC<Props> = () => {
 							فهرس
 						</p>
 					</div>
-					{activeCourseId && <CourseOutline activeCourseId={activeCourseId} />}
-				</div>
+					<CourseOutline />
+				</div>}
 			</div>
 		</div>
 	)
