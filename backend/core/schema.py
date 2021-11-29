@@ -96,11 +96,16 @@ class QuestionFilter(django_filters.FilterSet):
 
 	@property
 	def qs(self):
-		print(self.data)
+		# '.distinct()' is a hack to prevent unexpected duplications
+		qs = super().qs.distinct()
 
-
-		# This is a hack to prevent unexpected duplications
-		return super().qs.distinct()
+		# Sort by upvotes
+		get_upvotes = lambda x:  core_models.Vote.objects.filter(question=x, value=core_models.Vote.UPVOTE).count()
+		get_downvotes = lambda x:  core_models.Vote.objects.filter(question=x, value=core_models.Vote.DOWNVOTE).count()
+		upvote_sorted_qs = sorted(qs, key=lambda x: get_upvotes(x) - get_downvotes(x), reverse=True)
+		# user = self.request.user
+		# personalized_sorted_qs = sorted(upvote_sorted_qs, key=lambda q: q.user.id == user.id, reverse=True)
+		return upvote_sorted_qs
 
 class AnswerFilter(django_filters.FilterSet):
 	class Meta:
@@ -109,9 +114,16 @@ class AnswerFilter(django_filters.FilterSet):
 
 	@property
 	def qs(self):
+		# '.distinct()' is a hack to prevent unexpected duplications
+		qs = super().qs.distinct()
 
-		# This is a hack to prevent unexpected duplications
-		return super().qs.distinct()
+		# Sort by upvotes
+		get_upvotes = lambda x:  core_models.Vote.objects.filter(answer=x, value=core_models.Vote.UPVOTE).count()
+		get_downvotes = lambda x:  core_models.Vote.objects.filter(answer=x, value=core_models.Vote.DOWNVOTE).count()
+		upvote_sorted_qs = sorted(qs, key=lambda x: get_upvotes(x) - get_downvotes(x), reverse=True)
+		# user = self.request.user
+		# personalized_sorted_qs = sorted(upvote_sorted_qs, key=lambda q: q.user.id == user.id, reverse=True)
+		return upvote_sorted_qs
 
 
 class QuizFilter(django_filters.FilterSet):
@@ -133,9 +145,16 @@ class QuizFilter(django_filters.FilterSet):
 
 	@property
 	def qs(self):
+		# '.distinct()' is a hack to prevent unexpected duplications
+		qs = super().qs.distinct()
 
-		# This is a hack to prevent unexpected duplications
-		return super().qs.distinct()
+		# Sort by upvotes
+		get_upvotes = lambda x:  core_models.Vote.objects.filter(quiz=x, value=core_models.Vote.UPVOTE).count()
+		get_downvotes = lambda x:  core_models.Vote.objects.filter(quiz=x, value=core_models.Vote.DOWNVOTE).count()
+		upvote_sorted_qs = sorted(qs, key=lambda x: get_upvotes(x) - get_downvotes(x), reverse=True)
+		# user = self.request.user
+		# personalized_sorted_qs = sorted(upvote_sorted_qs, key=lambda q: q.user.id == user.id, reverse=True)
+		return upvote_sorted_qs
 
 
 class ResourceFilter(django_filters.FilterSet):
@@ -158,9 +177,16 @@ class ResourceFilter(django_filters.FilterSet):
 
 	@property
 	def qs(self):
+		# '.distinct()' is a hack to prevent unexpected duplications
+		qs = super().qs.distinct()
 
-		# This is a hack to prevent unexpected duplications
-		return super().qs.distinct()
+		# Sort by upvotes
+		get_upvotes = lambda x:  core_models.Vote.objects.filter(resource=x, value=core_models.Vote.UPVOTE).count()
+		get_downvotes = lambda x:  core_models.Vote.objects.filter(resource=x, value=core_models.Vote.DOWNVOTE).count()
+		upvote_sorted_qs = sorted(qs, key=lambda x: get_upvotes(x) - get_downvotes(x), reverse=True)
+		# user = self.request.user
+		# personalized_sorted_qs = sorted(upvote_sorted_qs, key=lambda q: q.user.id == user.id, reverse=True)
+		return upvote_sorted_qs
 
 
 class SummaryFilter(django_filters.FilterSet):
@@ -182,9 +208,16 @@ class SummaryFilter(django_filters.FilterSet):
 
 	@property
 	def qs(self):
+		# '.distinct()' is a hack to prevent unexpected duplications
+		qs = super().qs.distinct()
 
-		# This is a hack to prevent unexpected duplications
-		return super().qs.distinct()
+		# Sort by upvotes
+		get_upvotes = lambda x:  core_models.Vote.objects.filter(summary=x, value=core_models.Vote.UPVOTE).count()
+		get_downvotes = lambda x:  core_models.Vote.objects.filter(summary=x, value=core_models.Vote.DOWNVOTE).count()
+		upvote_sorted_qs = sorted(qs, key=lambda x: get_upvotes(x) - get_downvotes(x), reverse=True)
+		# user = self.request.user
+		# personalized_sorted_qs = sorted(upvote_sorted_qs, key=lambda q: q.user.id == user.id, reverse=True)
+		return upvote_sorted_qs
 
 class VoteFilter(django_filters.FilterSet):
 	class Meta:

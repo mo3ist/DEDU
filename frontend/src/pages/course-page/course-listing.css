@@ -8,7 +8,7 @@
 	}
 
 	.clsfn-btn-selected {
-		@apply py-2 px-2 text-secondary rounded-lg
+		@apply py-2 px-2 text-secondary rounded-sm
 	}
 
 	.course-btn {
@@ -16,7 +16,7 @@
 	}
 
 	.course-btn-selected {
-		@apply py-2 px-2 rounded-lg
+		@apply py-2 px-2 rounded-sm
 	}
 
 	.clsfn-btn-container {
