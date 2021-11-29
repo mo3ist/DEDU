@@ -75,7 +75,7 @@ const AnswerEdit: React.FC<Props> = ({ answerId }) => {
 	})
 	
 	return (
-		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative h-full">
+		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative h-full rounded-lg">
 			{mutationData && <Success />}
 			
 			{(queryLoading || mutationLoading) && <Loading />}

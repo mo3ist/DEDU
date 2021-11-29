@@ -458,7 +458,7 @@ class AnswerType(DjangoObjectType):
 		user = info.context.user
 		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, answer=obj).first()
 		if user_vote_query:
-			return user_vote_query[0].value
+			return user_vote_query.value
 		else:
 			return None
 
@@ -509,7 +509,7 @@ class QuizType(DjangoObjectType):
 		user = info.context.user
 		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, quiz=obj).first()
 		if user_vote_query:
-			return user_vote_query[0].value
+			return user_vote_query.value
 		else:
 			return None
 
@@ -565,7 +565,7 @@ class ResourceType(DjangoObjectType):
 		user = info.context.user
 		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, resource=obj).first()
 		if user_vote_query:
-			return user_vote_query[0].value
+			return user_vote_query.value
 		else:
 			return None
 	def resolve_vote_count(obj, info, **kwargs):
@@ -615,7 +615,7 @@ class SummaryType(DjangoObjectType):
 		user = info.context.user
 		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, summary=obj).first()
 		if user_vote_query:
-			return user_vote_query[0].value
+			return user_vote_query.value
 		else:
 			return None
 	def resolve_vote_count(obj, info, **kwargs):

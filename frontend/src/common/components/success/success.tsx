@@ -10,7 +10,7 @@ const Success: React.FC<Props> = () => {
 			className="absolute inset-0 bg-primary opacity-80 z-10 flex items-center justify-center rounded-lg"
 		>
 			<p
-				className="text-secondary font-bold text-3xl"
+				className="text-secondary font-bold text-xl md:text-3xl text-center"
 			>
 				تم إرسال المشاركة وبانتظار المراجعة.
 			</p>
