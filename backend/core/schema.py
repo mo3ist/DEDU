@@ -400,9 +400,10 @@ class QuestionType(DjangoObjectType):
 	user_vote = graphene.String()
 
 	def resolve_user_vote(obj, info, **kwargs):
-		user_vote_query = obj.votes.filter(user=info.context.user)
+		user = info.context.user
+		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, question=obj).first()
 		if user_vote_query:
-			return user_vote_query[0].value
+			return user_vote_query.value
 		else:
 			return None
 
@@ -454,7 +455,8 @@ class AnswerType(DjangoObjectType):
 	user_vote = graphene.String()
 
 	def resolve_user_vote(obj, info, **kwargs):
-		user_vote_query = obj.votes.filter(user=info.context.user)
+		user = info.context.user
+		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, answer=obj).first()
 		if user_vote_query:
 			return user_vote_query[0].value
 		else:
@@ -504,7 +506,8 @@ class QuizType(DjangoObjectType):
 	user_vote = graphene.String()
 
 	def resolve_user_vote(obj, info, **kwargs):
-		user_vote_query = obj.votes.filter(user=info.context.user)
+		user = info.context.user
+		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, quiz=obj).first()
 		if user_vote_query:
 			return user_vote_query[0].value
 		else:
@@ -559,7 +562,8 @@ class ResourceType(DjangoObjectType):
 	user_vote = graphene.String()
 
 	def resolve_user_vote(obj, info, **kwargs):
-		user_vote_query = obj.votes.filter(user=info.context.user)
+		user = info.context.user
+		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, resource=obj).first()
 		if user_vote_query:
 			return user_vote_query[0].value
 		else:
@@ -608,7 +612,8 @@ class SummaryType(DjangoObjectType):
 	user_vote = graphene.String()
 
 	def resolve_user_vote(obj, info, **kwargs):
-		user_vote_query = obj.votes.filter(user=info.context.user)
+		user = info.context.user
+		user_vote_query = core_models.Vote.objects.filter(user__id=user.id, summary=obj).first()
 		if user_vote_query:
 			return user_vote_query[0].value
 		else:
