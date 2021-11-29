@@ -247,13 +247,22 @@ class QuizSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Quiz
 		fields = ("id", "title", "a", "b", "c", "d", "answer", "user", "tag_set", "mod", "course")
-
+	
+	course = serializers.CharField(required=True)
 	id = serializers.CharField(required=False) 
 	tag_set = serializers.ListField(
 		child=serializers.CharField(),
 		required=False
 	)
 	mod = serializers.CharField(required=False)
+
+	def validate_course(self, value):
+		try:
+			course = models.Course.objects.get(code=value)
+		except models.Course.DoesNotExist:
+			raise serializers.ValidationError("Course dosen't exist.")
+
+		return course
 
 	def create(self, validated_data):
 		tag_set = validated_data.pop("tag_set", [])

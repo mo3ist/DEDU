@@ -134,7 +134,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 							}} 
 						/>
 						{toggleSearch && <div
-							className="absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 rounded-b-lg overflow-hidden"
+							className="h-44 md:h-56 absolute bg-primary w-full flex flex-col items-center justify-center shadow-xl z-10 rounded-b-lg overflow-hidden"
 							
 						>
 							{/* Wrapper for scroll */}
@@ -142,7 +142,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 								className="h-full w-full overflow-y-scroll"
 							>
 								<div
-									className="w-full grid grid-cols-1 gap-2 p-2"
+									className="w-full grid grid-cols-1 gap-2 p-2 h-full"
 									ref={divSearch}
 									onScroll={() => {
 										if (divSearch.current?.scrollHeight! - divSearch.current?.scrollTop! === divSearch.current?.clientHeight!) {
@@ -201,7 +201,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 									})}
 									
 									{
-										data?.tags?.edges.length === 0 && <div className="w-full flex items-center justify-center h-10 md:text-lg font-semibold">
+										data?.tags?.edges.length === 0 && <div className="h-full w-full flex items-center justify-center md:text-lg font-semibold">
 											<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
 											</svg>

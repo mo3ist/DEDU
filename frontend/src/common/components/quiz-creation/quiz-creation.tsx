@@ -4,6 +4,8 @@ import classname from 'classnames'
 import TagSearch from '../tag-search/tag-search';
 import TextEditor from '../text-editor/text-editor';
 import { GetEditableQuiz_quizzes_edges_node } from '../../../pages/quiz-edit/__generated__/GetEditableQuiz';
+import { useReactiveVar } from '@apollo/client';
+import { currentCourseVar } from '../../apollo-client/apollo-client';
 
 const imgbbUploader = require('imgbb-uploader')
 
@@ -32,6 +34,8 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 	const [validForm, setValidForm] = useState<boolean>(true)
 
 	const editor = useRef<JoditEditor>(null)
+
+	const currentCourse = useReactiveVar(currentCourseVar)
 
 	return (
 		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative text-secondary">
@@ -161,7 +165,7 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 						"border-2 border-dashed border-primary-100 rounded-lg": tags?.length === 0 && !validForm
 					})}
 				>
-					<TagSearch tags={tags!} setTags={setTags} courseCode="291V5" creatable={true}/>
+					<TagSearch tags={tags!} setTags={setTags} courseCode={currentCourse?.code!} creatable={true}/>
 				</div>
 			</div>
 			<div>
