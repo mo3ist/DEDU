@@ -1,23 +1,24 @@
 from django.contrib import admin
 from . import models
+from . import forms
 
 class LectureAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	form = forms.LectureForm
 
 class QuestionAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	form = forms.QuestionForm
 
 class AnswerAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	form = forms.AnswerForm
 
 class QuizAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	form = forms.QuizForm
 
 class ResourceAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	form = forms.ResourceForm
 
 class SummaryAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	form = forms.SummaryForm
 
 class ClassificationAdmin(admin.ModelAdmin):
 	list_display = ['__str__']
