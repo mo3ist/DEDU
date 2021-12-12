@@ -9,6 +9,10 @@
 
 export interface SearchTags_tags_edges_node {
   __typename: "TagType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
 }
 
@@ -61,5 +65,5 @@ export interface SearchTagsVariables {
   tagType?: string | null;
   first?: number | null;
   after?: string | null;
-  course_Code?: string | null;
+  courseCode?: string | null;
 }

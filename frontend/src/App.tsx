@@ -107,7 +107,7 @@ const App: React.FC = () => {
 						<Route path="/courses/:course/resource/">
 							<ResourceListingPage />
 						</Route>
-						<Route path="/courses/">
+						<Route path={["/courses/", "/"]}>
 							<CoursePage />
 						</Route>
 					</Switch>

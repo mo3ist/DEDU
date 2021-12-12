@@ -286,7 +286,7 @@ class Tag(models.Model):
 		OTHER = ("OTHER", "Other")
 
 	title = models.CharField(max_length=250)
-	body = models.CharField(max_length=5000, null=True)
+	body = models.CharField(max_length=5000, null=True, blank=True)
 	contents = GM2MField(Lecture, Question, Answer, Quiz, Resource, Summary)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	mod = models.OneToOneField(Mod, on_delete=models.CASCADE, related_query_name="tag")

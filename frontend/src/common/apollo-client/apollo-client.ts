@@ -165,13 +165,29 @@ const cache = new InMemoryCache({
 				tags: {
 					keyArgs: ['id', 'title', 'tagType', 'course_Code'],
 					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						
+						// DIRTY FIX: Only merge in case of pagination. Else, take in the existing.
+						// This fix exists because I'm using useApolloClient directly to make requests.
+						// SO: The pagination will be like this: when you click away from the component and start over, it 
+						// will start from page 0 again. won't cache. Good enough for now.
+						if (incoming?.pageInfo?.startCursor === existing?.pageInfo?.startCursor) {
+							return incoming
+						}
+
+
 						// clean this shit please
 						return {
 							...incoming, 
 							edges: [
 								...existing?.edges,
 								...incoming?.edges
-							]
+							],
+							pageInfo: {
+								...incoming.pageInfo,
+								startCursor: existing?.pageInfo?.startCursor ? // the initial value is undefined, so take the first valid value
+												existing?.pageInfo?.startCursor :
+												incoming?.pageInfo?.startCursor
+							}
 						}
 					}
 				},

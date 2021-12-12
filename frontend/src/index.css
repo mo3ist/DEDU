@@ -11,3 +11,7 @@
 .main-margin {
 	@apply mx-8 my-4 md:m-48 md:my-8
 }
+
+div {
+	@apply scrollbar scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent
+}
