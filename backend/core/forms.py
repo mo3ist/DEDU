@@ -40,6 +40,11 @@ class QuizForm(ExtendedContentForm):
 	class Meta(ExtendedContentForm.Meta):
 		model = models.Quiz
 
+class SolutionForm(forms.ModelForm):
+	class Meta:
+		model = models.Solution
+		fields = '__all__'
+
 class ResourceForm(ExtendedContentForm):
 	class Meta(ExtendedContentForm.Meta):
 		model = models.Resource

@@ -306,6 +306,29 @@ class QuizSerializer(serializers.ModelSerializer):
 
 		return quiz
 
+class SolutionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = models.Solution
+		fields = ("id", "quiz", "user", "answer", "correct")
+
+	id = serializers.CharField(required=False)
+	quiz = serializers.CharField(required=True)
+
+	def validate_quiz(self, value):
+		django_id = from_global_id(value)[1]
+		try: 
+			quiz = models.Quiz.objects.get(id=django_id)
+		except:
+			raise serializers.ValidationError("'Quiz' instance doesn't exist.")
+		return quiz
+
+	def create(self, validated_data):
+		# Check of correct
+		validated_data['correct'] = validated_data.get('answer', None) == validated_data['quiz'].answer
+
+		solution = models.Solution.objects.create(**validated_data)
+		return solution
+
 class ResourceSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Resource

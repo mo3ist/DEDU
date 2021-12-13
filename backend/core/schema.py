@@ -156,6 +156,10 @@ class QuizFilter(django_filters.FilterSet):
 		personalized_sorted_qs = sorted(upvote_sorted_qs, key=lambda q: q.user.id == user.id, reverse=True)
 		return personalized_sorted_qs
 
+class SolutionFilter(django_filters.FilterSet):
+	class Meta:
+		model = core_models.Solution
+		fields = ("id", "quiz", "user", "answer", "correct")
 
 class ResourceFilter(django_filters.FilterSet):
 
@@ -551,6 +555,31 @@ class CreateQuiz(AuthMutation, graphene.relay.ClientIDMutation):
 			raise Exception("Not valid.")
 		return CreateQuiz(quiz=None)
 
+class SolutionType(DjangoObjectType):
+	class Meta:
+		model = core_models.Solution
+		interfaces = (graphene.relay.Node,)
+
+class CreateSolution(AuthMutation, graphene.relay.ClientIDMutation):
+	permission_classes = (AllowAuthenticated,)
+	solution = graphene.Field(SolutionType)
+
+	class Input:
+		quiz = graphene.String(required=True)
+		answer = graphene.String(required=True)
+
+	@classmethod
+	def mutate_and_get_payload(cls, root, info, **input_data):
+		if cls.has_permission(root, info, input_data):
+			input_data["user"] = info.context.user.id
+			solution_serializer = core_serializers.SolutionSerializer(data=input_data)
+			if solution_serializer.is_valid():
+				solution = solution_serializer.save()
+				return CreateSolution(solution=solution)
+			print(solution_serializer.errors)
+			raise Exception("Not valid.")
+		return CreateSolution(solution=None)
+
 class ResourceType(DjangoObjectType):
 	class Meta:
 		model = core_models.Resource
@@ -807,6 +836,9 @@ class Query(graphene.ObjectType):
 	quiz = graphene.relay.node.Field(QuizType)
 	quizzes = DjangoFilterConnectionField(QuizType, filterset_class=QuizFilter)
 
+	solution = graphene.relay.node.Field(SolutionType)
+	solutions = DjangoFilterConnectionField(SolutionType, filterset_class=SolutionFilter)
+
 	resource = graphene.relay.node.Field(ResourceType)
 	resources = DjangoFilterConnectionField(ResourceType, filterset_class=ResourceFilter)
 	
@@ -827,6 +859,7 @@ class Mutation(graphene.ObjectType):
 	create_question = CreateQuestion.Field()
 	create_answer = CreateAnswer.Field()
 	create_quiz = CreateQuiz.Field()
+	create_solution = CreateSolution.Field()
 	create_resource = CreateResource.Field()
 	create_summary = CreateSummary.Field()
 	create_vote = CreateVote.Field()

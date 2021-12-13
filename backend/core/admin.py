@@ -14,6 +14,9 @@ class AnswerAdmin(admin.ModelAdmin):
 class QuizAdmin(admin.ModelAdmin):
 	form = forms.QuizForm
 
+class QuizSolution(admin.ModelAdmin):
+	form = forms.SolutionForm
+
 class ResourceAdmin(admin.ModelAdmin):
 	form = forms.ResourceForm
 
@@ -45,6 +48,7 @@ admin.site.register(models.Lecture, LectureAdmin)
 admin.site.register(models.Question, QuestionAdmin)
 admin.site.register(models.Answer, AnswerAdmin)
 admin.site.register(models.Quiz, QuizAdmin)
+admin.site.register(models.Solution, QuizSolution)
 admin.site.register(models.Resource, ResourceAdmin)
 admin.site.register(models.Summary, SummaryAdmin)
 admin.site.register(models.Classification, ClassificationAdmin)

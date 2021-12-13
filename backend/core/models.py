@@ -250,6 +250,22 @@ class Quiz(models.Model):
 	def __str__(self):
 		return self.title
 
+class Solution(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+	correct = models.BooleanField(default=False)
+	answer = models.CharField(max_length=250)
+
+	def save(self, *args, **kwargs):
+		# Validations
+		if Solution.objects.filter(user=self.user, quiz=self.quiz):
+			raise Exception("A solution already exists.")
+
+		return super().save(*args, **kwargs)
+
+	def __str__(self):
+		return f"for quiz#{self.quiz.id}"
+
 class Resource(models.Model):
 	title = models.CharField(max_length=500)
 	body = models.CharField(max_length=5000)
