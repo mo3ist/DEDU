@@ -30,7 +30,7 @@ const LectureListingPage: React.FC<Props> = () => {
 			<div
 				className="w-full"
 			>
-				<div
+				{/* <div
 					className="rtl border-b border-primary mb-1"
 				>
 					<p
@@ -38,9 +38,9 @@ const LectureListingPage: React.FC<Props> = () => {
 					>
 						فلترة المحاضرات
 					</p>
-				</div>
+				</div> */}
 				<div
-					className="md:h-20 flex flex-row items-center bg-secondary-100 p-1 md:p-4 gap-1 md:gap-2 rounded-b-lg"
+					className="md:h-20 flex flex-row items-center bg-secondary-100 p-1 md:p-4 gap-1 md:gap-2 rounded-lg"
 				>
 					<div
 						className="flex flex-row items-center flex-grow gap-1 md:gap-2"
@@ -157,7 +157,7 @@ const LectureListingPage: React.FC<Props> = () => {
 			<div
 				className="flex-grow"
 			>
-				<div
+				{/* <div
 					className="rtl border-b border-primary mb-2"
 				>
 					<p
@@ -165,7 +165,7 @@ const LectureListingPage: React.FC<Props> = () => {
 					>
 						النتائج
 					</p>
-				</div>
+				</div> */}
 				<LectureList display={displays[display][1]} lectureType={lectureTypes[lectureType]}/>
 			</div>
 		</div>

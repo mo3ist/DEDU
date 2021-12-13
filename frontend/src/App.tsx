@@ -4,7 +4,7 @@ import { ApolloProvider } from '@apollo/client'
 import apolloClient from "./common/apollo-client/apollo-client"
 import CoursePage from './pages/course-page/course-page'
 import LectureListingPage from './pages/lecture-listing-page/lecture-listing-page'
-import QnAListingPage from './pages/qna-listing-page/qna-listing-page';
+import QnAListingPage from './pages/question-listing-page/question-listing-page';
 import ResourceListingPage from './pages/resource-listing-page/resource-listing-page';
 import SummaryListingPage from './pages/summary-listing-page/summary-listing-page';
 import ResourceCreationPage from './pages/resource-creation-page/resource-creation-page';

@@ -5,7 +5,7 @@ import MiniLectureListing from "./mini-lecture-listing"
 import { GetDetailedLecture } from "./__generated__/GetDetailedLecture"
 import LectureDetailMain from "./lecture-detail-main"
 import Concepts from "./concepts"
-import QnAList from "../qna-listing-page/qna-list"
+import QuestionList from "../question-listing-page/question-list"
 
 interface Props {
 
@@ -109,7 +109,7 @@ const LectureDetail: React.FC<Props> = () => {
 						{/* rounded hack */}
 						<div
 						>
-							<QnAList 
+							<QuestionList 
 								tags={data?.lectures?.edges[0]?.node?.tagSet?.edges.map(edge => edge?.node?.title!) || []}
 							/>
 						</div>

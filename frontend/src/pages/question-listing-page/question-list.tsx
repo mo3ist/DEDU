@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react"
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
-import QnAListItem from "./qna-list-item";
-import { GetQnAs } from "./__generated__/GetQnAs";
-import { Redirect, useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import GenericListItem from "../../common/components/generic-list/generic-list-item";
 import classNames from "classnames";
+import { GetQuestions } from "./__generated__/GetQuestions";
 
 interface Props {
 	tags: Array<String> | null
 }
 
-const GET_QNAS = gql `
-	query GetQnAs($first: Int, $after: String, $tag_Title: String, $course_Code: String) {
+const GET_QUESTIONS = gql `
+	query GetQuestions($first: Int, $after: String, $tag_Title: String, $course_Code: String) {
 		questions(first: $first, after: $after, tag_Title: $tag_Title, tag_Course_Code: $course_Code, course_Code: $course_Code) {
 			edges {
 				node {
@@ -46,13 +45,13 @@ const GET_QNAS = gql `
 	}
 `
 
-const QnAList: React.FC<Props> = ({ tags }) => {
+const QuestionList: React.FC<Props> = ({ tags }) => {
 
 	const FIRST = 10;
 	const [ after, setAfter ] = useState<String>(""); 
 
 	const courseCode = useParams<{ course: string }>().course
-	const [getQnAs, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQnAs>(GET_QNAS, {
+	const [getQuestions, { loading, error, data, fetchMore, refetch }] = useLazyQuery<GetQuestions>(GET_QUESTIONS, {
 		variables: {
 			first: FIRST,
 			after: after,
@@ -62,7 +61,7 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 	});
 
 	useEffect(() => {
-		getQnAs()
+		getQuestions()
 	}, [])
 
 	const history = useHistory()
@@ -71,21 +70,6 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 		<div
 			className="h-full w-full text-secondary rtl"
 		>	
-			<div
-				className="w-full bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
-			>
-				<button
-					className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
-					onClick={() => {
-						history.push(`/courses/${courseCode}/question/create/`)
-					}}
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
-						<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-					</svg>
-					إضافة سؤال
-				</button>
-			</div>
 			<div
 				className="grid grid-cols-1 gap-4 md:gap-8"
 			>
@@ -115,4 +99,4 @@ const QnAList: React.FC<Props> = ({ tags }) => {
 	)
 }
 
-export default QnAList;
+export default QuestionList;

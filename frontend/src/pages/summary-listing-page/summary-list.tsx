@@ -70,7 +70,7 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 		<div
 			className="h-full w-full text-secondary rtl"
 		>		
-			<div
+			{/* <div
 				className="w-full bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
 			>
 				<button
@@ -84,11 +84,11 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 					</svg>
 					إضافة ملخص
 				</button>
-			</div>
+			</div> */}
 			<div
 				className="grid grid-cols-1 gap-4 md:gap-8"
 			>
-				{data?.summaries?.edges.map(edge => {
+				{/* {data?.summaries?.edges.map(edge => {
 					return (
 						edge && <div
 							// className="bg-secondary-100"
@@ -108,8 +108,16 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 						المزيد
 					</button>
 
-				}
+				} */}
 			</div>
+			{!data && <p
+				className="h-96 flex items-center justify-center font-semibold text-primary text-xl md:text-3xl"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+				</svg>
+				لاتتوفر نتائج
+			</p>}
 		</div>
 	)
 }

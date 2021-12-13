@@ -1,7 +1,6 @@
 import React, { useState } from "react"
-import { useParams } from 'react-router-dom'
+import GenericListingPage from "../../common/components/generic-listing-page/generic-listing-page";
 
-import TagSearch from "../../common/components/tag-search/tag-search";
 import SummaryList from "./summary-list";
 
 interface Props {
@@ -10,45 +9,22 @@ interface Props {
 
 const SummaryListingPage: React.FC<Props> = () => {
 
-	const [tags, setTags] = useState<Array<String> | null>([])
-	const params = useParams<{course: string}>()
-
+	const [tags, setTags] = useState<string[] | null>([])
+	
 	return (
 		<div
-			className="flex flex-col h-full gap-2 main-margin"
+			className="w-full h-full"
 		>
-			<div
-				className="w-full"
+			<GenericListingPage 
+				tags={tags}
+				setTags={setTags}
+				ListHeader={{
+					creationPath: "summary",
+					creationText: "مشاركة ملخص"
+				}}
 			>
-				<div
-					className="rtl border-b border-primary mb-1"
-				>
-					<p
-						className="text-xl text-primary mb-1"
-					>
-						فلترة الملخصات
-					</p>
-				</div>
-				<TagSearch 
-					tags={tags}
-					setTags={setTags}
-					courseCode={params.course}
-				/>
-			</div>
-			<div
-				className="flex-grow"
-			>
-				<div
-					className="rtl border-b border-primary mb-1"
-				>
-					<p
-						className="text-xl text-primary mb-1"
-					>
-						النتائج
-					</p>
-				</div>
-				<SummaryList tags={tags}/>
-			</div>
+				<SummaryList tags={tags} />
+			</GenericListingPage>
 		</div>
 	)
 }

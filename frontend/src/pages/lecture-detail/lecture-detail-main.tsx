@@ -1,5 +1,5 @@
 import React from "react"
-import QnAList from "../qna-listing-page/qna-list"
+import QuestionList from "../question-listing-page/question-list"
 import { GetDetailedLecture_lectures_edges_node } from "./__generated__/GetDetailedLecture"
 
 interface Props {

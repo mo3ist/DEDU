@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import GenericListingPage from "../../common/components/generic-listing-page/generic-listing-page";
+import QuestionList from "./question-list";
 
-import ResourceList from "./resource-list";
 
 interface Props {
 
@@ -19,11 +19,11 @@ const ResourceListingPage: React.FC<Props> = () => {
 				tags={tags}
 				setTags={setTags}
 				ListHeader={{
-					creationPath: "resource",
-					creationText: "مشاركة مصدر"
+					creationPath: "question",
+					creationText: "مشاركة سؤال"
 				}}
 			>
-				<ResourceList tags={tags} />
+				<QuestionList tags={tags} />
 			</GenericListingPage>
 		</div>
 	)
