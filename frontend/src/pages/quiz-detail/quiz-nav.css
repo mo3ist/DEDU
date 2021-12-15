@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.quiz-nav-button {
+		@apply bg-secondary-100 rounded-lg w-7 h-7 md:w-10 md:h-10 md:p-1
+	}
+	.quiz-nav-icon {
+		@apply h-4 w-4 md:h-8 md:w-8 inline
+	}
+
+}

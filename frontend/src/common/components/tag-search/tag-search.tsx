@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ApolloError, gql, useApolloClient, useLazyQuery, useQuery } from '@apollo/client';
 
 import { SearchTags } from './__generated__/SearchTags'
 import classNames from "classnames";
 import Loading from "../loading/loading";
+import { currentTagsVar } from "../../apollo-client/apollo-client";
 
 interface Props {
-	tags: Array<String> | null;
+	tags: string[] | null;
 	setTags : Function;
 	courseCode: String;
 	creatable?: boolean;	// For tag creation...
@@ -82,6 +83,21 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 		setError(error)
 		return {data, loading, error} 
 	}
+
+	// useEffect(() => {
+	// 	// On mount, load the tags with lecture tags, so that the default values for the
+	// 	// 'Contents' are lecture-related
+	// 	getSearchTags({}).then(({ data }) => {
+	// 		setTags(data?.tags?.edges.map(edge => edge?.node?.title))
+	// 	})
+		
+	// }, [])
+
+	useEffect(() => {
+		// For global state management
+		currentTagsVar(tags)
+		localStorage.setItem("currentTagsVar", JSON.stringify(currentTagsVar()))
+	}, [tags])
 
 	return (
 		<div

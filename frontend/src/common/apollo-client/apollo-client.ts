@@ -53,9 +53,9 @@ const cache = new InMemoryCache({
 		},
 		QuizType: {
 			fields: {
-				userAnswer: {
-					read(value="", { variables }) {
-						return value
+				quizSolutions: {
+					read(_, { variables }) {
+						return quizSolutionsVar();
 					}
 				}
 			}
@@ -65,6 +65,15 @@ const cache = new InMemoryCache({
 				currentCourse: {
 					read(_, { variables }) {
 						return currentClassificationVar();
+					}
+				}
+			}
+		},
+		TagTypeConnection: {
+			fields: {
+				currentTags: {
+					read(_, { variables }) {
+						return currentTagsVar();
 					}
 				}
 			}
@@ -156,8 +165,21 @@ const cache = new InMemoryCache({
 						return {
 							...incoming, 
 							edges: [
-								...existing?.edges,
-								...incoming?.edges
+								...existing?.edges || [],
+								...incoming?.edges || []
+							]
+						}
+					}
+				},
+				solutions: {
+					keyArgs: ['id'],
+					merge(existing = {edges: [], pageInfo: {}}, incoming){
+						// clean this shit please
+						return {
+							...incoming, 
+							edges: [
+								...existing?.edges || [],
+								...incoming?.edges || []
 							]
 						}
 					}
@@ -234,5 +256,14 @@ export type CurrentClassification = {
 }
 export const currentClassificationVar = makeVar<CurrentClassification | null>(JSON.parse(localStorage.getItem("currentClassification")!));
 
+export type CurrentTags = string[]
+export const currentTagsVar = makeVar<CurrentTags | null>(JSON.parse(localStorage.getItem("currentTagsVar")!))
+
+type QuizSolution = {
+	id: string
+	answer: string
+}
+export type QuizSolutions = QuizSolution[]
+export const quizSolutionsVar = makeVar<QuizSolutions | null>(JSON.parse(localStorage.getItem("quizSolutionsVar")!))
 
 export default apolloClient

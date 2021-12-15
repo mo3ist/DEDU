@@ -1,4 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
+import classNames from "classnames";
 import React, { useState } from "react"
 import { currentCourseVar } from "../../apollo-client/apollo-client";
 import ListHeader from "../list-header/list-header";
@@ -36,12 +37,19 @@ const GenericListingPage: React.FC<Props> = ({ children, tags, setTags, ListHead
 						creationText={header.creationText}
 						creationPath={`/courses/${currentCourse?.code}/${header.creationPath}/create/`}
 					/>
-					{showFilter && 
-					<TagSearch
-						tags={tags}
-						setTags={setTags}
-						courseCode={currentCourse?.code!}
-					/>}
+					{/* Conditional rendering on display property instead of mounting because I need the TagSearch initial query */}
+					<div
+						className={classNames("h-full w-full", {
+							"hidden": !showFilter
+						})}
+
+					>
+						<TagSearch
+							tags={tags}
+							setTags={setTags}
+							courseCode={currentCourse?.code!}
+						/>
+					</div>
 				</div>
 			</div>
 			<div

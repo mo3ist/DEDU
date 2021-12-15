@@ -241,6 +241,29 @@ class NestedAttachmentInput(graphene.InputObjectType):
 	title = graphene.String(required=True)
 	attm_type = graphene.String(required=True)
 	
+# https://github.com/graphql-python/graphene-django/issues/636
+class ExtendedConnection(graphene.relay.Connection):
+	class Meta:
+		abstract = True
+	
+	@classmethod
+	def __init_subclass_with_meta__(cls, node=None, name=None, **options):
+		result = super().__init_subclass_with_meta__(node=node, name=name, **options)
+
+		cls._meta.fields["total_count"] = graphene.Field(
+			type=graphene.Int, 
+			name="totalCount",
+			description="Number of items in the queryset.",
+			required=True,
+			resolver=cls.resolve_total_count
+		)
+
+		return result
+
+	def resolve_total_count(self, *_):
+		print(self.iterable)
+		return len(self.iterable)
+
 class ModType(DjangoObjectType):
 	class Meta:
 		model = core_models.Mod
@@ -502,6 +525,7 @@ class CreateAnswer(AuthMutation, graphene.relay.ClientIDMutation):
 class QuizType(DjangoObjectType):
 	class Meta:
 		model = core_models.Quiz
+		connection_class = ExtendedConnection
 		interfaces = (graphene.relay.Node,)
 
 	tag_set = DjangoFilterConnectionField('core.schema.TagType', filterset_class=TagFilter)
@@ -527,6 +551,10 @@ class QuizType(DjangoObjectType):
 		return core_models.Attachment.objects.filter(
 			quiz = obj
 		)
+
+	def resolve_solution_set(obj, info, **kwargs):
+		# Only user's
+		return core_models.Solution.objects.filter(quiz=obj, user__id=info.context.user.id)
 
 class CreateQuiz(AuthMutation, graphene.relay.ClientIDMutation):
 	permission_classes = (AllowAuthenticated,)

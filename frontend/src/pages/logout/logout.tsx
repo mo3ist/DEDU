@@ -1,3 +1,4 @@
+import { useReactiveVar } from "@apollo/client"
 import React, { useEffect } from "react"
 import { useHistory } from "react-router"
 import { currentClassificationVar, currentCourseVar, currentUserVar } from "../../common/apollo-client/apollo-client"
@@ -8,8 +9,16 @@ interface Props {
 
 const Logout: React.FC<Props> = () => {
 	
+	const currentUser = useReactiveVar(currentUserVar)
 	const history = useHistory()
 	
+	useEffect(() => {
+		if (!currentUser){
+			// If not logged in:
+			history.push("/courses/")
+		}
+	}, [])
+
 	return (
 		<div
 			className="main-margin rtl"
@@ -35,7 +44,8 @@ const Logout: React.FC<Props> = () => {
 						localStorage.removeItem('currentClassification')
 						currentClassificationVar(null)
 
-						history.push('/courses/')
+						// SECURITY MEASUREMENT.
+						window.location.reload();
 					}}
 					className="rounded-md bg-primary text-secondary min-w-full min-h-full font-bold text-xl md:text-2xl h-16"
 				>
