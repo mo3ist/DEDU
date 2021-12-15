@@ -36,7 +36,16 @@ class VoteAdmin(admin.ModelAdmin):
 	list_display = ['__str__']
 
 class ModAdmin(admin.ModelAdmin):
-	list_display = ['__str__']
+	list_display = ['state', 'date', 'by']
+	list_filter = ['state', 'date', 'by']
+	default_filter = (('state', models.Mod.PENDING),)
+
+	form = forms.ModForm
+
+	def get_form(self, request, *args, **kwargs):
+		form = super().get_form(request, *args, **kwargs)
+		form.current_user = request.user
+		return form
 
 class AttachmentAdmin(admin.ModelAdmin):
 	list_display = ['__str__']

@@ -52,3 +52,13 @@ class ResourceForm(ExtendedContentForm):
 class SummaryForm(ExtendedContentForm):
 	class Meta(ExtendedContentForm.Meta):
 		model = models.Summary
+
+class ModForm(forms.ModelForm):
+	class Meta:
+		model = models.Mod
+		fields = ('state', 'by', 'reason')
+
+	state = forms.ChoiceField(choices=models.Mod.STATE, widget=forms.RadioSelect())
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)

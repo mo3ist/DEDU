@@ -68,8 +68,15 @@ class Mod(MPTTModel):
 			if self.state != Mod.PENDING:
 				raise Exception(f"You can't change the state to '{self.state}' without a OneToOne relation with a moderated Model.")
 
+		if self.by:
+			if not self.by.is_staff:
+				raise Exception("Not authorized!")
+
 		super().save(*args, **kwargs)
 		
+	def __str__(self):
+		return self.state
+
 @receiver(post_save, sender=Mod)
 def populate_fields(sender, instance, **kwargs):
 	Mod.objects.filter(id=instance.id).update(

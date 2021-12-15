@@ -6,11 +6,11 @@ class UserAdmin(BaseUserAdmin):
 	list_display = ["__str__"]
 
 	fieldsets = (
-		(None, {'fields': ('name', 'email', 'password',)}),
+		(None, {'fields': ('name', 'email', 'password', 'is_staff',)}),
 	)
 
 	add_fieldsets = (
-		(None, {'fields': ('email', 'password1', 'password2')}),
+		(None, {'fields': ('email', 'password1', 'password2', 'is_staff')}),
 	)
 
 	filter_horizontal = []

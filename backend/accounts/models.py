@@ -1,35 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
+	BaseUserManager, AbstractBaseUser
 )
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
-        """
-        Creates and saves a User with the given email and password.
-        """
-        if not email:
-            raise ValueError('Users must have an email address')
+	def create_user(self, email, password=None):
+		"""
+		Creates and saves a User with the given email and password.
+		"""
+		if not email:
+			raise ValueError('Users must have an email address')
 
-        user = self.model(
-            email=self.normalize_email(email),
-        )
+		user = self.model(
+			email=self.normalize_email(email),
+		)
 
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
 
-    def create_superuser(self, email, password=None):
-        """
-        Creates and saves a superuser with the given email and password.
-        """
-        user = self.create_user(
-            email,
-            password=password,
-        )
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
+	def create_superuser(self, email, password=None):
+		"""
+		Creates and saves a superuser with the given email and password.
+		"""
+		user = self.create_user(
+			email,
+			password=password,
+		)
+		user.is_admin = True
+		user.is_staff = True
+		user.save(using=self._db)
+		return user
 
 
 class User(AbstractBaseUser):
@@ -42,6 +43,7 @@ class User(AbstractBaseUser):
 	)
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
+	is_staff = models.BooleanField(default=False)
 
 	objects = UserManager()
 
@@ -60,8 +62,9 @@ class User(AbstractBaseUser):
 		# Simplest possible answer: Yes, always
 		return True
 
-	@property
-	def is_staff(self):
-		"Is the user a member of staff?"
-		# Simplest possible answer: All admins are staff
-		return self.is_admin
+	# @property
+	# def is_staff(self):
+	# 	"Is the user a member of staff?"
+	# 	# Simplest possible answer: All admins are staff
+	# 	print(self.__getattribute__("is_staff"))
+	# 	return self.is_admin
