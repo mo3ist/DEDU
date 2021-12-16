@@ -19,7 +19,7 @@ class Mod(MPTTModel):
 		(REJECTED, "Rejected")
 	]
 
-	state = models.CharField(choices=STATE, max_length=8, default=PENDING)
+	state = models.CharField(choices=STATE, max_length=8, default=PENDING, null=True, blank=True)
 	by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name="mod_by")
 	date = models.DateTimeField(auto_now=True)
 	reason = models.CharField(max_length=1000, null=True, blank=True)
@@ -68,6 +68,26 @@ class Mod(MPTTModel):
 			if self.state != Mod.PENDING:
 				raise Exception(f"You can't change the state to '{self.state}' without a OneToOne relation with a moderated Model.")
 
+			# Add new pending mod
+			# NOTE: 
+			# Doing this in post_save was kinda confusing, so I moved it here till future bugs :'
+			# So, the idea is to delete the leaf node of the parent if it was pending and 
+			# Replace the self.parent with leaf_node.parent AKA replace old pending leaf with a new one
+
+			# WARNING: DON'T TRY USING ANY OTHER METHOD BEFORE THINKING ABOUT 
+			# WHAT WILL HAPPEN IN A .save() INTERMEDIATE OPERATION. 
+			# ALMOST ALL OF THE MEHTODS PROVIDED BY MPTT REQUIRES SAVING FIRST,
+			# MEANING: RECURSION BUGS.
+			if self.parent:
+				descendants = self.parent.get_descendants(include_self=True)
+				print(f"{descendants=}")
+				if not descendants:
+					return super().save(*args, **kwargs)
+				leaf = descendants[len(descendants)-1]
+				if leaf.state == Mod.PENDING:
+					self.parent = leaf.parent
+					leaf.delete()
+
 		if self.by:
 			if not self.by.is_staff:
 				raise Exception("Not authorized!")
@@ -75,24 +95,16 @@ class Mod(MPTTModel):
 		super().save(*args, **kwargs)
 		
 	def __str__(self):
-		return self.state
+		return f"{self.state} #{self.id}"
 
 @receiver(post_save, sender=Mod)
-def populate_fields(sender, instance, **kwargs):
+def keep_track(sender, instance, **kwargs):
 	Mod.objects.filter(id=instance.id).update(
 		group_id=instance.get_root().id
 	)
 	if instance.state != Mod.PENDING:
 		if instance.parent:
 			Mod.objects.filter(id=instance.parent.id).update(history=True)
-
-	# Creation: when user submits new pending content, 
-	# the old pending one gets deleted and replaced by the new one.
-	if instance.parent:
-		if instance.parent.state == Mod.PENDING:
-			old_parent = instance.parent
-			instance.move_to(instance.parent.parent)
-			old_parent.delete()
 
 class Vote(models.Model):
 	UPVOTE = 'UPVOTE'
