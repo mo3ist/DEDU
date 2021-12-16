@@ -19,7 +19,7 @@ class Mod(MPTTModel):
 		(REJECTED, "Rejected")
 	]
 
-	state = models.CharField(choices=STATE, max_length=8, default=PENDING, null=True, blank=True)
+	state = models.CharField(choices=STATE, max_length=8, default=PENDING)
 	by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name="mod_by")
 	date = models.DateTimeField(auto_now=True)
 	reason = models.CharField(max_length=1000, null=True, blank=True)
