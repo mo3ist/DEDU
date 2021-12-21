@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { TagTagType } from "./../../../../__generated__/globalTypes";
+import { TagTagType, ModState } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: GetSummaries
@@ -37,6 +37,11 @@ export interface GetSummaries_summaries_edges_node_user {
   profilePicture: string | null;
 }
 
+export interface GetSummaries_summaries_edges_node_mod {
+  __typename: "ModType";
+  state: ModState;
+}
+
 export interface GetSummaries_summaries_edges_node {
   __typename: "SummaryType";
   /**
@@ -49,6 +54,7 @@ export interface GetSummaries_summaries_edges_node {
   created: any;
   tagSet: GetSummaries_summaries_edges_node_tagSet | null;
   user: GetSummaries_summaries_edges_node_user;
+  mod: GetSummaries_summaries_edges_node_mod;
 }
 
 export interface GetSummaries_summaries_edges {

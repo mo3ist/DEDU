@@ -33,6 +33,9 @@ const GET_RESOURCES = gql `
 						name
 						profilePicture
 					}
+					mod {
+						state
+					}
 				}
 			}
 			pageInfo {

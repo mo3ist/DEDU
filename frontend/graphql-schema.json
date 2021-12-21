@@ -2275,6 +2275,22 @@
             "deprecationReason": null
           },
           {
+            "name": "isStaff",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "modBy",
             "description": "",
             "args": [

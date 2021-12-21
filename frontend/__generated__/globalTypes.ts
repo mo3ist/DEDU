@@ -28,6 +28,15 @@ export enum LectureLectureType {
 /**
  * An enumeration.
  */
+export enum ModState {
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+}
+
+/**
+ * An enumeration.
+ */
 export enum TagTagType {
   CHAPTER = "CHAPTER",
   CONCEPT = "CONCEPT",

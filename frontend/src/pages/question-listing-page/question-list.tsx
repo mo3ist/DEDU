@@ -33,6 +33,9 @@ const GET_QUESTIONS = gql `
 						name
 						profilePicture
 					}
+					mod {
+						state
+					}
 				}
 			}
 			pageInfo {

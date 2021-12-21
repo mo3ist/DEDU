@@ -2,7 +2,7 @@ import { useReactiveVar } from "@apollo/client"
 import classNames from "classnames"
 import React, { useState } from "react"
 import { Link, useLocation, useHistory, useRouteMatch } from "react-router-dom"
-import { GetQnAs_questions_edges_node } from "../../../pages/question-listing-page/__generated__/GetQnAs"
+import { GetQuestions_questions_edges_node } from "../../../pages/question-listing-page/__generated__/GetQuestions"
 import { GetResources_resources_edges_node } from "../../../pages/resource-listing-page/__generated__/GetResources"
 import { GetSummaries_summaries_edges_node } from "../../../pages/summary-listing-page/__generated__/GetSummaries"
 import { currentCourseVar, currentUserVar } from "../../apollo-client/apollo-client"
@@ -11,7 +11,7 @@ import Vote from "../vote/vote"
 const arTimeAgo = require('artimeago')
 
 interface Props {
-	content: GetSummaries_summaries_edges_node | GetResources_resources_edges_node | GetQnAs_questions_edges_node | null
+	content: GetSummaries_summaries_edges_node | GetResources_resources_edges_node | GetQuestions_questions_edges_node | null
 }
 
 const GenericListItem: React.FC<Props> = ({ content }) => {
@@ -47,16 +47,28 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 		>
 			{currentUser?.name === content?.user.name && 
 				<div
-					className="w-full"
+					className="w-full flex flex-row items-center justify-start gap-1"
 				>
-					<button
+					{content?.mod?.state != "REJECTED" && <button
 						className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base"
 						onClick={() => {
 							history.push(buildPath(content?.id!, "edit"))
 						}}
 					>
 						تعديل
-					</button>
+					</button>}
+					
+					<p
+						className={classNames("py-1 px-2 rounded-t-lg text-sm md:text-base", {
+							"bg-yellow-300 text-secondary": content?.mod?.state === "PENDING",
+							//"bg-green-600": content?.mod?.state === "APPROVED",
+							"bg-red-800 text-secondary-100": content?.mod?.state === "REJECTED",
+							
+						})}
+					>
+						{content?.mod?.state === "PENDING" && "قيد المراجعة"}
+						{content?.mod?.state === "REJECTED" && "مرفوض"}
+					</p>
 				</div>}
 			<div
 				className={classNames("bg-secondary-100 flex flex-col gap-1 p-1 rtl text-secondary", 

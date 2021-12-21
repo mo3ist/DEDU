@@ -1,18 +1,18 @@
 import graphene
 import graphql_jwt
-from core.schema import Query as CoreQuery, Mutation as CoreMutation
-from accounts.schema import Query as AccountsQuery, Mutation as AccountsMutation
+from core import schema as core_schema
+from accounts import schema as accounts_schema
 
 class Query(
-	CoreQuery,
-	AccountsQuery,
+	core_schema.Query,
+	accounts_schema.Query,
 	graphene.ObjectType
 ):
 	pass
 
 class Mutation(
-	CoreMutation,
-	AccountsMutation,
+	core_schema.Mutation,
+	accounts_schema.Mutation,
 	graphene.ObjectType
 ):
 	token_auth = graphql_jwt.ObtainJSONWebToken.Field()

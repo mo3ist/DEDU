@@ -56,7 +56,7 @@ class SummaryForm(ExtendedContentForm):
 class ModForm(forms.ModelForm):
 	class Meta:
 		model = models.Mod
-		fields = ('state', 'by', 'reason')
+		fields = '__all__'
 
 	state = forms.ChoiceField(choices=models.Mod.STATE, widget=forms.RadioSelect())
 

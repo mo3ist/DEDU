@@ -33,6 +33,9 @@ const GET_SUMMARIES = gql `
 						name
 						profilePicture
 					}
+					mod {
+						state
+					}
 				}
 			}
 			pageInfo {
