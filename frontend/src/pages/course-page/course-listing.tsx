@@ -7,6 +7,7 @@ import { GetClassifications } from './__generated__/GetClassifications'
 import './course-listing.css'
 import { currentClassificationVar, currentCourseVar } from '../../common/apollo-client/apollo-client';
 import classNames from 'classnames';
+import Loading from '../../common/components/loading/loading';
 
 interface Props {
 
@@ -58,8 +59,14 @@ export const CourseListing: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-row rounded-lg md:p-2 rtl bg-primary-100 p-1"
+			className="relative flex flex-row rounded-lg md:p-2 rtl bg-primary-100 p-1"
 		>
+			{loading && 
+			<div
+				className="h-96"
+			>
+				<Loading />
+			</div>}
 			<div
 				className={classNames("clsfn-btn-container pl-1 flex flex-col gap-1", {"w-1/2": currentClassification, "w-full": !currentClassification})}
 			>

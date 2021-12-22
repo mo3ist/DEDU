@@ -1,4 +1,5 @@
 import React from "react"
+import Loading from "../../common/components/loading/loading"
 import QuestionList from "../question-listing-page/question-list"
 import { GetDetailedLecture_lectures_edges_node } from "./__generated__/GetDetailedLecture"
 
@@ -10,7 +11,7 @@ const LectureDetailMain: React.FC<Props> = ({ lecture }) => {
 	const videoAttachment = lecture?.attachmentSet?.edges.filter(edge => edge?.node?.attmType === "VIDEO")[0]?.node
 	return (
 		<div
-			className="bg-secondary-100 rounded-lg px-4 py-2 flex flex-col gap-4 h-full w-full rtl"
+			className="relative bg-secondary-100 rounded-lg px-4 py-2 flex flex-col gap-4 h-full w-full rtl"
 		>
 			{/* meta */}
 			<div

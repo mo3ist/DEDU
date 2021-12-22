@@ -8,6 +8,7 @@ import { CourseStatistics } from './course-statistics'
 import { GetCourseId } from "./__generated__/GetCourseId"
 import { currentClassificationVar, currentCourseVar } from "../../common/apollo-client/apollo-client"
 import classNames from "classnames"
+import Loading from "../../common/components/loading/loading"
 
 interface Props {
 
@@ -41,8 +42,9 @@ export const CoursePage: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="mx-8 my-4 md:my-8 flex flex-row flex-wrap md:flex-nowrap h-full gap-4 md:gap-8 text-secondary"
+			className="relative mx-8 my-4 md:my-8 flex flex-row flex-wrap md:flex-nowrap h-full gap-4 md:gap-8 text-secondary"
 		>
+			{/* {loading && <Loading />} */}
 			<div
 				className={classNames("order-2 flex flex-col flex-grow gap-4 md:gap-8", {
 						"w-2/3": currentCourse,

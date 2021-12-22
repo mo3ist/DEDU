@@ -4,6 +4,7 @@ import classname from "classnames"
 
 import { currentCourseVar } from "../../common/apollo-client/apollo-client"
 import { GetMiniLectureList } from "./__generated__/GetMiniLectureList"
+import Loading from "../../common/components/loading/loading"
 // import { useParams } from "react-router"
 
 interface Props {
@@ -50,8 +51,9 @@ const MiniLectureListing: React.FC<Props> = ({ id, setId }) => {
 	
 	return (
 		<div
-			className="h-40 md:h-96 w-full rounded-b-lg overflow-hidden"
+			className="relative h-40 md:h-96 w-full rounded-b-lg overflow-hidden"
 		>
+			{loading && <Loading />}
 			<div
 				className="h-full overflow-y-scroll flex flex-col items-center justify-start bg-secondary-100 gap-1 md:gap-2 py-2 px-1"
 			>

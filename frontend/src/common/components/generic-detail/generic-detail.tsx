@@ -6,6 +6,7 @@ import TextEditor from "../text-editor/text-editor";
 import { GetDetailedSummary_summaries_edges_node } from "../../../pages/summary-detail/__generated__/GetDetailedSummary";
 import { GetDetailedResource_resources_edges_node } from "../../../pages/resource-detail/__generated__/GetDetailedResource";
 import { GetDetailedQuestion_questions_edges_node } from "../../../pages/question-detail/__generated__/GetDetailedQuestion";
+import Loading from "../loading/loading";
 
 const arTimeAgo = require('artimeago')
 

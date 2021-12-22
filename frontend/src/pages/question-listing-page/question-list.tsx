@@ -5,6 +5,7 @@ import { useHistory, useParams } from "react-router";
 import GenericListItem from "../../common/components/generic-list/generic-list-item";
 import classNames from "classnames";
 import { GetQuestions } from "./__generated__/GetQuestions";
+import Loading from "../../common/components/loading/loading";
 
 interface Props {
 	tags: Array<String> | null
@@ -71,8 +72,9 @@ const QuestionList: React.FC<Props> = ({ tags }) => {
 
 	return (
 		<div
-			className="h-full w-full text-secondary rtl"
+			className="relative h-full w-full text-secondary rtl"
 		>	
+			{loading && <Loading />}
 			<div
 				className="grid grid-cols-1 gap-4 md:gap-8"
 			>
@@ -98,6 +100,14 @@ const QuestionList: React.FC<Props> = ({ tags }) => {
 
 				}
 			</div>
+			{!data && <p
+				className="h-96 flex items-center justify-center font-semibold text-primary text-xl md:text-3xl"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+				</svg>
+				لاتتوفر نتائج
+			</p>}
 		</div>
 	)
 }

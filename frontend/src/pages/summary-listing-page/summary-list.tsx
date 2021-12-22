@@ -6,6 +6,7 @@ import { GetSummaries as GetSummaries } from "./__generated__/GetSummaries";
 import { useHistory, useParams } from "react-router";
 import GenericListItem from "../../common/components/generic-list/generic-list-item";
 import classNames from "classnames";
+import Loading from "../../common/components/loading/loading";
 
 interface Props {
 	tags: Array<String> | null
@@ -71,27 +72,13 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 
 	return (
 		<div
-			className="h-full w-full text-secondary rtl"
+			className="relative h-full w-full text-secondary rtl"
 		>		
-			{/* <div
-				className="w-full bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
-			>
-				<button
-					className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
-					onClick={() => {
-						history.push(`/courses/${courseCode}/summary/create/`)
-					}}
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
-						<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-					</svg>
-					إضافة ملخص
-				</button>
-			</div> */}
+			{loading && <Loading />}
 			<div
 				className="grid grid-cols-1 gap-4 md:gap-8"
 			>
-				{/* {data?.summaries?.edges.map(edge => {
+				{data?.summaries?.edges.map(edge => {
 					return (
 						edge && <div
 							// className="bg-secondary-100"
@@ -111,7 +98,7 @@ const SummaryList: React.FC<Props> = ({ tags }) => {
 						المزيد
 					</button>
 
-				} */}
+				}
 			</div>
 			{!data && <p
 				className="h-96 flex items-center justify-center font-semibold text-primary text-xl md:text-3xl"

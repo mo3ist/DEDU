@@ -53,13 +53,14 @@ const QuestionDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="grid grid-cols-1 gap-4 md:gap-8 relative main-margin"
+			className="grid-cols-1 gap-4 md:gap-8 main-margin"
 		>
-			{loading && <Loading />}
 
 			<div
-				className="rounded-lg overflow-hidden"
+				className="relative rounded-lg overflow-hidden"
 			>
+				{loading && <Loading />}
+
 				<GenericDetail
 					content={question!}
 				/>

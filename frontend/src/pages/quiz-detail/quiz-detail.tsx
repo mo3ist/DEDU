@@ -86,20 +86,21 @@ const QuizDetail: React.FC<Props> = () => {
 		setQuizIds(data?.quizzes?.edges.map(edge => edge?.node?.id!)!)
 	}, [data])
 
-	if (loading) {
-		return (
-			<div
-				className="h-96 relative"
-			>
-				<Loading />
-			</div>
-		)
-	}
+	// if (loading) {
+	// 	return (
+	// 		<div
+	// 			className="h-96 relative"
+	// 		>
+	// 			<Loading />
+	// 		</div>
+	// 	)
+	// }
 
 	return (
 		<div 
-			className="text-secondary main-margin flex flex-col items-center justify-center gap-2"
+			className="relative text-secondary main-margin flex flex-col items-center justify-center gap-2"
 		>
+			{loading && <Loading />}
 			{quizIds && <><div
 				className="w-full flex-grow"
 			>

@@ -10,6 +10,7 @@ import classNames from "classnames";
 import AnswerCreationPage from "../answer-creation-page/answer-creation-page";
 import AnswerEdit from "../answer-edit/answer-edit";
 import { currentCourseVar, currentUserVar } from "../../common/apollo-client/apollo-client";
+import Loading from "../../common/components/loading/loading";
 
 interface Props {
 	questionId: string
@@ -95,8 +96,15 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				</button>
 			</div>
 			<div
-				className="grid grid-cols-1 gap-4 md:gap-8"
+				className="relative grid grid-cols-1 gap-4 md:gap-8"
 			>
+				{loading &&
+				<div
+					className="h-96"
+				>
+					<Loading />
+				</div>}
+
 				<div
 					className="grid grid-cols-1 gap-4 md:gap-8"
 				>

@@ -6,6 +6,7 @@ import { GetDetailedLecture } from "./__generated__/GetDetailedLecture"
 import LectureDetailMain from "./lecture-detail-main"
 import Concepts from "./concepts"
 import QuestionList from "../question-listing-page/question-list"
+import Loading from "../../common/components/loading/loading"
 
 interface Props {
 
@@ -61,7 +62,6 @@ const LectureDetail: React.FC<Props> = () => {
 		}
 	})
 
-	
 	return (
 		<div
 			className="w-full flex flex-col items-center justify-center rtl text-secondary p-8"
@@ -71,8 +71,9 @@ const LectureDetail: React.FC<Props> = () => {
 				className="w-full flex-grow flex flex-row flex-wrap md:flex-nowrap items-start justify-center gap-2 md:gap-8"
 			>
 				<div
-					className="w-1/2 md:w-1/6 order-1 md:order-1 h-full"
+					className="relative flex-grow md:w-1/6 order-1 md:order-1 h-full"
 				>
+					{loading && <Loading />}
 					<div
 						className="rtl border-b border-primary mb-1"
 					>
@@ -88,9 +89,9 @@ const LectureDetail: React.FC<Props> = () => {
 					/>
 				</div>
 				<div
-					className="flex-grow order-3 md:order-2 md:w-4/6 h-full flex flex-col items-center justify-center gap-8"
+					className="relative flex-grow order-3 md:order-2 md:w-4/6 h-full flex flex-col items-center justify-center gap-8"
 				>
-					
+					{loading && <Loading />}
 					<LectureDetailMain lecture={data?.lectures?.edges[0]?.node!}/>
 
 					{data?.lectures?.edges[0]?.node?.tagSet?.edges?.length! > 0 && <div
@@ -116,8 +117,9 @@ const LectureDetail: React.FC<Props> = () => {
 					</div>}	
 				</div>
 				<div
-					className="flex-grow md:w-1/6 order-2 md:order-3 h-full"
+					className="relative flex-grow md:w-1/6 order-2 md:order-3 h-full"
 				>
+					{loading && <Loading />}
 					<div
 						className="rtl border-b border-primary mb-1"
 					>

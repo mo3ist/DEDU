@@ -4,6 +4,7 @@ import { GetQuizzesMeta } from "./__generated__/GetQuizzesMeta";
 import { currentCourseVar, currentTagsVar, currentUserVar } from "../../common/apollo-client/apollo-client";
 import classNames from "classnames";
 import { useHistory } from "react-router";
+import Loading from "../../common/components/loading/loading";
 
 interface Props {
 	// quiz: GetQuizzes_quizzes_edges_node
@@ -43,15 +44,16 @@ const QuizListItem: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="flex flex-row items-center justify-center bg-secondary-100 p-1 md:p-2 rounded-lg gap-2 flex-wrap"
+			className="relative flex flex-row items-center justify-center bg-secondary-100 p-1 md:p-2 rounded-lg gap-2 flex-wrap"
 		>
+			{loading && <Loading />}
 			<div
 				className="flex-grow flex flex-row items-center justify-start gap-2 md:gap-4"
 			>
 				<p
 					className="md:text-xl flex border-b-2 border-primary"
 				>
-					<span className="font-bold text-primary">{data?.quizzes?.totalCount}</span> سؤال
+					<span className="font-bold text-primary pl-1">{data?.quizzes?.totalCount}</span> سؤال
 				</p>
 				<p
 					className="font-semibold p-1 rounded-full"

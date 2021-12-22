@@ -5,6 +5,7 @@ import { gql, useQuery, useReactiveVar } from '@apollo/client'
 import { GetCourseCode } from "./__generated__/GetCourseCode";
 import { GetContentCount } from "./__generated__/GetContentCount";
 import { currentCourseVar } from "../../common/apollo-client/apollo-client";
+import Loading from "../../common/components/loading/loading";
 
 interface Content {
 	title: string;
@@ -94,8 +95,9 @@ export const ContentListing: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="grid grid-cols-2 gap-4 md:gap-8 h-full rtl"
+			className="relative grid grid-cols-2 gap-4 md:gap-8 h-full rtl"
 		>
+			{(codeLoading || countLoading) && <Loading />}
 			{contents.map(content => {
 				return (
 					<div

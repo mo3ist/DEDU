@@ -2,6 +2,7 @@ import { gql, useQuery, useReactiveVar } from "@apollo/client";
 import React from "react"
 import ReactMarkdown from 'react-markdown'
 import { currentCourseVar } from "../../common/apollo-client/apollo-client";
+import Loading from "../../common/components/loading/loading";
 
 
 import { GetCourseOutline } from "./__generated__/GetCourseOutline";
@@ -35,8 +36,14 @@ export const CourseOutline: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="bg-secondary-100 p-4 rounded-lg"
+			className="relative bg-secondary-100 p-4 rounded-lg"
 		>
+			{loading && 
+			<div
+				className="h-96"
+			>
+				<Loading />
+			</div>}
 			<article
 				className="prose"
 			>

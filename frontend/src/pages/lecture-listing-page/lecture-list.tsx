@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { GetLectures } from "./__generated__/GetLectures";
 import LectureListItem from "./lecture-list-item";
 import { GetSyllabusTags } from "./__generated__/GetSyllabusTags";
+import Loading from "../../common/components/loading/loading";
  
 interface Props {
 	display?: string;
@@ -120,8 +121,13 @@ const LectureList: React.FC<Props> = ({ display, lectureType }) => {
 
 	return (
 		<div
-			className="grid grid-cols-1 gap-4"
+			className="relative grid grid-cols-1 gap-4"
 		>
+			{(loading || tagsLoading) && <div
+				className="h-96"
+			>
+				<Loading />
+			</div>}
 			{tagsData?.tags?.edges.map(tagEdge => {
 				const filtered_lectures = data?.lectures?.edges.filter(lectureEdge => 
 					lectureEdge?.node?.tagSet?.edges.filter(lectureTagsEdge => 
@@ -153,6 +159,14 @@ const LectureList: React.FC<Props> = ({ display, lectureType }) => {
 
 									)
 								})}
+								{filtered_lectures?.length === 0 && <p
+									className="flex items-center justify-center font-semibold text-primary text-base md:text-xl"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+									</svg>
+									لاتتوفر نتائج
+								</p>}
 							</div>
 						</div>
 					</div>
