@@ -79,6 +79,10 @@ const QuestionEdit: React.FC<Props> = () => {
 		}
 	})
 	
+	const checkNewTags = (tags: string[]): boolean => {
+		return tags.filter(is_new => !question?.tagSet?.edges.map(tag => tag?.node?.title).includes(is_new)).length > 0
+	}
+
 	return (
 		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative h-full rounded-lg main-margin">
 			{mutationData && <Success />}
@@ -90,7 +94,7 @@ const QuestionEdit: React.FC<Props> = () => {
 				courseCode={courseCode}
 				onSubmit={({ title, body, tags }) => {
 					// TODO: Tag inequality
-					if (title !== question?.title || body !== question?.body) {
+					if (title !== question?.title || body !== question?.body || checkNewTags(tags!)) {
 						editQuestion({
 							variables: {
 								modId: question?.mod?.id,

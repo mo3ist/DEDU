@@ -6,7 +6,10 @@ import QuizCreation from '../../common/components/quiz-creation/quiz-creation';
 import { currentCourseVar } from '../../common/apollo-client/apollo-client';
 import Success from '../../common/components/success/success';
 import Loading from '../../common/components/loading/loading';
-import { GetEditableQuiz } from './__generated__/GetEditableQuiz';
+import { GetEditableQuiz, GetEditableQuiz_quizzes_edges_node } from './__generated__/GetEditableQuiz';
+import { GetQuiz_quizzes_edges_node } from '../quiz-detail/__generated__/GetQuiz';
+import { GetEditableQuestion_questions_edges_node } from '../question-edit/__generated__/GetEditableQuestion';
+import { useParams } from 'react-router';
 
 interface Props {
 
@@ -70,34 +73,63 @@ const EDIT_QUIZ = gql`
 const QuizEdit: React.FC<Props> = () => {
 	
 	const currentCourse = useReactiveVar(currentCourseVar)
-	
+	const quizId = useParams<{id: string}>().id
+
 	const [editQuiz, { loading: mutationLoading, error: mutationError, data: mutationData }] = useMutation(EDIT_QUIZ)
 	const { loading: queryLoading, error: queryError, data: queryData } = useQuery<GetEditableQuiz>(GET_EDITABLE_QUIZ, {
 		variables: {
-			id: currentCourse?.id
+			id: quizId
 		}
 	})
 
+	const checkNewTags = (tags: string[], quiz: GetEditableQuiz_quizzes_edges_node): boolean => {
+		return tags.filter(is_new => !quiz?.tagSet?.edges.map(tag => tag?.node?.title).includes(is_new)).length > 0
+	}
+
+	const checkNewQuiz = (title: string, a: string | null, b:string | null, c:string | null, d:string | null, answer:string, quiz:GetEditableQuiz_quizzes_edges_node, tags: string[]): boolean => {
+		return ( 
+			checkNewTags(tags, quiz) ||  
+			title !== quiz?.title ||
+			a !== quiz?.a || 
+			b !== quiz?.b || 
+			c !== quiz?.c ||
+			d !== quiz?.d ||
+			answer !== quiz?.answer
+		)
+	}
+
 	return (
 		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative rounded-lg main-margin">
-			{mutationData && <Success />}
+			{mutationData && <Success redirectUrl={`/courses/${currentCourse?.code}/quiz/`} />}
 			
 			{(mutationLoading || queryLoading) && <Loading />}
 
 			<QuizCreation
+				key={queryData?.quizzes?.edges[0]?.node?.id}
 				content={queryData?.quizzes?.edges[0]?.node}
 				onSubmit={({ title, a, b, c, d, answer, tags }) => {
-					editQuiz({variables: {
-						modId: queryData?.quizzes?.edges[0]?.node?.mod?.id,
-						title: title,
-						a: a,
-						b: b,
-						c: c,
-						d: d,
-						answer: answer,
-						tags: tags,
-						courseCode: currentCourse?.code
-					}})
+					if (checkNewQuiz(
+						title!,
+						a,
+						b,
+						c,
+						d,
+						answer!,
+						queryData?.quizzes?.edges[0]?.node!,
+						tags!,
+					)) {
+						editQuiz({variables: {
+							modId: queryData?.quizzes?.edges[0]?.node?.mod?.id,
+							title: title,
+							a: a,
+							b: b,
+							c: c,
+							d: d,
+							answer: answer,
+							tags: tags,
+							courseCode: currentCourse?.code
+						}})
+					}
 			}}/>
 		</div>
 	)
