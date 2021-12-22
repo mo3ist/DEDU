@@ -243,6 +243,7 @@ const Quiz:React.FC<Props> = ({ id }) => {
 											className="ml-1 md:ml-2 w-5 h-5 inline"
 											disabled={reveal}
 											onClick={() => setValue(option!)}
+											checked={option == value}
 										/>
 										{option}
 									</label>
