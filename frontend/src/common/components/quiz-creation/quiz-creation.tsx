@@ -88,7 +88,16 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 										<input 
 											type="text" 
 											value={value!}
-											onChange={(e) => {setOptions(options.map((itm, idx) => idx === index ? e.target.value : itm))}} 
+											onChange={(e) => {
+												setOptions(
+													options.map((itm, idx) => idx === index ? e.target.value : itm)
+												)
+
+												// THIS IS A HACK TO "BIND" THE ANSWER WITH OPTIONS:
+												// USER WILL HAVE TO PICK THE ANSWER AGAIN WHEN HE CHANGES AN OPTION
+												// THIS MAKES ME AVOID ACTUALLY BINDING THE ANSWER OPTION TO ANSWER
+												setAnswer("")
+											}} 
 											className="flex-grow rounded-lg pr-2 h-8" />
 										<button 
 											className={classname("p-2 bg-primary rounded-lg", {"opacity-50 cursor-not-allowed": options.length === 2})}
@@ -138,7 +147,7 @@ const QuizCreation: React.FC<Props> = ({ content, onSubmit }) => {
 										name="answer" 
 										className="w-5 h-5" 
 										onClick={() => setAnswer(value)}
-										// checked={value === content?.answer}
+										checked={value === answer}
 									/>
 									<label htmlFor={index.toString()}><span className="font-bold">{index+1}.</span> {value}</label>
 								</div>
