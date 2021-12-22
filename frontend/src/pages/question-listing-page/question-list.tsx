@@ -82,7 +82,7 @@ const QuestionList: React.FC<Props> = ({ tags }) => {
 				{data?.questions?.edges.map(edge => {
 					return (
 						edge && <div
-							// className="bg-secondary-100"
+							className="rounded-lg overflow-hidden"
 						>
 							<GenericListItem content={edge.node} />
 						</div> 

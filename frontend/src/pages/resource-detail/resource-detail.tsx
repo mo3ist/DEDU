@@ -34,6 +34,10 @@ const GET_DETAILED_RESOURCE = gql`
 						name
 						profilePicture
 					}
+					mod {
+						id 
+						state
+					}
 				}
 			}
 		}

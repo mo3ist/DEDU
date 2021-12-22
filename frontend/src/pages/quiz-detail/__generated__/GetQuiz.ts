@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ModState } from "./../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: GetQuiz
 // ====================================================
@@ -39,6 +41,15 @@ export interface GetQuiz_quizzes_edges_node_user {
   profilePicture: string | null;
 }
 
+export interface GetQuiz_quizzes_edges_node_mod {
+  __typename: "ModType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  state: ModState;
+}
+
 export interface GetQuiz_quizzes_edges_node {
   __typename: "QuizType";
   /**
@@ -56,6 +67,7 @@ export interface GetQuiz_quizzes_edges_node {
   userVote: string | null;
   created: any;
   user: GetQuiz_quizzes_edges_node_user;
+  mod: GetQuiz_quizzes_edges_node_mod;
 }
 
 export interface GetQuiz_quizzes_edges {

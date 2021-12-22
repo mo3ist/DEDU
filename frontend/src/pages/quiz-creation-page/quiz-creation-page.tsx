@@ -31,6 +31,13 @@ const CREATE_QUIZ = gql`
 				c
 				d
 				answer
+				solutionSet {
+					edges {
+						node {
+							id
+						}
+					}
+				}
 			}
 		}
 	}

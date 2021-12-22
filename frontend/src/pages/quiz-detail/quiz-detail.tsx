@@ -102,7 +102,7 @@ const QuizDetail: React.FC<Props> = () => {
 		>
 			{loading && <Loading />}
 			{quizIds && <><div
-				className="w-full flex-grow"
+				className="w-full flex-grow rounded-lg overflow-hidden"
 			>
 				<Quiz
 					id={quizIds[activeIndex]}

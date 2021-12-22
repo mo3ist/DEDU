@@ -304,6 +304,14 @@ class QuizSerializer(serializers.ModelSerializer):
 		else:
 			raise Exception("'Mod' Not valid.")
 
+		# Create a correct solution for quiz creator
+		solution = models.Solution.objects.create(
+			user=user,
+			quiz=quiz,
+			correct=True,
+			answer=quiz.answer
+		)
+
 		return quiz
 
 class SolutionSerializer(serializers.ModelSerializer):

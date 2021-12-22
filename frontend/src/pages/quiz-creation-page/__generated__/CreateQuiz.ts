@@ -7,6 +7,30 @@
 // GraphQL mutation operation: CreateQuiz
 // ====================================================
 
+export interface CreateQuiz_createQuiz_quiz_solutionSet_edges_node {
+  __typename: "SolutionType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+}
+
+export interface CreateQuiz_createQuiz_quiz_solutionSet_edges {
+  __typename: "SolutionTypeEdge";
+  /**
+   * The item at the end of the edge
+   */
+  node: CreateQuiz_createQuiz_quiz_solutionSet_edges_node | null;
+}
+
+export interface CreateQuiz_createQuiz_quiz_solutionSet {
+  __typename: "SolutionTypeConnection";
+  /**
+   * Contains the nodes in this connection.
+   */
+  edges: (CreateQuiz_createQuiz_quiz_solutionSet_edges | null)[];
+}
+
 export interface CreateQuiz_createQuiz_quiz {
   __typename: "QuizType";
   /**
@@ -19,6 +43,7 @@ export interface CreateQuiz_createQuiz_quiz {
   c: string | null;
   d: string | null;
   answer: string;
+  solutionSet: CreateQuiz_createQuiz_quiz_solutionSet;
 }
 
 export interface CreateQuiz_createQuiz {

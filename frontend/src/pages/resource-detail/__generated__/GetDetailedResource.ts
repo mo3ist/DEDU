@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { TagTagType } from "./../../../../__generated__/globalTypes";
+import { TagTagType, ModState } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: GetDetailedResource
@@ -37,6 +37,15 @@ export interface GetDetailedResource_resources_edges_node_user {
   profilePicture: string | null;
 }
 
+export interface GetDetailedResource_resources_edges_node_mod {
+  __typename: "ModType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  state: ModState;
+}
+
 export interface GetDetailedResource_resources_edges_node {
   __typename: "ResourceType";
   /**
@@ -50,6 +59,7 @@ export interface GetDetailedResource_resources_edges_node {
   userVote: string | null;
   tagSet: GetDetailedResource_resources_edges_node_tagSet | null;
   user: GetDetailedResource_resources_edges_node_user;
+  mod: GetDetailedResource_resources_edges_node_mod;
 }
 
 export interface GetDetailedResource_resources_edges {

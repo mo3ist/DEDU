@@ -80,7 +80,7 @@ const ResourceList: React.FC<Props> = ({ tags }) => {
 				{data?.resources?.edges.map(edge => {
 					return (
 						edge && <div
-							// className="bg-secondary-100"
+							className="rounded-lg overflow-hidden"
 						>
 							<GenericListItem content={edge.node} />
 						</div> 

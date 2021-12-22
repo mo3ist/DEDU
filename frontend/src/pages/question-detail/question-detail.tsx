@@ -35,6 +35,10 @@ const GET_DETAILED_QUESTION = gql`
 						name
 						profilePicture
 					}
+					mod {
+						id 
+						state
+					}
 				}
 			}
 		}
