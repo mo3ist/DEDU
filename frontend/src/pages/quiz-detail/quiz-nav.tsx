@@ -16,6 +16,8 @@ const QuizNav: React.FC<Props> = ({ quizIds, activeIndex, setActiveIndex }) => {
 	const [start, setStart] = useState(0);
 	const [end, setEnd] = useState(0);
 
+	const [inputClicked, setInputClicked] = useState(false)
+
 	const getActiveQuizIds = ( index = activeIndex ) => {
 		var start = index - BUTTON_NUMBER >= 0 ? (index - BUTTON_NUMBER)+1 : 0;
 		var end = index + BUTTON_NUMBER <= quizIds?.length! -1 ? (index + BUTTON_NUMBER)+1 : quizIds?.length;
@@ -32,14 +34,15 @@ const QuizNav: React.FC<Props> = ({ quizIds, activeIndex, setActiveIndex }) => {
 	}, [activeIndex])
 
 	const inputRef = useRef<HTMLInputElement>(null)
+	const inputButtonRef = useRef<HTMLButtonElement>(null)
 
 	return (
 		<div
-			className="w-full flex flex-row items-center justify-center rtl"
+			className="w-full flex flex-row items-center justify-center rtl flex-wrap gap-2"
 		>
 			{/* First */}
 			<div
-				className="flex-grow flex items-center justify-start gap-1"
+				className="flex-grow flex items-center justify-start gap-1 order-2 md:order-1"
 			>
 				<button
 					className="quiz-nav-button"
@@ -81,43 +84,69 @@ const QuizNav: React.FC<Props> = ({ quizIds, activeIndex, setActiveIndex }) => {
 
 			{/* Choice */}
 			<div
-				className="flex items-center justify-center gap-1 rounded-lg bg-primary-100"
+				className="flex items-center justify-center gap-1 rounded-lg bg-secondary-100 w-full md:w-2/6 order-1 md:order-2 p-1"
 			>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						const value = inputRef.current?.value
-						setActiveIndex(Number.parseInt(value!)-1)
-						setActiveQuizIds(getActiveQuizIds(Number.parseInt(value!)-1)!)
-					}}
+				<div
+					className="w-2/6 h-8 flex items-center"
 				>
-					<input 
-						type="text" 
-						className="outline-none w-7 h-7 md:w-10 md:h-10 md:p-1 rounded-r-lg text-center bg-primary placeholder-secondary"
-						ref={inputRef}
-						placeholder="?"
-						onChange={(e) => {
-							const value = e.currentTarget.value
-							var isNumber = Number.isInteger(Number(value)) && value !== "";
-							// if (value == "") {
-							// 	setActiveIndex(0)
-							// }
-							if (isNumber){
-								e.currentTarget.value = Math.min(Number.parseInt(inputRef.current?.value!), quizIds?.length!).toString()
-							}
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							const value = inputRef.current?.value
+							setActiveIndex(Number.parseInt(value!)-1)
+							setActiveQuizIds(getActiveQuizIds(Number.parseInt(value!)-1)!)
+
+							setInputClicked(false)
+
 						}}
-					/>
-				</form>
-				<p
-					className="inline md:p-1"
-				>
-					/{quizIds?.length}
-				</p>
+						className="h-full w-full"
+					>
+						{inputClicked && <input 
+							type="text" 
+							className="outline-none w-full h-full md:h-8 p-1 rounded-lg text-center bg-secondary-200 flex items-center justify-center placeholder-secondary"
+							ref={inputRef}
+							onBlur={() => {
+								setInputClicked(false)
+							}}
+
+							// cause of cond rendering, focus after click
+							autoFocus={true}
+							onChange={(e) => {
+								const value = e.currentTarget.value
+								var isNumber = Number.isInteger(Number(value)) && value !== "";
+								// if (value == "") {
+								// 	setActiveIndex(0)
+								// }
+								if (isNumber){
+									e.currentTarget.value = Math.max(1, Math.min(Number.parseInt(inputRef.current?.value!), quizIds?.length!)).toString()
+								}
+							}}
+						/>}
+						{!inputClicked && <button
+							className="w-full h-full md:h-8 p-1 rounded-lg text-center bg-secondary-200 flex items-center justify-center shadow-md font-bold"
+							ref={inputButtonRef}
+							onClick={(e) => {
+								setInputClicked(true)
+							}}
+						>
+							{/* <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg> */}
+							{activeIndex + 1}
+						</button>}
+					</form>
+					<p
+						className="inline p-1 w-1/2"
+					>
+						/ {quizIds?.length}
+					</p>
+				</div>
+					
 			</div>
 
 			{/* Last */}
 			<div
-				className="flex-grow flex items-center justify-end gap-1"
+				className="flex-grow flex items-center justify-end gap-1 order-3"
 			>
 				{activeQuizIds?.slice(-BUTTON_NUMBER).map((id, index) => {
 					return (
