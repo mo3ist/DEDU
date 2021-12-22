@@ -43,7 +43,7 @@ const QuestionCreationPage: React.FC<Props> = () => {
 
 	return (
 		<div className="grid grid-cols-1 gap-4 bg-secondary-100 p-2 rtl relative main-margin rounded-lg">
-			{data && <Success />}
+			{data && <Success redirectUrl={`/courses/${courseCode}/question/`}/>}
 			
 			{loading && <Loading />}
 

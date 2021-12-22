@@ -11,6 +11,7 @@ import AnswerCreationPage from "../answer-creation-page/answer-creation-page";
 import AnswerEdit from "../answer-edit/answer-edit";
 import { currentCourseVar, currentUserVar } from "../../common/apollo-client/apollo-client";
 import Loading from "../../common/components/loading/loading";
+import ProtectedButton from "../../common/components/protected-button/protected-button";
 
 interface Props {
 	questionId: string
@@ -83,7 +84,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 			<div
 				className="bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
 			>
-				<button
+				<ProtectedButton
 					className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
 					onClick={() => {
 						setCreation(!creation)
@@ -93,7 +94,7 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 						<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
 					</svg>
 					إضافة إجابة
-				</button>
+				</ProtectedButton>
 			</div>
 			<div
 				className="relative grid grid-cols-1 gap-4 md:gap-8"

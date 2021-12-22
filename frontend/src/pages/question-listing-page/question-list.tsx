@@ -6,6 +6,7 @@ import GenericListItem from "../../common/components/generic-list/generic-list-i
 import classNames from "classnames";
 import { GetQuestions } from "./__generated__/GetQuestions";
 import Loading from "../../common/components/loading/loading";
+import Success from "../../common/components/success/success";
 
 interface Props {
 	tags: Array<String> | null
