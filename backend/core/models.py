@@ -211,6 +211,32 @@ class Lecture(models.Model):
 	def __str__(self):
 		return self.title
 
+	def save(self, *args, **kwargs):
+		try:
+			# Editing existing tag
+			
+			old_lec = Lecture.objects.get(id=self.id)
+			lec_tag = Tag.objects.get(title=old_lec.title)
+			lec_tag.title = self.title
+			lec_tag.save()
+
+		except:
+			# Creating a new tag
+			lec_tag = Tag.objects.create(
+				title=self.title,
+				body="",
+				user=self.user,
+				mod=Mod.objects.create(user=self.user),
+				course=self.course,
+				tag_type=Tag.TAG_TYPE.LECTURE
+			)
+
+			super().save(*args, **kwargs)
+
+			lec_tag.contents.add(self)
+			
+		return super().save(*args, **kwargs)
+
 class Teacher(models.Model):
 
 	class TEACHER_TYPE(models.TextChoices):
