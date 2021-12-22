@@ -32,7 +32,7 @@ const AnswerListItem: React.FC<Props> = ({ answer, editableAnswerId, setEditable
 		>
 			{currentUser?.name === answer?.user.name && 
 				<div
-					className="w-full"
+					className="w-full flex flex-row items-center justify-start gap-1"
 				>
 					<button
 						className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base"
@@ -42,6 +42,17 @@ const AnswerListItem: React.FC<Props> = ({ answer, editableAnswerId, setEditable
 					>
 						تعديل
 					</button>
+					<p
+						className={classNames("py-1 px-2 rounded-t-lg text-sm md:text-base", {
+							"bg-yellow-300 text-secondary": answer?.mod?.state === "PENDING",
+							//"bg-green-600": answer?.mod?.state === "APPROVED",
+							"bg-red-800 text-secondary-100": answer?.mod?.state === "REJECTED",
+							
+						})}
+					>
+						{answer?.mod?.state === "PENDING" && "قيد المراجعة"}
+						{answer?.mod?.state === "REJECTED" && "مرفوض"}
+					</p>
 				</div>}
 			<div
 				className={classNames("bg-secondary-100 flex flex-col gap-1 p-1 rtl text-secondary", 

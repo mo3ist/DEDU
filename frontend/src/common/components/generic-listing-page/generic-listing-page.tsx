@@ -23,7 +23,7 @@ const GenericListingPage: React.FC<Props> = ({ children, tags, setTags, ListHead
 
 	return (
 		<div
-			className="flex flex-col h-full gap-2 main-margin rtl text-secondary"
+			className="flex flex-col h-full gap-4 md:gap-8 main-margin rtl text-secondary"
 		>
 			<div
 				className="w-full"

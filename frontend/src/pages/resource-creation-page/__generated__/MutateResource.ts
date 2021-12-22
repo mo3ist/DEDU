@@ -9,11 +9,19 @@
 
 export interface MutateResource_createResource_resource_course {
   __typename: "CourseType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   code: string;
 }
 
 export interface MutateResource_createResource_resource_tagSet_edges_node {
   __typename: "TagType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
 }
 
@@ -35,6 +43,10 @@ export interface MutateResource_createResource_resource_tagSet {
 
 export interface MutateResource_createResource_resource {
   __typename: "ResourceType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
   title: string;
   body: string;
   course: MutateResource_createResource_resource_course;

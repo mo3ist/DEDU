@@ -53,7 +53,7 @@ const QuestionDetail: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="grid-cols-1 gap-4 md:gap-8 main-margin"
+			className="grid grid-cols-1 gap-4 md:gap-8 main-margin"
 		>
 
 			<div
@@ -66,7 +66,7 @@ const QuestionDetail: React.FC<Props> = () => {
 				/>
 			</div>
 			<div
-				className="px-4 md:px-8"
+				className="px-4 md:px-8 w-full"
 			>
 				<AnswerList questionId={question?.id!}/>
 			</div>

@@ -31,6 +31,10 @@ const GET_QUESTION_ANSWERS = gql `
 						name
 						profilePicture
 					}
+					mod {
+						id 
+						state
+					}
 				}
 			}
 			pageInfo {
@@ -70,9 +74,9 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 
 	return (
 		<div
-			className="h-full w-full text-secondary rtl"
+			className="h-full w-full text-secondary flex flex-col items-start justify-center rtl"
 		>		
-			<div
+			{/* <div
 				className="rtl border-b border-primary mb-1"
 			>
 				<p
@@ -80,11 +84,26 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 				>
 					الإجابات
 				</p>
-			</div>
+			</div> */}
 			<div
-				className="bg-secondary-200 mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start p-1 md:p-4"
+				className="mb-4 md:mb-8 rounded-b-lg flex flex-row items-center justify-start"
 			>
-				<ProtectedButton
+				<div
+					className="flex-grow flex items-center justify-start"
+				>
+					<ProtectedButton
+						className="rounded-lg bg-primary p-2 flex flex-row items-center justify-center gap-1 md:text-lg"
+						onClick={() => {
+							setCreation(!creation)
+						}}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8" viewBox="0 0 20 20" fill="currentColor">
+							<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+						</svg>
+						إضافة إجابة
+					</ProtectedButton>
+				</div>
+				{/* <ProtectedButton
 					className="bg-secondary-100 p-2 md:p-4 rounded-lg md:text-lg font-semibold"
 					onClick={() => {
 						setCreation(!creation)
@@ -94,10 +113,10 @@ const AnswerList: React.FC<Props> = ({ questionId }) => {
 						<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
 					</svg>
 					إضافة إجابة
-				</ProtectedButton>
+				</ProtectedButton> */}
 			</div>
 			<div
-				className="relative grid grid-cols-1 gap-4 md:gap-8"
+				className="flex-grow w-full relative grid grid-cols-1 gap-4 md:gap-8"
 			>
 				{loading &&
 				<div

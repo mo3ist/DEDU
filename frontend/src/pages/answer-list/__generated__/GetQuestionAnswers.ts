@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ModState } from "./../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: GetQuestionAnswers
 // ====================================================
@@ -11,6 +13,15 @@ export interface GetQuestionAnswers_answers_edges_node_user {
   __typename: "UserType";
   name: string | null;
   profilePicture: string | null;
+}
+
+export interface GetQuestionAnswers_answers_edges_node_mod {
+  __typename: "ModType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  state: ModState;
 }
 
 export interface GetQuestionAnswers_answers_edges_node {
@@ -24,6 +35,7 @@ export interface GetQuestionAnswers_answers_edges_node {
   userVote: string | null;
   created: any;
   user: GetQuestionAnswers_answers_edges_node_user;
+  mod: GetQuestionAnswers_answers_edges_node_mod;
 }
 
 export interface GetQuestionAnswers_answers_edges {

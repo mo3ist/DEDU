@@ -50,11 +50,14 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 					className="w-full flex flex-row items-center justify-start gap-1"
 				>
 					{content?.mod?.state != "REJECTED" && <button
-						className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base"
+						className="bg-primary-100 py-1 px-2 rounded-t-lg text-sm md:text-base flex items-center justify-center rtl"
 						onClick={() => {
 							history.push(buildPath(content?.id!, "edit"))
 						}}
 					>
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 pl-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+						</svg>
 						تعديل
 					</button>}
 					
@@ -75,11 +78,18 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 				{
 					"rounded-tl-lg rounded-b-lg": currentUser?.name === content?.user.name,
 					"rounded-lg": currentUser?.name !== content?.user.name,
+
+					// // ROUNDED STUFF
+					// "rounded-b-lg": currentUser?.name === content?.user.name,
+					// "rounded-tr-lg": content?.mod.state === "REJECTED",
+					// "rounded-tl-lg": content?.mod.state === "APPROVED",
+					// "rounded-lg": currentUser?.name !== content?.user.name,
+
 				})}
 			>
 				{/* upper part */}
 				<div
-					className="flex-grow flex flex-row gap-2 p-1"
+					className="flex-grow flex flex-row gap-2 p-1 flex-wrap"
 				>
 					{/* votes */}
 					<Vote 
@@ -89,10 +99,10 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 					/>
 					{/* title + user data */}
 					<div
-						className="flex-grow flex flex-col items-start justify-start gap-1 w-4/6"
+						className="flex-grow flex flex-col items-start justify-start gap-1 md:gap-2 w-4/6"
 					>
 						<p
-							className="w-full overflow-ellipsis text-md md:text-xl font-semibold bg-secondary-200 border-r-4 border-secondary py-2 px-1 flex items-center"
+							className="w-full overflow-ellipsis text-md md:text-xl font-bold p-2 flex items-center rounded-lg"
 						>
 							<Link to={buildPath(content?.id!, "detail")}>
 								{content?.title}
@@ -107,29 +117,31 @@ const GenericListItem: React.FC<Props> = ({ content }) => {
 								<img src={content?.user.profilePicture!} alt="" />
 							</div>
 							<p
-								className="text-sm md:text-lg"
+								className="text-sm md:text-base"
 							>
 								{content?.user.name}
 							</p>
 						</div>
-					</div>
-					{/* date */}
-					<div
-						className=""
-					>
-						<p
-							className="text-sm md:text-lg flex items-center gap-1 flex-wrap"
+
+						{/* date */}
+						<div
+							className="flex-grow"
 						>
-							منذ <span className="text-primary font-semibold md:pr-1">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>
-						</p>
-						{content && "answerCount" in content && 
 							<p
-								className="text-sm md:text-lg flex items-center gap-1 md:gap-2"
+								className="text-sm md:text-base flex items-center gap-1 flex-wrap"
 							>
-								<span className="text-primary font-bold">{content?.answerCount}</span> اجابة
+								منذ <span className="text-primary font-semibold md:pr-1">{arTimeAgo({date: new Date(content?.created).getTime()}).split('منذ')[1]}</span>
 							</p>
-						}
+							{content && "answerCount" in content && 
+								<p
+									className="text-sm md:text-lg flex items-center gap-1"
+								>
+									<span className="text-primary font-semibold">{content?.answerCount}</span> إجابة
+								</p>
+							}
+						</div>
 					</div>
+					
 				</div>
 
 				{/* lower part (tags) */}
