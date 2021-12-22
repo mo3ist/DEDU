@@ -15,18 +15,17 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 
 	return (
 		<div
-			className="h-54 bg-secondary-100 flex flex-col gap-1 p-1 rtl text-secondary border-2 border-secondary-200 rounded-lg"
+			className="h-54 bg-secondary-100 flex flex-col gap-1 p-1 rtl text-secondary rounded-lg"
 		>
 			{/* upper part */}
 			<div
 				className="flex-grow flex flex-row gap-1 p-1"
 			>
-				{/* title + user data */}
 				<div
 					className="flex-grow flex flex-col items-start justify-center gap-1 w-4/6"
 				>
 					<p
-						className="flex-grow overflow-ellipsis text-md md:text-xl font-bold bg-secondary-200 border-r-4 border-secondary pr-4 py-2 flex items-center w-full"
+						className="flex-grow overflow-ellipsis text-md md:text-xl font-bold flex items-center w-full"
 					>
 						<Link to={`${location.pathname}detail/${lecture?.node?.id!}`}>
 							{lecture.node?.title}
@@ -54,32 +53,33 @@ const LectureListItem: React.FC<Props> = ({ lecture }) => {
 							{lecture.node?.body}
 						</p>
 					</div>
+					<div
+						className="flex-grow "
+					>
+						<p
+							className="text-sm md:text-base flex flex-wrap items-center gap-2"
+						>
+							منذ <span className="text-primary font-bold">{arTimeAgo({date: new Date(lecture.node?.created).getTime()}).split('منذ')[1]}</span>
+						</p>
+						<p
+							className="text-sm md:text-base flex items-center gap-2"
+						>
+							<span className="text-primary font-bold">{lecture.node?.questionCount}</span>سؤال
+						</p>
+						<p
+							className="text-sm md:text-base flex items-center gap-2"
+						>
+							<span className="text-primary font-bold">{lecture.node?.summaryCount}</span>ملخص
+						</p>
+						<p
+							className="text-sm md:text-base flex items-center gap-2"
+						>
+							<span className="text-primary font-bold">{lecture.node?.resourceCount}</span>مصدر
+						</p>
+				</div>
 				</div>
 				{/* date */}
-				<div
-					className="bg-secondary-100 w-1/6 pr-4"
-				>
-					<p
-						className="text-sm md:text-lg flex flex-wrap items-center gap-2"
-					>
-						منذ <span className="text-primary font-bold">{arTimeAgo({date: new Date(lecture.node?.created).getTime()}).split('منذ')[1]}</span>
-					</p>
-					{lecture.node?.questionCount! > 0 && <p
-						className="text-xl flex items-center gap-2"
-					>
-						<span className="text-primary font-bold">{lecture.node?.questionCount}</span>سؤال
-					</p>}
-					{lecture.node?.summaryCount! > 0 && <p
-						className="text-xl flex items-center gap-2"
-					>
-						<span className="text-primary font-bold">{lecture.node?.summaryCount}</span>ملخص
-					</p>}
-					{lecture.node?.resourceCount! > 0 && <p
-						className="text-xl flex items-center gap-2"
-					>
-						<span className="text-primary font-bold">{lecture.node?.resourceCount}</span>مصدر
-					</p>}
-				</div>
+				
 			</div>
 
 			{/* lower part (tags) */}
