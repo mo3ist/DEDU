@@ -101,7 +101,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 
 	return (
 		<div
-			className="flex flex-col h-36 w-full items-center justify-center bg-secondary-100 text-secondary border-2 border-secondary-200 rounded-lg rtl"
+			className="flex flex-col h-36 w-full items-center justify-center bg-secondary-100 text-secondary border-2 border-secondary-200 rounded-lg rtl text-sm md:text-base"
 		>
 			{/* Wrapper for design (bg-color) */}
 			<div
@@ -227,7 +227,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 										tag.length > 0 && 
 										
 										<button
-											className="flex-grow h-10 w-full bg-secondary-100 rounded-lg font-semibold relative text-secondary"
+											className="flex-grow flex items-center justify-start gap-2 px-2 h-10 w-full bg-secondary-100 rounded-lg font-semibold text-secondary"
 											onClick={() => {
 												setTags(tags!?.concat(tag))
 												setTag("")
@@ -240,20 +240,20 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 											}}
 										>
 											<p
-												className="absolute right-1 text-sm font-normal flex gap-1"
+												className="h-full text-sm font-normal flex items-center justify-center md:justify-start gap-1"
 											>
 												<svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
 												</svg>
 												إنشاء
 											</p>
-											<span className="font-bold">{tag}</span>
+											<span className="font-bold inline flex-grow truncate">{tag}</span>
 										</button>}
 
 									{/* {data?.tags?.edges.length === 0 && tags?.indexOf(tag) === -1 && tag.length > 0 && */}
 									{tag.length > 0 && !submit &&
 										<button
-											className="flex-grow h-10 w-full bg-secondary-100 rounded-lg font-semibold relative"
+											className="flex-grow flex items-center justify-start gap-2 px-2 h-10 w-full bg-secondary-100 rounded-lg font-semibold text-secondary"
 											onClick={() => {
 												// if (creatable) {
 												// 	setTags(tags!?.concat(tag))
@@ -269,12 +269,12 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 											}}
 										>
 											<p
-												className="absolute right-1 text-sm font-normal flex gap-1"
+												className="h-full text-sm font-normal flex items-center justify-center md:justify-start gap-1"
 											>
 												<svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="keyboard" className="w-6 h-6 inline" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M528 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h480c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm8 336c0 4.411-3.589 8-8 8H48c-4.411 0-8-3.589-8-8V112c0-4.411 3.589-8 8-8h480c4.411 0 8 3.589 8 8v288zM170 270v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm-336 82v-28c0-6.627-5.373-12-12-12H82c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm384 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zM122 188v-28c0-6.627-5.373-12-12-12H82c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm96 0v-28c0-6.627-5.373-12-12-12h-28c-6.627 0-12 5.373-12 12v28c0 6.627 5.373 12 12 12h28c6.627 0 12-5.373 12-12zm-98 158v-16c0-6.627-5.373-12-12-12H180c-6.627 0-12 5.373-12 12v16c0 6.627 5.373 12 12 12h216c6.627 0 12-5.373 12-12z"></path></svg>
 												بحث
 											</p>
-											<span className="font-bold">{tag}</span>
+											<span className="font-bold inline flex-grow truncate">{tag}</span>
 										</button>
 									}
 
@@ -283,7 +283,7 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 									{data?.tags?.edges.map(edge => {
 										return (
 											<button
-												className={classNames("flex-initial h-10 w-full bg-secondary-100 rounded-lg font-semibold relative", {
+												className={classNames("flex-initial h-10 w-full bg-secondary-100 rounded-lg font-semibold relative truncate px-2", {
 													"opacity-50 cursor-not-allowed": tags?.indexOf(edge?.node?.title!) !== -1
 												})}
 												onClick={() => {
@@ -300,12 +300,6 @@ const TagSearch: React.FC<Props> = ({  tags=[], setTags, courseCode, creatable=f
 												</svg>}
 											
 											</button> 
-											// <button
-											// 	className="h-10 w-full opacity-80 cursor-not-allowed"
-											// >
-											// 	{edge?.node?.title}
-											// </button>
-
 										)
 									})}
 									

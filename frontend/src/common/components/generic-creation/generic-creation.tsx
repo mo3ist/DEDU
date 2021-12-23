@@ -157,7 +157,6 @@ const GenericCreation: React.FC<Props> = ({ content, courseCode, onSubmit }) => 
 					className="bg-secondary-200 w-full text-2xl md:text-3xl text-secondary p-2 md:p-4 rounded-lg"
 					onClick={async () => {
 						if (title?.length !== 0 && body?.length !== 0 && tags?.length !== 0) {
-							console.log("valid", title, body, tags)
 							const text = await base64toURL(body)
 							onSubmit({
 								title: title,
