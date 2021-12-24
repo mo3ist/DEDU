@@ -26,6 +26,7 @@ import QuizCreationPage from './pages/quiz-creation-page/quiz-creation-page';
 import QuizEdit from './pages/quiz-edit/quiz-edit';
 import Logout from './pages/logout/logout';
 import QuizDetail from './pages/quiz-detail/quiz-detail';
+import BackgroundIcons from './common/components/background-icons/background-icons';
 
 
 // I DON'T BELIEVE IN REDUNDANCY LOL
@@ -34,13 +35,15 @@ const App: React.FC = () => {
 
 	return (
 		<div
-			className="flex-1 font-cairo w-full"
+			className="flex-1 font-cairo w-full relative"
 		>
+			<BackgroundIcons />
+
 			<ApolloProvider client={ apolloClient }>
 				<Router>
 
 					<div
-						// className="pb-16"
+						className="pb-16"
 					>
 						<Navbar />
 					</div>
@@ -116,6 +119,7 @@ const App: React.FC = () => {
 						</Route>
 					</Switch>
 				</Router>
+
 			</ApolloProvider>
 		</div>
 	);

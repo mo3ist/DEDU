@@ -1,0 +1,28 @@
+// /* @import compass */
+// body
+//   background: black
+  
+// .star
+//   width: 10px
+//   height: 10px
+//   position: absolute
+//   font-size: 10px
+//   color: white
+    
+// @for $i from 1 through 1000
+//   .star:nth-child(#{$i})
+//     top: random(750) + px
+//     left: random(1500) + px
+//     opacity: random()
+//     font-size: random(10) + px
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.item {
+		color: red;
+	}
+}

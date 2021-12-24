@@ -259,11 +259,21 @@ export const currentClassificationVar = makeVar<CurrentClassification | null>(JS
 export type CurrentTags = string[]
 export const currentTagsVar = makeVar<CurrentTags | null>(JSON.parse(localStorage.getItem("currentTagsVar")!))
 
-type QuizSolution = {
+export type QuizSolution = {
 	id: string
 	answer: string
 }
 export type QuizSolutions = QuizSolution[]
 export const quizSolutionsVar = makeVar<QuizSolutions | null>(JSON.parse(localStorage.getItem("quizSolutionsVar")!))
+
+export type RandomPoint = {
+	top: number,
+	left: number,
+	size: number
+}  
+
+export type RandomPoints = RandomPoint[];
+
+export const randomPointsVar = makeVar<RandomPoints | null>(JSON.parse(localStorage.getItem("randomPointsVar")!))
 
 export default apolloClient

@@ -14,7 +14,7 @@ const ListHeader: React.FC<Props> = ({ showFilter, setShowFilter, creationText, 
 
 	return (
 		<div
-			className="w-full h-full flex flex-row items-center justify-center gap-2"
+			className="z-10 w-full h-full flex flex-row items-center justify-center gap-2"
 		>
 			<div
 				className="flex-grow flex items-center justify-start"
