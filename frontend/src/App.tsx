@@ -40,7 +40,7 @@ const App: React.FC = () => {
 				<Router>
 
 					<div
-						className="pb-16"
+						// className="pb-16"
 					>
 						<Navbar />
 					</div>

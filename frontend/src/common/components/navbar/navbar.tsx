@@ -53,7 +53,7 @@ const Navbar: React.FC<Props> = () => {
 
 	return (
 		<div
-			className="h-16 bg-secondary-100 w-full fixed z-20 flex flex-row items-center rtl p-1 text-secondary text-sm md:text-2xl gap-1 shadow-sm border-b-2 border-secondary"
+			className="h-16 md:h-20 bg-secondary-100 w-full sticky z-20 flex flex-row items-center rtl p-1 md:p-4 text-secondary text-sm md:text-2xl gap-1 shadow-sm border-b-2 border-secondary"
 		>
 			<div
 				className="nav-container justify-start"
@@ -145,34 +145,34 @@ const Navbar: React.FC<Props> = () => {
 			>
 				{!currentUser ? 
 				<button
-					className={classname("nav-button", {"active": location.pathname === "/auth"})} 
+					className={classname("nav-button p-0 h-10 w-10 md:h-14 md:w-14 rounded-full bg-secondary-200", {"": location.pathname === "/auth"})} 
 				>
 					<Link
 						to="/auth"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" className="h-full md:h-8 md:w-8 inline md:ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+						<svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 md:h-10 md:w-10 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
 						</svg>
-						<span className="hidden md:inline">تسجيل دخول</span>
+						{/* <span className="hidden md:inline mr-1">تسجيل دخول</span> */}
 					</Link>
 				</button> :
 				<div
-					className="w-full h-full flex items-center justify-end gap-1 md:gap-2"
+					className="h-full flex items-center justify-end gap-1 md:gap-2"
 				>
 					<img
-						className="rounded-full h-8 md:h-14 hidden md:block"
+						className="rounded-full w-8 h-8 md:h-14 md:w-14 hidden md:block"
 						src={currentUser.profilePicture}
 					/>
 					<button
-						className={classname("nav-button", {"active": location.pathname === "/logout"})} 
+						className={classname("nav-button p-0 h-10 w-10 md:h-14 md:w-14 rounded-full bg-secondary-200", {"": location.pathname === "/logout"})} 
 					>
 						<Link
 							to="/logout"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" className="h-full md:h-8 md:w-8 inline md:ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+							<svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 md:h-10 md:w-10 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
 							</svg>
-							<span className="hidden md:inline">تسجيل خروج</span>
+							{/* <span className="hidden md:inline mr-1">تسجيل خروج</span> */}
 						</Link>
 					</button>
 					

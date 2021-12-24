@@ -20,7 +20,7 @@
 	}
 
 	.nav-button {
-		@apply text-secondary px-1 md:px-4 py-1 rounded-lg bg-primary-100 font-semibold border border-primary h-10 md:h-14
+		@apply text-secondary px-1 md:px-4 py-1 rounded-lg bg-primary font-semibold h-10 md:h-14 shadow-sm
 	}
 
 	.active {
