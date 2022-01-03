@@ -22,3 +22,4 @@ social-auth-app-django==5.0.0
 social-auth-core==4.1.0
 packaging==21.3 
 psycopg2==2.8.6	# DOWNGRADED CAUSE OF A BUG
+gunicorn==20.1.0

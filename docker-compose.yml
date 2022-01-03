@@ -5,23 +5,49 @@ services:
             context: .
             dockerfile: ./Dockerfile-backend
         container_name: django
-        command: python manage.py runserver 0.0.0.0:8000
+        command: >
+          sh -c "
+            python manage.py makemigrations
+            python manage.py migrate 
+            gunicorn conf.wsgi --bind 0.0.0.0:8000 --workers 1 --threads 1 --log-level debug"
         ports:
           - "8000:8000"
         environment:
           - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=${SOCIAL_AUTH_GOOGLE_OAUTH2_KEY}
           - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=${SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET}
+          - POSTGRES_DB=${POSTGRES_DB}
+          - POSTGRES_USER=${POSTGRES_USER}
+          - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+          - POSTGRES_HOST=${POSTGRES_HOST}
+          - POSTGRES_PORT=${POSTGRES_PORT}
         volumes:
           - ./backend:/backend/
-    frontend:
-        build: 
-            context: .
-            dockerfile: ./Dockerfile-frontend
-        container_name: react
-        command: npm start
-        ports:
-          - "3000:3000"
-        environment:
-          - REACT_APP_IMGBB_API_KEY=${REACT_APP_IMGBB_API_KEY}
-        volumes:
-          - ./frontend:/frontend/
+        depends_on:
+          - db
+
+    db:
+      image: postgres
+      volumes: 
+        - db_vol:/var/lib/postgresql/data
+      ports:
+        - 5432:5432
+      environment:
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+    # frontend:
+    #     build: 
+    #         context: .
+    #         dockerfile: ./Dockerfile-frontend
+    #     container_name: react
+    #     command: npm start
+    #     ports:
+    #       - "3000:3000"
+    #     environment:
+    #       - REACT_APP_IMGBB_API_KEY=${REACT_APP_IMGBB_API_KEY}
+    #     volumes:
+    #       - ./frontend:/frontend/
+
+volumes:
+  db_vol: 
