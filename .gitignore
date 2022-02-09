@@ -6,6 +6,7 @@ backend/*/__pycache__/
 backend/__pycache__/
 backend/db.sqlite3
 backend/.ipynb_checkpoints/
+backend/static/
 backend/meida/*
 !backend/media/.gitkeep
 *.ipynb

@@ -1,0 +1,74 @@
+version: "3.8"
+services: 
+    backend:
+        build: 
+            context: .
+            dockerfile: ./Dockerfile-backend
+        container_name: dedu_backend
+        command: >
+            sh -c "
+                python manage.py makemigrations && 
+                python manage.py migrate &&
+                python manage.py collectstatic --no-input &&
+                gunicorn conf.wsgi --bind 0.0.0.0:8000 --workers 1 --threads 1 --log-level debug"
+        ports:
+            - "8000:8000"
+        environment:
+            SOCIAL_AUTH_GOOGLE_OAUTH2_KEY: ${SOCIAL_AUTH_GOOGLE_OAUTH2_KEY}
+            SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET: ${SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET}
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_HOST: ${POSTGRES_HOST}
+            POSTGRES_PORT: ${POSTGRES_PORT}
+        volumes:
+            - ./backend:/backend/
+            - ./frontend/build:/backend/build/
+        depends_on:
+            postgres:
+                condition: service_healthy
+            frontend:
+                condition: service_completed_successfully
+        
+    nginx:
+        image: nginx:latest
+        container_name: dedu_nginx
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./backend/static:/static
+        depends_on:
+            - backend
+
+    postgres:
+        image: postgres
+        container_name: dedu_postgres
+        restart: always
+        volumes: 
+            - postgres_volume:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+    frontend:
+        build: 
+            context: .
+            dockerfile: ./Dockerfile-frontend
+        container_name: dedu_frontend
+        ports:
+          - "3000:3000"
+        environment:
+          - REACT_APP_IMGBB_API_KEY=${REACT_APP_IMGBB_API_KEY}
+        volumes:
+          - ./frontend:/frontend/
+
+volumes:
+    postgres_volume: 
